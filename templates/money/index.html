@@ -1,0 +1,22 @@
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+{% block extra_script %}
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular-route.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular-cookies.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+   {% include "money/angular.html" %}
+{% endblock %}
+<base href="/">
+
+<title>Casuta noastra virtuala</title>
+<body ng-app="money">
+    {% block content %}
+        {% include "money/nav_bar.html" %}
+        <div ng-view></div>
+    {% endblock %}
+</body>
