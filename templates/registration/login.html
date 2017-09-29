@@ -1,0 +1,58 @@
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+{% load static %}
+
+<head>
+    <link rel="stylesheet" href="{% static "registration/login.css" %}"/>
+</head>
+ <div class="jumbotron vertical-center">
+
+    <div class="row justify-content-center align-items-center">
+        <div class="col-md-4 col-md-offset-4">
+
+            {% block content %}
+
+            {% if form.errors %}
+            <p class="form_title">Your username and password didn't match. Please try again.</p>
+            {% endif %}
+
+            {% if next %}
+                {% if user.is_authenticated %}
+                <p>Your account doesn't have access to this page. To proceed,
+                please login with an account that has access.</p>
+                {% else %}
+                <p>Login</p>
+                {% endif %}
+            {% endif %}
+
+            <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <div>
+                    <label for="id_username">Username</label>
+                </div>
+                <div>
+                      {{ form.username }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div>
+                    <label for="id_password">Password</label>
+                </div>
+                <div>
+                   {{ form.password }}
+                </div>
+             </div>
+
+            <div>
+              <input type="submit" class="btn btn-primary" value="Login" />
+              <input type="hidden" name="next" value="{{ next }}" />
+            </div>
+            </form>
+            {% endblock %}
+        </div>
+    </div>
+</div>

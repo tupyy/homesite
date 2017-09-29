@@ -1,23 +1,34 @@
-"""HomeSite URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/1.11/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  url(r'^$', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  url(r'^$', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.conf.urls import url, include
-    2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
-"""
-from django.conf.urls import url
+from django.conf.urls import url,include
 from django.contrib import admin
-from money import views
+from money.views import *
+from rest_framework.routers import DefaultRouter
+from django.urls import *
+from money.views import *
+
+router = DefaultRouter()
+router.register(r'api/subcategory',SubcategoryViewSet,base_name="subcategory")
+router.register(r'api/category',CategoryViewSet,base_name="category")
+router.register(r'api/payment',PaymentViewSet,base_name='payment')
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^.*$',views.index,name='index')
+    url('^api/subcategories/(?P<category>.+)/$', SubcategoryList.as_view()),
+    url(r'^payment/',payment,name="payment"),
+    url(r'^permanent_payment/',permanent_payment,name='permanent_payment'),
+    url(r'^delete_payment/(?P<pk>[0-9]+)/$',delete_payment,name="delete_payment"),
+    url(r'^month/',month_payments,name='month'),
+    url(r'^view_permanent_payments/',view_permanent_payments,name="view_permanent_payments"),
+    url(r'^delete_permanent_payment/(?P<pk>[0-9]+)/$', delete_permanent_payment, name="delete_permanent_payment"),
+
+    url(r'^$',index,name="index")
 ]
+
+urlpatterns += router.urls
+
+#Add Django site authentication urls (for login, logout, password management)
+urlpatterns += [
+    url(r'^accounts/', include('django.contrib.auth.urls')),
+]
+
+
+

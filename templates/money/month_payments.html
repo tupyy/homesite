@@ -1,12 +1,47 @@
 {# tutorial/templates/people.html #}
 {% load render_table from django_tables2 %}
 {% load static %}
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
 <!doctype html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="{% static "money/table.css" %}"/>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <title>Cheltuieli lunare</title>
+</head>
+
 <html>
-    <head>
-        <link rel="stylesheet" href="{% static 'django_tables2/themes/paleblue/css/screen.css' %}" />
-    </head>
     <body>
-        {% render_table month_table %}
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/">Casuta noastra</a>
+                <p class="navbar-text">{{ nav_bar_title }}</p>
+            </div>
+            </div><!-- /.container-fluid -->
+        </nav>
+
+        <div class="col-md-12 col-xs-12 container-fluid">
+            <div class="col-md-12 col-xs-12">
+                <div class="table-responsive">
+                    {% render_table month_table %}
+                </div>
+            </div>
+        </div>
     </body>
 </html>

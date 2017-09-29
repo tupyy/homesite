@@ -1,16 +1,21 @@
 from django import forms
-from models import Category,Subcategory,PaymentOption,PaymentModel
+from models import Category,Subcategory,PaymentOption,PaymentModel,PermanentPaymentModel
 import datetime
 from django.contrib.auth.models import User
+
+
+class ModelChoiceNoValidation(forms.ModelChoiceField):
+    def validate(self, value):
+        pass
+
 
 class PaymentForm(forms.Form):
     user = forms.ModelChoiceField(label="User",queryset=User.objects.all(),empty_label=None)
     category = forms.ModelChoiceField(queryset = Category.objects.all(),empty_label=None)
-    subcategory = forms.ModelChoiceField(
-        label="Subcategory",
-        queryset=Subcategory.objects.filter(category__name='Alimente'),
-        empty_label=None
-    )
+
+    subcategories = Subcategory.objects.filter(category__name__exact='Alimente')
+    subcategory = forms.CharField(required=False,widget=forms.Select(choices=( (x.id,x.name) for x in subcategories )))
+
     suma = forms.DecimalField(max_digits=5,decimal_places=2,label="Suma",min_value=0)
     payment_option = forms.ModelChoiceField(queryset=PaymentOption.objects.all(),empty_label=None)
     nb_payment_option = forms.IntegerField(label='Numar optiuni de plata',min_value=0,initial=0)
@@ -27,11 +32,36 @@ class PaymentForm(forms.Form):
         data = self.cleaned_data
         payment = PaymentModel(user=data['user'],
                                category=data['category'],
-                               subcategory=data['subcategory'],
+                               subcategory=Subcategory.objects.get(pk=int(data['subcategory'])),
                                sum=data['suma'],
                                option_pay=data['payment_option'],
                                nb_option=data['nb_payment_option'],
                                date=data['date'],
+                               comments=data['comments'])
+        payment.save()
+
+
+class PermanentPaymentForm(forms.Form):
+    user = forms.ModelChoiceField(label="User",queryset=User.objects.all(),empty_label=None)
+    category = forms.ModelChoiceField(queryset = Category.objects.all(),empty_label=None)
+
+    subcategories = Subcategory.objects.filter(category__name__exact='Alimente')
+    subcategory = forms.CharField(required=False,widget=forms.Select(choices=( (x.id,x.name) for x in subcategories )))
+
+    suma = forms.DecimalField(max_digits=5,decimal_places=2,label="Suma",min_value=0)
+    comments = forms.CharField(
+        max_length=200,
+        widget=forms.Textarea(),
+        help_text="Comentariu",
+        required=False
+    )
+
+    def save(self):
+        data = self.cleaned_data
+        payment = PermanentPaymentModel(user=data['user'],
+                               category=data['category'],
+                               subcategory=Subcategory.objects.get(pk=int(data['subcategory'])),
+                               sum=data['suma'],
                                comments=data['comments'])
         payment.save()
 

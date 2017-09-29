@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
     <title>Adaugare cheltuiala</title>
 </head>
 
@@ -32,7 +31,6 @@
                 {% for field in form.visible_fields %}
                 <div class="form-group">
                   {{ field.label_tag }}
-
                   {% if form.is_bound %}
                     {% if field.errors %}
                       {% render_field field class="form-control is-invalid" %}
@@ -55,6 +53,7 @@
                 {% endfor %}
                 <button type="submit" class="btn btn-primary" name="submit">Submit</button>
                 <button type="submit" class="btn btn-primary" name="submit_close">Submit & Close</button>
+                <a href="/" class="btn btn-info" role="button">Close</a>
             </form>
         </div>
     </div>
@@ -67,4 +66,41 @@
         });
     });
 
+    function removeOptions(selectbox)
+    {
+        var i;
+        for(i = selectbox.options.length - 1 ; i >= 0 ; i--)
+        {
+            selectbox.remove(i);
+        }
+    }
+
+    $(function() {
+       var categorySelect = document.getElementById('id_category');
+       var subcategorySelect = document.getElementById('id_subcategory');
+       categorySelect.addEventListener("change", function() {
+
+           category_name = categorySelect.item(categorySelect.selectedIndex).text;
+           $.get("/api/subcategories/" + category_name + "/",function(data,status) {
+               if (status == "success") {
+
+                   removeOptions(subcategorySelect);
+                   for (var j = 0; j < data.length; j++) {
+                       var dict = data[j];
+                       var opt = document.createElement('option');
+                       opt.value = dict.id;
+                       opt.innerHTML = dict.name;
+                       subcategorySelect.appendChild(opt);
+                   }
+               }
+           });
+        });
+
+        $(document).ready(function() {
+            document.getElementById('id_category').options[0].selected='selected';
+            document.getElementById('id_category').onchange();
+        });
+
+
+    })
   </script>
