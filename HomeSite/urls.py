@@ -4,6 +4,10 @@ from money.views import *
 from rest_framework.routers import DefaultRouter
 from django.urls import *
 from money.views import *
+from django.contrib.staticfiles.views import serve
+from django.conf.urls.static import static
+import settings
+
 
 router = DefaultRouter()
 router.register(r'api/subcategory',SubcategoryViewSet,base_name="subcategory")
@@ -23,7 +27,7 @@ urlpatterns = [
     url(r'^$',index,name="index")
 ]
 
-urlpatterns += router.urls
+#urlpatterns += router.urls
 
 #Add Django site authentication urls (for login, logout, password management)
 urlpatterns += [
