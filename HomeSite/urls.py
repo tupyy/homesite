@@ -10,9 +10,8 @@ import settings
 
 
 router = DefaultRouter()
-router.register(r'api/subcategory',SubcategoryViewSet,base_name="subcategory")
-router.register(r'api/category',CategoryViewSet,base_name="category")
-router.register(r'api/payment',PaymentViewSet,base_name='payment')
+router.register(r'api/money/category',CategoryViewSet,base_name="money_category")
+router.register(r'api/money/payment',PaymentViewSet,base_name='money_payment')
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -26,6 +25,8 @@ urlpatterns = [
 
     url(r'^$',index,name="index")
 ]
+
+urlpatterns += router.urls
 
 #urlpatterns += router.urls
 
