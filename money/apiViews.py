@@ -79,6 +79,18 @@ class SubcategoryViewSet(viewsets.ViewSet,generics.ListAPIView):
         except ValueError:
             return Response("Category with id " + pk + " not found", status=status.HTTP_400_BAD_REQUEST)
 
+    def update(self,request,pk=None):
+        subcategory = get_object_or_404(Subcategory.objects.all(),pk=pk)
+        try:
+            serializer = SubcategorySerializer(instance=subcategory,data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data,status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+        except serializers.ValidationError as ex:
+            return Response(ex.detail,status=status.HTTP_400_BAD_REQUEST)
+
     def list(self,request):
         queryset = Subcategory.objects.all()
         serializer = SubcategorySerializer(queryset,many=True)

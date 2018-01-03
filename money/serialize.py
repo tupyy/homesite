@@ -46,6 +46,28 @@ class SubcategorySerializer(serializers.ModelSerializer):
         else:
             raise serializers.ValidationError('Category not found')
 
+    def update(self, instance, validated_data):
+        """
+        Update and return an existing Subcategory instance
+        :param instance:
+        :type instance Subcategory
+        :param validated_data:
+        :return:
+        """
+
+        if self.__get_category_name() is not None:
+            category = Category.objects.filter(name__exact=self.__get_category_name())
+            if len(category) > 0:
+                if category[0].name != instance.category.name:
+                    instance.category = category[0]
+            else:
+                raise serializers.ValidationError("New category not found")
+
+            instance.name = validated_data.get('name',instance.name)
+            instance.description = validated_data.get('description',instance.description)
+            instance.save()
+            return instance
+
     class Meta:
         model = Subcategory
         fields = ('id','category','name','description')
