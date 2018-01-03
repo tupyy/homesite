@@ -30,6 +30,15 @@ class CategoryViewSet(viewsets.ViewSet):
         except ValueError:
             return Response("Category with id " + pk + " not found", status=status.HTTP_400_BAD_REQUEST)
 
+    def update(self,request,pk=None):
+        queryset = Category.objects.all()
+        category = get_object_or_404(queryset,pk=pk)
+        serializer = CategorySerializer(instance=category,data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
     def list(self,request):
         queryset = Category.objects.all()
         serializer = CategorySerializer(queryset, many=True)
