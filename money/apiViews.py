@@ -113,6 +113,11 @@ class PaymentViewSet(viewsets.ViewSetMixin,generics.ListAPIView):
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
+    def destroy(self,request,pk=None):
+        payment = get_object_or_404(PaymentModel,pk=pk)
+        payment.delete()
+        return Response(PaymentModelSerialier(payment).data,status=status.HTTP_200_OK)
+
     def get_queryset(self):
        queryset = PaymentModel.objects.all()
        start_date = self.request.query_params.get('start_date',None)

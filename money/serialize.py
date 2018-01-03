@@ -112,11 +112,9 @@ class PaymentModelSerialier(serializers.ModelSerializer):
                                                          nb_option = int(validated_data['nb_option']),
                                                          comments = validated_data['comments'])
             return payment
-        except KeyError as key_error:
-            raise serializers.ValidationError(key_error.message)
-        except ValueError as value_error:
-            raise serializers.ValidationError(value_error.message)
-
+        except (IndexError,KeyError,ValueError) as ex:
+            raise serializers.ValidationError(ex.message)
+        
     def __get_category(self,category_name):
         return Category.objects.filter(name__exact=category_name)[0]
 
