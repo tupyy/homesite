@@ -17,6 +17,7 @@ router.register(r'api/money/payment',PaymentViewSet,base_name='money_payment')
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url('^api/subcategories/(?P<category>.+)/$', SubcategoryViewSet.as_view({'get':'category'})),
     url(r'^payment/',payment,name="payment"),
     url(r'^permanent_payment/',permanent_payment,name='permanent_payment'),
     url(r'^delete_payment/(?P<pk>[0-9]+)/$',delete_payment,name="delete_payment"),

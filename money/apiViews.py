@@ -3,6 +3,7 @@ from serialize import *
 from rest_framework import generics
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework.decorators import detail_route
 from rest_framework import status
 
 """
@@ -55,6 +56,7 @@ class CategoryViewSet(viewsets.ViewSet):
 
 
 class SubcategoryViewSet(viewsets.ViewSet,generics.ListAPIView):
+    serializer_class = SubcategorySerializer
     """
     Viewset for subcategory
     """
@@ -96,10 +98,10 @@ class SubcategoryViewSet(viewsets.ViewSet,generics.ListAPIView):
         serializer = SubcategorySerializer(queryset,many=True)
         return Response(serializer.data)
 
-    def get_queryset(self):
-        category_name = self.kwargs['category']
-        return Subcategory.objects.filter(category__name__exact=category_name)
-
+    @detail_route(methods=['get'])
+    def category(self,request,pk=None):
+        subcategory = get_object_or_404(Subcategory.objects.all(),pk=pk)
+        return Response(CategorySerializer(subcategory.category).data,status=status.HTTP_200_OK)
 
 class PaymentViewSet(viewsets.ViewSetMixin,generics.ListAPIView):
    serializer_class = PaymentModelSerialier
