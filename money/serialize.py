@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.shortcuts import get_object_or_404
+from datetime import datetime
 from models import *
 
 
@@ -86,27 +87,58 @@ class PaymentOptionSerializer(serializers.ModelSerializer):
 
 
 class PaymentModelSerialier(serializers.ModelSerializer):
-    category = serializers.SerializerMethodField('get_category_name')
-    subcategory = serializers.SerializerMethodField('get_subcategory_name')
-    user = serializers.SerializerMethodField('get_username')
+    id = serializers.IntegerField(read_only=True)
+    category = serializers.StringRelatedField(read_only=True)
+    subcategory = serializers.StringRelatedField(read_only=True)
+    user = serializers.StringRelatedField(read_only=True)
+    option_pay = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = PaymentModel
         fields = ('__all__')
 
     def create(self, validated_data):
-        pass
+        try:
+            category = self.__get_category(self.initial_data['category'])
+            subcategory = self.__get_subcategory(self.initial_data['subcategory'])
+            payment_option = self.__get_payment_option(self.initial_data['payment_option'])
+            user = self.__get_user(self.initial_data['user'])
 
-    def get_category_name(self,payment):
-        ":type payment PaymentModel"
-        return payment.category.name
+            (payment,created) = PaymentModel.objects.get_or_create(user=user,category=category,
+                                                         subcategory=subcategory,
+                                                         sum=float(validated_data['sum']),
+                                                         date = validated_data['date'],
+                                                         option_pay=payment_option,
+                                                         nb_option = int(validated_data['nb_option']),
+                                                         comments = validated_data['comments'])
+            return payment
+        except KeyError as key_error:
+            raise serializers.ValidationError(key_error.message)
+        except ValueError as value_error:
+            raise serializers.ValidationError(value_error.message)
 
-    def get_subcategory_name(self,payment):
-        ":type payment PaymentModel"
-        return payment.subcategory.name
+    def __get_category(self,category_name):
+        return Category.objects.filter(name__exact=category_name)[0]
 
-    def get_username(self,payment):
-        ":type payment PaymentModel"
-        return payment.user.name
+    def __get_subcategory(self,subcategory):
+        return Subcategory.objects.filter(name__exact=subcategory)[0]
+
+    def __get_user(self,username):
+        return User.objects.filter(username__exact=username)[0]
+
+    def __get_payment_option(self,payment_option):
+        return PaymentOption.objects.filter(name__exact=payment_option)[0]
+
+    # def get_category_name(self,payment):
+    #     ":type payment PaymentModel"
+    #     return payment.category.name
+    #
+    # def get_subcategory_name(self,payment):
+    #     ":type payment PaymentModel"
+    #     return payment.subcategory.name
+    #
+    # def get_username(self,payment):
+    #     ":type payment PaymentModel"
+    #     return payment.user.name
 
 

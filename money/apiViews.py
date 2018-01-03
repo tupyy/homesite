@@ -104,9 +104,16 @@ class SubcategoryViewSet(viewsets.ViewSet,generics.ListAPIView):
         return Response(CategorySerializer(subcategory.category).data,status=status.HTTP_200_OK)
 
 class PaymentViewSet(viewsets.ViewSetMixin,generics.ListAPIView):
-   serializer_class = PaymentModelSerialier
+    serializer_class = PaymentModelSerialier
 
-   def get_queryset(self):
+    def create(self,request):
+        serializer = PaymentModelSerialier(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+    def get_queryset(self):
        queryset = PaymentModel.objects.all()
        start_date = self.request.query_params.get('start_date',None)
        end_date = self.request.query_params.get('end_date',None)
