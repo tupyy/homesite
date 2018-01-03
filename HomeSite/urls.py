@@ -4,6 +4,7 @@ from money.views import *
 from rest_framework.routers import DefaultRouter
 from django.urls import *
 from money.views import *
+from money.apiViews import CategoryViewSet,PaymentViewSet,SubcategoryViewSet
 from django.contrib.staticfiles.views import serve
 from django.conf.urls.static import static
 import settings
@@ -11,11 +12,11 @@ import settings
 
 router = DefaultRouter()
 router.register(r'api/money/category',CategoryViewSet,base_name="money_category")
+router.register(r'api/money/subcategory',SubcategoryViewSet,base_name="money_subcategory")
 router.register(r'api/money/payment',PaymentViewSet,base_name='money_payment')
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url('^api/subcategories/(?P<category>.+)/$', SubcategoryList.as_view()),
     url(r'^payment/',payment,name="payment"),
     url(r'^permanent_payment/',permanent_payment,name='permanent_payment'),
     url(r'^delete_payment/(?P<pk>[0-9]+)/$',delete_payment,name="delete_payment"),

@@ -48,7 +48,7 @@ class PaymentModel(models.Model):
     category = models.ForeignKey(Category)
     subcategory = models.ForeignKey(Subcategory)
     date = models.DateField()
-    sum = models.DecimalField(max_digits=5, decimal_places=2)
+    sum = models.DecimalField(max_digits=8, decimal_places=2)
     option_pay = models.ForeignKey(PaymentOption)
     nb_option = models.IntegerField(default=0)
     comments = models.CharField(max_length=200,null=True)
