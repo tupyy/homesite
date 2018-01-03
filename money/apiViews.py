@@ -142,3 +142,38 @@ class PaymentViewSet(viewsets.ViewSetMixin,generics.ListAPIView):
        return queryset
 
 
+class PaymentOptionViewSet(viewsets.ViewSet):
+
+    def create(self,request):
+        serializer = PaymentOptionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def destroy(self,request,pk=None):
+        queryset = PaymentOption.objects.all()
+        try:
+            payment_option = get_object_or_404(queryset, pk=pk)
+            payment_option.delete()
+            return Response(PaymentOptionSerializer(payment_option).data,status=status.HTTP_200_OK)
+        except ValueError:
+            return Response("Payment option with id " + pk + " not found", status=status.HTTP_400_BAD_REQUEST)
+
+
+    def update(self,request,pk=None):
+        queryset = PaymentOption.objects.all()
+        payment_option = get_object_or_404(queryset,pk=pk)
+        serializer = PaymentOptionSerializer(instance=payment_option,data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+
+    def list(self,request):
+        queryset = PaymentOption.objects.all()
+        serializer = PaymentOptionSerializer(queryset, many=True)
+        return Response(serializer.data)
