@@ -101,20 +101,63 @@ class PaymentModelSerialier(serializers.ModelSerializer):
         try:
             category = self.__get_category(self.initial_data['category'])
             subcategory = self.__get_subcategory(self.initial_data['subcategory'])
-            payment_option = self.__get_payment_option(self.initial_data['payment_option'])
-            user = self.__get_user(self.initial_data['user'])
 
-            (payment,created) = PaymentModel.objects.get_or_create(user=user,category=category,
-                                                         subcategory=subcategory,
-                                                         sum=float(validated_data['sum']),
-                                                         date = validated_data['date'],
-                                                         option_pay=payment_option,
-                                                         nb_option = int(validated_data['nb_option']),
-                                                         comments = validated_data['comments'])
-            return payment
+            if self.__is_valid_subcategory(category.name,subcategory.name):
+                payment_option = self.__get_payment_option(self.initial_data['payment_option'])
+                user = self.__get_user(self.initial_data['user'])
+
+                (payment,created) = PaymentModel.objects.get_or_create(user=user,category=category,
+                                                             subcategory=subcategory,
+                                                             sum=float(validated_data['sum']),
+                                                             date = validated_data['date'],
+                                                             option_pay=payment_option,
+                                                             nb_option = int(validated_data['nb_option']),
+                                                             comments = validated_data['comments'])
+                return payment
+            else:
+                raise serializers.ValidationError('Subcategory %s does not belong to category %s' % (subcategory.name,category.name))
         except (IndexError,KeyError,ValueError) as ex:
             raise serializers.ValidationError(ex.message)
-        
+
+    def update(self, instance, validated_data):
+        try:
+            category = self.__get_category(self.initial_data['category'])
+            subcategory = self.__get_subcategory(self.initial_data['subcategory'])
+
+            if self.__is_valid_subcategory(category.name, subcategory.name):
+                payment_option = self.__get_payment_option(self.initial_data['payment_option'])
+                user = self.__get_user(self.initial_data['user'])
+
+                instance.category = category
+                instance.user = user
+                instance.subcategory = subcategory
+                instance.sum = validated_data.get("sum",instance.sum)
+                instance.option_pay = payment_option
+                instance.nb_option = validated_data.get('nb_option',instance.nb_option)
+                instance.date = validated_data.get('date',instance.date)
+                instance.comments = validated_data.get('comments',instance.comments)
+                instance.save()
+                return instance
+            else:
+                raise serializers.ValidationError(
+                    'Subcategory %s does not belong to category %s' % (subcategory.name, category.name))
+        except (IndexError, KeyError) as ex:
+            raise serializers.ValidationError(ex.message)
+
+    def __is_valid_subcategory(self,category_name,subcategory_name):
+        """
+        Check if the subcategory belongs to the category
+        :param category_name:
+        :param subcategory_name:
+        :return: true if the subcategory belongs to the category
+        """
+        category = self.__get_category(category_name)
+        subcategory = self.__get_subcategory(subcategory_name)
+        if category.pk == subcategory.category.pk:
+            return True
+
+        return False
+
     def __get_category(self,category_name):
         return Category.objects.filter(name__exact=category_name)[0]
 
@@ -127,16 +170,5 @@ class PaymentModelSerialier(serializers.ModelSerializer):
     def __get_payment_option(self,payment_option):
         return PaymentOption.objects.filter(name__exact=payment_option)[0]
 
-    # def get_category_name(self,payment):
-    #     ":type payment PaymentModel"
-    #     return payment.category.name
-    #
-    # def get_subcategory_name(self,payment):
-    #     ":type payment PaymentModel"
-    #     return payment.subcategory.name
-    #
-    # def get_username(self,payment):
-    #     ":type payment PaymentModel"
-    #     return payment.user.name
 
 
