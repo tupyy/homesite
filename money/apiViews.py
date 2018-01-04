@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import detail_route
 from rest_framework import status
 
+#TODO foloseste self.serializer_class
 """
     View sets for the serializers. Except CategoryViewSet they are not used for 
     moment
