@@ -5,7 +5,7 @@ from rest_framework.routers import DefaultRouter
 from django.urls import *
 from money.views import *
 from money.apiViews import CategoryViewSet,PaymentViewSet,SubcategoryViewSet,PaymentOptionViewSet
-from authentication.views import AccountViewSet
+from authentication.views import AccountViewSet,LoginView,LogoutView
 
 router = DefaultRouter()
 router.register(r'api/money/category',CategoryViewSet,base_name="money_category")
@@ -17,6 +17,9 @@ router.register(r'api/accounts',AccountViewSet,base_name='authentication')
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url('^api/subcategories/(?P<category>.+)/$', SubcategoryViewSet.as_view({'get':'category'})),
+    url(r'^api/auth/login/$', LoginView.as_view(), name='login'),
+    url(r'^api/auth/logout/$', LogoutView.as_view(), name='logout'),
+
 ]
 
 urlpatterns += router.urls
