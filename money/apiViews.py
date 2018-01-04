@@ -5,7 +5,10 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import detail_route
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import permission_classes
 
+#TODO foloseste self.serializer_class
 """
     View sets for the serializers. Except CategoryViewSet they are not used for 
     moment
@@ -14,6 +17,8 @@ class CategoryViewSet(viewsets.ViewSet):
     """
     View set for categories
     """
+    permission_classes = (IsAuthenticated,)
+
     def create(self,request):
         serializer  = CategorySerializer(data=request.data)
         if serializer.is_valid():
@@ -56,7 +61,9 @@ class CategoryViewSet(viewsets.ViewSet):
 
 
 class SubcategoryViewSet(viewsets.ViewSet,generics.ListAPIView):
+    permission_classes = (IsAuthenticated,)
     serializer_class = SubcategorySerializer
+
     """
     Viewset for subcategory
     """
@@ -114,11 +121,13 @@ class PaymentViewSet(viewsets.ViewSetMixin,generics.ListAPIView):
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
+    @permission_classes((IsAuthenticated,))
     def destroy(self,request,pk=None):
         payment = get_object_or_404(PaymentModel,pk=pk)
         payment.delete()
         return Response(PaymentModelSerialier(payment).data,status=status.HTTP_200_OK)
 
+    @permission_classes((IsAuthenticated,))
     def update(self,request,pk=None):
         payment = get_object_or_404(PaymentModel.objects.all(),pk=pk)
 
@@ -132,7 +141,7 @@ class PaymentViewSet(viewsets.ViewSetMixin,generics.ListAPIView):
         except serializers.ValidationError as ex:
             return Response(ex.detail,status=status.HTTP_400_BAD_REQUEST)
 
-
+    @permission_classes((IsAuthenticated,))
     def get_queryset(self):
        queryset = PaymentModel.objects.all()
        start_date = self.request.query_params.get('start_date',None)
@@ -143,7 +152,8 @@ class PaymentViewSet(viewsets.ViewSetMixin,generics.ListAPIView):
 
 
 class PaymentOptionViewSet(viewsets.ViewSet):
-
+    permission_classes = (IsAuthenticated,)
+    
     def create(self,request):
         serializer = PaymentOptionSerializer(data=request.data)
         if serializer.is_valid():
