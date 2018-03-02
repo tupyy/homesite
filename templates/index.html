@@ -1,29 +1,123 @@
-{% load bootstrap3 %}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
-{% bootstrap_messages %}
-
-{% block extra_script %}
-
-{% endblock %}
-<base href="/">
-
-<body>
-    {% block content %}
-        {% include "nav_bar.html" %}
-    {% endblock %}
-    {% if user.is_authenticated %}
-        <div class="row">
-           <div class="container h-100">
-                <div class="row justify-content-center align-items-center">
-                    <div class="col-md-4 col-md-offset-4">
-                        <h4>Total luna curenta:</h4>
-                        <div class="table-responsive">
-                            {% include "money/total_table.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Casuta noastra</title>
+        <!-- Bootstrap core CSS -->
+        <link href="{%  static 'money/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+        <!-- Custom styles for this template -->
+        <link href="{% static "money/css/style.css" %}" rel="stylesheet">
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light"> 
+            <a class="navbar-brand" href="#">Casuta</a> 
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler106" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation"> 
+                <span class="navbar-toggler-icon"></span> 
+            </button>             
+            <div class="collapse navbar-collapse" id="navbarToggler106"> 
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0"> 
+                    <li class="nav-item dropdown"> 
+                        <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Plati&nbsp;</a> 
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"> 
+                            <a class="dropdown-item" href="#">Adaugare plati</a> 
+                            <a class="dropdown-item" href="#">Vizualizare luna curenta</a> 
+                            <a class="dropdown-item" href="#">Something else here</a> 
+                        </div>                         
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Viramente&nbsp;</a> 
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"> 
+                            <a class="dropdown-item" href="#">Adaugare virament permanent</a> 
+                            <a class="dropdown-item" href="#">Vizualizare viramente</a> 
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Contracte&nbsp;</a> 
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"> 
+                            <a class="dropdown-item" href="#">Adaugare</a> 
+                            <a class="dropdown-item" href="#">Vizualizare</a> 
+                        </div>
+                    </li>                     
+                </ul>                 
+                <form class="form-inline my-2 my-lg-0">
+                    {% if user.is_authenticated %}
+                        <a role="button" class="btn my-2 my-sm-0 btn-primary" href="{% url "logout_view" %}?next={{request.path}}">Sign out</a>
+                    {% else %}
+                        <a class="btn my-2 my-sm-0 btn-primary" type="submit" href="{% url 'login_view' %}?next={{request.path}}">Sign in</a>
+                    {% endif %}
+                </form>                 
+            </div>             
+        </nav>
+        <section class="content">
+            {% if user.is_authenticated %}
+                <div class="d-flex container-fluid justify-content-center">
+                    <div class="row">
+                        <div class="col-control offset-md-2 col-md-2">
+                            <div>
+                                <div class="form-group">
+                                    <label for="form-select-luna">Selecteaza luna</label>
+                                    <select id="form-select-luna" class="form-control">
+                                        {% for luna in luni %}
+                                            <option>{{ luna }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-main col-md-6 col-lg-5" style="margin-top: 15px;">
+                            <h3 class="div-title">Cheltuieli {{ luna_curenta }}</h3>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Categorie</th>
+                                        <th>Suma</th>
+                                        {% for luna_prev in luni_precedente %}
+                                            <th>{{ luna_prev }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for total in totals %}
+                                        <tr>
+                                            <td class="align-middle">{{ total.categorie }}</td>
+                                            <td class="align-middle">{{ total.suma }}</td>
+                                            {% if 'suma_prev_1' in total %}
+                                                <td class="align-middle">{{ total.suma_prev_1 }}</td>
+                                            {% endif %}
+                                            {% if 'suma_prev_2' in total %}
+                                                <td class="align-middle">{{ total.suma_prev_2 }}</td>
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="div-total-container" style="margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid #dadada;">
+                                <div class="div-total-head">
+                                    <h6>Total:&nbsp;</h6>
+                                </div>
+                                <div class="div-total">4000 €</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    {% endif %}
-</body>
+            {% endif %}
+        </section>
+        <!-- Bootstrap core JavaScript
+    ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="{% static  "money/js/jquery.min.js" %}"></script>
+        <script src="{% static "money/bootstrap/js/bootstrap.min.js" %}"></script>
+    </body>
+</html>

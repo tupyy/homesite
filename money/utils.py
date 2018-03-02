@@ -14,7 +14,15 @@ def compute_total(payments,categories):
                 total_category += float(payment.sum)
 
         total_category_dict['categorie'] = category.name
-        total_category_dict['suma'] = str(total_category)
+        total_category_dict['suma'] = total_category
         total.append(total_category_dict)
 
     return total
+
+
+def append_to_total(totals,totals_to_append,month_index):
+    for total in totals:
+        for total1 in totals_to_append:
+            if total['categorie'] == total1['categorie']:
+                key = "suma_prev_" + str(month_index)
+                total[key] = "{:4.1f}".format(total1['suma'])

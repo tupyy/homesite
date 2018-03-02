@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from datetime import date
+import calendar
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -10,7 +11,7 @@ from money.forms import PaymentForm,PermanentPaymentForm
 from money.models import PaymentModel, Category, PermanentPaymentModel
 from money.serialize import *
 from money.tables import MonthTable, TotalTable,ViewPermanentPaymentTable
-from money.utils import compute_total
+from money.utils import compute_total, append_to_total
 
 """
     Djano classic view
@@ -19,8 +20,28 @@ from money.utils import compute_total
 def index(request):
     payments = PaymentModel.objects.filter(date__month=date.today().month)
     data = compute_total(payments,Category.objects.all())
-    table = TotalTable(data)
-    return render(request, 'index.html', {'total_table' : table})
+
+    # Compute totals for n-1 and n-2 month
+    month_prev = []
+    if date.today().month > 2:
+        prev_month_limit = 2
+    else:
+        prev_month_limit = 1
+
+    for i in range(date.today().month - prev_month_limit,date.today().month):
+        payments_prev = PaymentModel.objects.filter(date__month=i)
+        data_previous_month =  compute_total(payments_prev,Category.objects.all())
+        append_to_total(data,data_previous_month,i)
+        month_prev.append(calendar.month_name[date.today().month - i])
+
+    months_choices = []
+    for i in range(1, date.today().month+1):
+        months_choices.append(calendar.month_name[i])
+
+    return render(request, 'index.html', {'totals' : data,
+                                          'luna_curenta' : calendar.month_name[date.today().month],
+                                          'luni' : months_choices,
+                                          'luni_precedente' : month_prev})
 
 
 

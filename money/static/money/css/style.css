@@ -1,0 +1,64 @@
+.content {
+    margin-top: 50px;
+}
+
+tfoot {
+}
+
+.col-main {
+    display: inline-table;
+    margin-left: 30px;
+}
+
+.row {
+    width: 100%;
+}
+
+@media screen and (max-width:574.99px) {
+    .div-title {
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+    .col-main {
+        margin: 0;
+        display: table;
+    }
+}
+
+.div-btn {
+    display: inline-block;
+    margin-left: 15px;
+}
+
+.btn {
+    width: 100%;
+}
+
+td {
+    text-align: left;
+    height: 20px;
+}
+
+.div-total-head {
+    display: inline-block;
+}
+
+.div-total {
+    display: inline-block;
+    margin-left: 15px;
+}
+
+@media screen and (max-width:574.99px) {
+    .table {
+        table-layout: fixed;
+    }
+
+    thead {
+        font-size: 13px;
+    }
+
+    td {
+        font-size: 13px;
+    }
+}
