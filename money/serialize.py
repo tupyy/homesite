@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.shortcuts import get_object_or_404
 from datetime import datetime
-from models import *
+from money.models import *
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -124,7 +124,7 @@ class PaymentModelSerialier(serializers.ModelSerializer):
                 payment_option = self.__get_payment_option(self.initial_data['payment_option'])
                 user = self.__get_user(self.initial_data['user'])
 
-                (payment, created) = PaymentModel.objects.get_or_create(user=user,
+                payment = PaymentModel.objects.create(user=user,
                                                                         category=category,
                                                                         subcategory=subcategory,
                                                                         sum=float(validated_data['sum']),
@@ -185,7 +185,7 @@ class PaymentModelSerialier(serializers.ModelSerializer):
         return Subcategory.objects.filter(name__exact=subcategory)[0]
 
     def __get_user(self, username):
-        return User.objects.filter(username__exact=username)[0]
+        return Account.objects.filter(username__exact=username)[0]
 
     def __get_payment_option(self, payment_option):
         return PaymentOption.objects.filter(name__exact=payment_option)[0]

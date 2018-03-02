@@ -44,12 +44,12 @@ class PaymentModel(models.Model):
     Model for the spending entry
     """
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(Account)
-    category = models.ForeignKey(Category)
-    subcategory = models.ForeignKey(Subcategory)
+    user = models.ForeignKey(Account,null=True,on_delete=models.SET_NULL)
+    category = models.ForeignKey(Category,null=True,on_delete=models.SET_NULL)
+    subcategory = models.ForeignKey(Subcategory,null=True,on_delete=models.SET_NULL)
     date = models.DateField()
     sum = models.DecimalField(max_digits=8, decimal_places=2)
-    option_pay = models.ForeignKey(PaymentOption)
+    option_pay = models.ForeignKey(PaymentOption,null=True, on_delete=models.SET_NULL)
     nb_option = models.IntegerField(default=0)
     comments = models.CharField(max_length=200,null=True)
 
@@ -65,9 +65,9 @@ class PermanentPaymentModel(models.Model):
     Model a permanent payment. It supposed to be payed each month
     """
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(Account)
-    category = models.ForeignKey(Category)
-    subcategory = models.ForeignKey(Subcategory)
+    user = models.ForeignKey(Account, null=True, on_delete=models.SET_NULL)
+    category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
+    subcategory = models.ForeignKey(Subcategory, null=True, on_delete=models.SET_NULL)
     sum = models.DecimalField(max_digits=5, decimal_places=2)
     comments = models.CharField(max_length=200, null=True)
 
