@@ -1,0 +1,59 @@
+.body {
+    background-color: #4fa7ef;
+}
+
+#head_row {
+    height: 10em;
+    display: flex;
+    align-items: center;
+}
+
+#already_label {
+    margin-right: 12px;
+    top: 0;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+#col_home {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+#line {
+    height: 4px;
+}
+
+#signup_tag {
+    height: 2.5em;
+    padding-top: 2px;
+}
+
+#column_form {
+    border-radius: 30px;
+    padding-top: 30px;
+    padding-right: 25px;
+    padding-left: 25px;
+    background-color: #ffffff;
+}
+
+#forgot_pass_column {
+    margin-top: 9px;
+}
+
+#forgot_pass_col {
+    margin-bottom: 15px;
+}
+
+#emailinput {
+    margin-bottom: 22px;
+    margin-top: 13px;
+}
+/*#forgot_pass_link {*/
+    /*color: #ffffff;*/
+/*}*/
+
+.btn-facebook {
+    width: 85%;
+    /*text-align: center;*/
+}

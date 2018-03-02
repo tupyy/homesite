@@ -1,0 +1,30 @@
+<html>
+{% load static %}
+
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="brand">
+    <title>{{ title }}</title>
+    {% include 'authentication/stylesheets.html' %}
+    <base href="/" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="row" id="head_row">
+            <a href="/">
+                <h3 class="col" id="col_home">Home</h3>
+            </a>
+            {% block additional_head_block %}{% endblock %}
+        </div>
+        {% block content %}{% endblock %}
+    </div>
+    {% include 'authentication/javascripts.html' %}
+</body>
+
+{% block script_link %}{% endblock %}
+</html>

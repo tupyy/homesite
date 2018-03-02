@@ -20,7 +20,7 @@ def index(request):
     payments = PaymentModel.objects.filter(date__month=date.today().month)
     data = compute_total(payments,Category.objects.all())
     table = TotalTable(data)
-    return render(request, 'money/index.html', {'total_table' : table})
+    return render(request, 'index.html', {'total_table' : table})
 
 
 

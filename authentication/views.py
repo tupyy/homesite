@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
 
 import json
+
+from django.utils.http import is_safe_url
 from rest_framework import permissions, viewsets
 from rest_framework.response import Response
 from rest_framework import status,views
@@ -41,38 +44,34 @@ class AccountViewSet(viewsets.ModelViewSet):
         }, status=status.HTTP_400_BAD_REQUEST)
 
 
-class LoginView(views.APIView):
-    def post(self, request, format=None):
-        data = json.loads(request.body)
+def login_view(request):
+    if request.method == 'GET':
+        return render(request, 'authentication/login.html',
+                      {'login_successful': True,
+                       'next': request.GET['next']
+                       })
 
-        username = data.get('username', None)
-        password = data.get('password', None)
+    elif request.method == 'POST':
 
-        account = authenticate(username=username, password=password)
-
-        if account is not None:
-            if account.is_active:
-                login(request, account)
-
-                serialized = AccountSerializer(account)
-
-                return Response(serialized.data)
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            redirect_to = request.POST.get('next')
+            url_is_safe = is_safe_url(redirect_to)
+            if redirect_to and url_is_safe:
+                return HttpResponseRedirect(redirect_to)
             else:
-                return Response({
-                    'status': 'Unauthorized',
-                    'message': 'This account has been disabled.'
-                }, status=status.HTTP_401_UNAUTHORIZED)
+                return redirect("/")
         else:
-            return Response({
-                'status': 'Unauthorized',
-                'message': 'Username/password combination invalid.'
-            }, status=status.HTTP_401_UNAUTHORIZED)
+            return render(request, 'authentication/login.html', {'login_successful': False,
+                                                                 'error_message': 'There was a problem with your login'})
 
 
-class LogoutView(views.APIView):
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def post(self, request, format=None):
-        logout(request)
-
-        return Response({}, status=status.HTTP_204_NO_CONTENT)
+def logout_view(request):
+    logout(request)
+    redirect_to = request.GET.get('next')
+    if  redirect_to and is_safe_url(redirect_to):
+        return HttpResponseRedirect(redirect_to)
+    return redirect('/')
