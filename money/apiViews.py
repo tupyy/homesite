@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import detail_route
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from authentication.permissions import IsPostOrIsAuthenticated
 from rest_framework.decorators import permission_classes
 
 #TODO foloseste self.serializer_class
@@ -18,9 +19,10 @@ class CategoryViewSet(viewsets.ViewSet):
     View set for categories
     """
     permission_classes = (IsAuthenticated,)
+    serializer_class = CategorySerializer
 
     def create(self,request):
-        serializer  = CategorySerializer(data=request.data)
+        serializer  = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
@@ -32,14 +34,14 @@ class CategoryViewSet(viewsets.ViewSet):
         try:
             category = get_object_or_404(queryset, pk=pk)
             category.delete()
-            return Response(CategorySerializer(category).data,status=status.HTTP_200_OK)
+            return Response(self.serializer_class(category).data,status=status.HTTP_200_OK)
         except ValueError:
             return Response("Category with id " + pk + " not found", status=status.HTTP_400_BAD_REQUEST)
 
     def update(self,request,pk=None):
         queryset = Category.objects.all()
         category = get_object_or_404(queryset,pk=pk)
-        serializer = CategorySerializer(instance=category,data=request.data)
+        serializer = self.serializer_class(instance=category,data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_200_OK)
@@ -47,14 +49,14 @@ class CategoryViewSet(viewsets.ViewSet):
 
     def list(self,request):
         queryset = Category.objects.all()
-        serializer = CategorySerializer(queryset, many=True)
+        serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
         queryset = Category.objects.all()
         try:
             category = get_object_or_404(queryset, pk=pk)
-            serializer = CategorySerializer(category)
+            serializer = self.serializer_class(category)
             return Response(serializer.data)
         except ValueError:
             return Response("Argument must be an int",status=status.HTTP_400_BAD_REQUEST)
@@ -70,7 +72,7 @@ class SubcategoryViewSet(viewsets.ViewSet,generics.ListAPIView):
     def create(self,request):
 
         try:
-            serializer  = SubcategorySerializer(data=request.data)
+            serializer  = self.serializer_class(data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data,status=status.HTTP_201_CREATED)
@@ -84,14 +86,14 @@ class SubcategoryViewSet(viewsets.ViewSet,generics.ListAPIView):
         try:
             subcategory = get_object_or_404(queryset, pk=pk)
             subcategory.delete()
-            return Response(SubcategorySerializer(subcategory).data, status=status.HTTP_200_OK)
+            return Response(self.serializer_class(subcategory).data, status=status.HTTP_200_OK)
         except ValueError:
             return Response("Category with id " + pk + " not found", status=status.HTTP_400_BAD_REQUEST)
 
     def update(self,request,pk=None):
         subcategory = get_object_or_404(Subcategory.objects.all(),pk=pk)
         try:
-            serializer = SubcategorySerializer(instance=subcategory,data=request.data)
+            serializer = self.serializer_class(instance=subcategory,data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data,status=status.HTTP_200_OK)
@@ -102,7 +104,7 @@ class SubcategoryViewSet(viewsets.ViewSet,generics.ListAPIView):
 
     def list(self,request):
         queryset = Subcategory.objects.all()
-        serializer = SubcategorySerializer(queryset,many=True)
+        serializer = self.serializer_class(queryset,many=True)
         return Response(serializer.data)
 
     @detail_route(methods=['get'])
@@ -113,26 +115,25 @@ class SubcategoryViewSet(viewsets.ViewSet,generics.ListAPIView):
 
 class PaymentViewSet(viewsets.ViewSetMixin,generics.ListAPIView):
     serializer_class = PaymentModelSerialier
+    permission_classes = (IsPostOrIsAuthenticated,)
 
     def create(self,request):
-        serializer = PaymentModelSerialier(data=request.data)
+        serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
-    @permission_classes((IsAuthenticated,))
     def destroy(self,request,pk=None):
         payment = get_object_or_404(PaymentModel,pk=pk)
         payment.delete()
-        return Response(PaymentModelSerialier(payment).data,status=status.HTTP_200_OK)
+        return Response(self.serializer_class(payment).data,status=status.HTTP_200_OK)
 
-    @permission_classes((IsAuthenticated,))
     def update(self,request,pk=None):
         payment = get_object_or_404(PaymentModel.objects.all(),pk=pk)
 
         try:
-            serializer = PaymentModelSerialier(instance=payment,data=request.data)
+            serializer = self.serializer_class(instance=payment,data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data,status=status.HTTP_200_OK)
@@ -141,7 +142,6 @@ class PaymentViewSet(viewsets.ViewSetMixin,generics.ListAPIView):
         except serializers.ValidationError as ex:
             return Response(ex.detail,status=status.HTTP_400_BAD_REQUEST)
 
-    @permission_classes((IsAuthenticated,))
     def get_queryset(self):
        queryset = PaymentModel.objects.all()
        start_date = self.request.query_params.get('start_date',None)
