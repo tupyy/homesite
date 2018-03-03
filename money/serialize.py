@@ -189,3 +189,10 @@ class PaymentModelSerialier(serializers.ModelSerializer):
 
     def __get_payment_option(self, payment_option):
         return PaymentOption.objects.filter(name__exact=payment_option)[0]
+
+
+class TotalSerializer(serializers.Serializer):
+    categorie = serializers.CharField(max_length=200)
+    total = serializers.CharField(max_length=10)
+    total_prev_1 = serializers.CharField(max_length=10)
+    total_prev_2 = serializers.CharField(max_length=10)

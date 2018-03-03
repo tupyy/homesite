@@ -76,6 +76,12 @@ class PermanentPaymentModel(models.Model):
 
 
 
+class Total(object):
 
+    def __init__(self,categorie,total,created=None):
+        self.categorie = categorie
+        self.total = total
+        self.total_prev_1 = ""
+        self.total_prev_2 = ""
 
 

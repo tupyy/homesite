@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+
 from money.models import Category,Subcategory,PaymentModel
 from money.serialize import *
 from rest_framework import generics
@@ -10,6 +12,8 @@ from authentication.permissions import IsPostOrIsAuthenticated
 from rest_framework.decorators import permission_classes
 
 #TODO foloseste self.serializer_class
+from money.utils import compute_total, append_to_total
+
 """
     View sets for the serializers. Except CategoryViewSet they are not used for 
     moment
@@ -187,3 +191,29 @@ class PaymentOptionViewSet(viewsets.ViewSet):
         queryset = PaymentOption.objects.all()
         serializer = PaymentOptionSerializer(queryset, many=True)
         return Response(serializer.data)
+
+
+class TotalViewSet(viewsets.ViewSet):
+    # permission_classes = [IsAuthenticated,]
+
+    def retrieve(self,request,pk=None):
+        payments = PaymentModel.objects.filter(date__month=pk)
+        data = compute_total(payments, Category.objects.all())
+
+        # Compute totals for n-1 and n-2 month
+        try:
+            month = int(pk)
+            if month > 2:
+                prev_month_limit = 2
+            else:
+                prev_month_limit = 1
+
+            for i in range(month - prev_month_limit, month):
+                payments_prev = PaymentModel.objects.filter(date__month=i)
+                data_previous_month = compute_total(payments_prev, Category.objects.all())
+                append_to_total(data, data_previous_month, i)
+
+            serializer = TotalSerializer(data, many=True)
+            return Response(serializer.data)
+        except ValueError as e:
+            return Response(e.__str__(), status=status.HTTP_400_BAD_REQUEST)

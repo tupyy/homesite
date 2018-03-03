@@ -18,32 +18,12 @@ from money.utils import compute_total, append_to_total
 """
 
 def index(request):
-    payments = PaymentModel.objects.filter(date__month=date.today().month)
-    data = compute_total(payments,Category.objects.all())
-
-    # Compute totals for n-1 and n-2 month
-    month_prev = []
-    if date.today().month > 2:
-        prev_month_limit = 2
-    else:
-        prev_month_limit = 1
-
-    for i in range(date.today().month - prev_month_limit,date.today().month):
-        payments_prev = PaymentModel.objects.filter(date__month=i)
-        data_previous_month =  compute_total(payments_prev,Category.objects.all())
-        append_to_total(data,data_previous_month,i)
-        month_prev.append(calendar.month_name[date.today().month - i])
 
     months_choices = []
-    for i in range(1, date.today().month+1):
+    for i in range(1, date.today().month + 1):
         months_choices.append(calendar.month_name[i])
 
-    return render(request, 'index.html', {'totals' : data,
-                                          'luna_curenta' : calendar.month_name[date.today().month],
-                                          'luni' : months_choices,
-                                          'luni_precedente' : month_prev})
-
-
+    return render(request, 'index.html', {'luni' : months_choices})
 
 def payment(request):
     if request.method == 'POST':
@@ -98,9 +78,9 @@ def delete_permanent_payment(request,pk):
 
 @login_required
 def month_payments(request):
-    table = MonthTable(PaymentModel.objects.filter(date__month=datetime.date.today().month))
+    table = MonthTable(PaymentModel.objects.filter(date__month=date.today().month))
     return render(request,'money/month_payments.html',{'month_table':table,
-                                                       'nav_bar_title':datetime.date.today().strftime('%B') + " payments"
+                                                       'nav_bar_title':date.today().strftime('%B') + " payments"
                                                        })
 
 @login_required
@@ -109,3 +89,4 @@ def view_permanent_payments(request):
     return render(request,'money/month_payments.html' ,{'month_table':table,
                                                         'nav_bar_title':'Viramente periodice lunare'
                                                         })
+

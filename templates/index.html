@@ -29,7 +29,7 @@
                     <li class="nav-item dropdown"> 
                         <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Plati&nbsp;</a> 
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"> 
-                            <a class="dropdown-item" href="#">Adaugare plati</a> 
+                            <a class="dropdown-item" href="{% url 'payment' %}">Adaugare plati</a>
                             <a class="dropdown-item" href="#">Vizualizare luna curenta</a> 
                             <a class="dropdown-item" href="#">Something else here</a> 
                         </div>                         
@@ -65,8 +65,8 @@
                         <div class="col-control offset-md-2 col-md-2">
                             <div>
                                 <div class="form-group">
-                                    <label for="form-select-luna">Selecteaza luna</label>
-                                    <select id="form-select-luna" class="form-control">
+                                    <label for="form_select_luna">Selecteaza luna</label>
+                                    <select id="form_select_luna" class="form-control">
                                         {% for luna in luni %}
                                             <option>{{ luna }}</option>
                                         {% endfor %}
@@ -75,40 +75,18 @@
                             </div>
                         </div>
                         <div class="col-main col-md-6 col-lg-5" style="margin-top: 15px;">
-                            <h3 class="div-title">Cheltuieli {{ luna_curenta }}</h3>
-                            <table class="table">
+                            <h3 class="div-title">Cheltuieli</h3>
+                            <table class="table" id="myTable">
                                 <thead>
                                     <tr>
                                         <th>Categorie</th>
                                         <th>Suma</th>
-                                        {% for luna_prev in luni_precedente %}
-                                            <th>{{ luna_prev }}</th>
-                                        {% endfor %}
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for total in totals %}
-                                        <tr>
-                                            <td class="align-middle">{{ total.categorie }}</td>
-                                            <td class="align-middle">{{ total.suma }}</td>
-                                            {% if 'suma_prev_1' in total %}
-                                                <td class="align-middle">{{ total.suma_prev_1 }}</td>
-                                            {% endif %}
-                                            {% if 'suma_prev_2' in total %}
-                                                <td class="align-middle">{{ total.suma_prev_2 }}</td>
-                                            {% endif %}
-                                        </tr>
-                                    {% endfor %}
                                 </tbody>
+
                             </table>
-                            <div class="div-total-container" style="margin-top: 10px;
-        padding-top: 10px;
-        border-top: 1px solid #dadada;">
-                                <div class="div-total-head">
-                                    <h6>Total:&nbsp;</h6>
-                                </div>
-                                <div class="div-total">4000 €</div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -119,5 +97,6 @@
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="{% static  "money/js/jquery.min.js" %}"></script>
         <script src="{% static "money/bootstrap/js/bootstrap.min.js" %}"></script>
+        <script src="{% static "money/js/get_totals.js" %}"></script>
     </body>
 </html>
