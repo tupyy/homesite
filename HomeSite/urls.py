@@ -33,9 +33,11 @@ Main URL patterns
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^money/payment/$',payment,name="payment"),
-    url(r'^money/viewpayment/$',month_payments,name="view_month_payments"),
+    path('money/payment/delete/<int:id/',delete_payment,name="delete_payment"),
+    path('money/payment/view/<int:month>/', month_payments, name="view_month_payments"),
     url(r'^$',index,name="index")
 ]
+
 
 urlpatterns += router.urls
 urlpatterns += urlpatterns_account

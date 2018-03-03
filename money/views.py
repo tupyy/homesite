@@ -77,7 +77,7 @@ def delete_permanent_payment(request,pk):
     return HttpResponseRedirect('/view_permanent_payments')
 
 @login_required
-def month_payments(request):
+def month_payments(request,month=13):
     categories = Category.objects.all()
 
     months_choices = []
@@ -85,12 +85,28 @@ def month_payments(request):
         months_choices.append(calendar.month_name[i])
 
     # Get payments for the current month
-    payments = PaymentModel.objects.filter(date__month=date.today().month)
-    return render(request,'money/view_month.html',{
-                                                    'categorii':categories,
-                                                   'luni':months_choices,
-                                                    'payments' : payments
-                                                  })
+    if month > 12:
+        payments = PaymentModel.objects.filter(date__month=date.today().month, date__year=date.today().year)
+        selected_month = date.today().month
+    else:
+        payments = PaymentModel.objects.filter(date__month=month, date__year=date.today().year)
+        selected_month=month
+
+    if len(payments) > 0:
+        return render(request,'money/view_month.html',{
+                                                        'categorii':categories,
+                                                       'luni':months_choices,
+                                                        'selected_month':selected_month,
+                                                        'payments' : payments
+                                                      })
+    else:
+        return render(request, 'money/view_month.html', {
+                                                        'categorii': categories,
+                                                        'luni': months_choices,
+                                                        'selected_month': selected_month,
+                                                        'payments': payments,
+                                                        'error_message' : 'Nothing to show'
+                                                    })
 
 @login_required
 def view_permanent_payments(request):

@@ -1,6 +1,10 @@
 $(document).ready(function() {
     document.getElementById('select_categorie').options[0].selected='selected';
-    $("#select_luna").find("option:last").attr("selected","selected");
+    var month_select = document.getElementById('select_luna');
+    month_select.addEventListener("change", function() {
+        month_index = month_select.selectedIndex + 1;
+        window.location.href='/money/payment/view/'+ month_index + '/';
+    });
 });
 
 
@@ -40,34 +44,34 @@ $(function() {
     });
 
     //change table
-    var monthSelect = document.getElementById('select_luna');
-        monthSelect.addEventListener("change", function() {
-        month_index = this.selectedIndex + 1;
-        $.getJSON("/api/money/payment?month=" + month_index,function(data,status) {
-           if (status === "success") {
-                $('#monthTable').find('tbody > tr').remove();
-                $.each(data,function(index,value) {
-                    $('#monthTable').find('>tbody:last-child').append(
-                        '<tr>' +
-                        '<td>' + value.user + '</td>' +
-                        '<td>' + value.category + '</td>' +
-                        '<td>' + value.subcategory + '</td>' +
-                        '<td>' + value.date + '</td>' +
-                        '<td>' + value.sum + '</td>' +
-                        '<td>' + value.option_pay + '</td>' +
-                        '<td>' + value.nb_option + '</td>' +
-                        '<td>' + value.comments + '</td>' +
-                        '<td class="td-btn">\n' +
-                        '<div class="div-btn">\n' +
-                        '<button type="button" class="btn btn-warning">Modificare</button>\n' +
-                        '<button type="button" class="btn btn-danger">Stergere</button>\n' +
-                        '</div>\n' +
-                        '</td>' +
-                        '<\tr>'
-                    );
-                });
-           }
-        });
-    });
+    // var monthSelect = document.getElementById('select_luna');
+    //     monthSelect.addEventListener("change", function() {
+    //     month_index = this.selectedIndex + 1;
+    //     $.getJSON("/api/money/payment?month=" + month_index,function(data,status) {
+    //        if (status === "success") {
+    //             $('#monthTable').find('tbody > tr').remove();
+    //             $.each(data,function(index,value) {
+    //                 $('#monthTable').find('>tbody:last-child').append(
+    //                     '<tr>' +
+    //                     '<td>' + value.user + '</td>' +
+    //                     '<td>' + value.category + '</td>' +
+    //                     '<td>' + value.subcategory + '</td>' +
+    //                     '<td>' + value.date + '</td>' +
+    //                     '<td>' + value.sum + '</td>' +
+    //                     '<td>' + value.option_pay + '</td>' +
+    //                     '<td>' + value.nb_option + '</td>' +
+    //                     '<td>' + value.comments + '</td>' +
+    //                     '<td class="td-btn">\n' +
+    //                     '<div class="div-btn">\n' +
+    //                     '<button type="button" class="btn btn-warning">Modificare</button>\n' +
+    //                     '<button type="button" class="btn btn-danger">Stergere</button>\n' +
+    //                     '</div>\n' +
+    //                     '</td>' +
+    //                     '<\tr>'
+    //                 );
+    //             });
+    //        }
+    //     });
+    // });
 });
 

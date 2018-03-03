@@ -29,7 +29,11 @@
                                 <label for="select_luna">Luna</label>
                                 <select class="form-control filtru-ctrl filtru-luna" id="select_luna">
                                     {% for luna in luni %}
-                                        <option>{{ luna }}</option>
+                                        {% if forloop.counter == selected_month %}
+                                            <option selected>{{ luna }}</option>
+                                        {% else %}
+                                            <option>{{ luna }}</option>
+                                        {% endif %}
                                     {% endfor %}
                                 </select>                                                                  
                             </div>
@@ -49,44 +53,49 @@
                             </div>                                                                                                                                                 
                         </form>
                     </div>
-                    <div class="div-table">
-                        <table class="table" id="monthTable">
-                            <thead> 
-                                <tr>
-                                    <th>User</th>
-                                    <th>Categorie</th> 
-                                    <th>Subcategorie</th>
-                                    <th>Data</th>
-                                    <th>Suma</th>
-                                    <th>Optiuni plata</th>
-                                    <th>Numar optiuni</th>
-                                    <th>Comentarii</th> 
-                                    <th></th> 
-                                </tr>                                 
-                            </thead>                             
 
-                            <tbody>
-                                {% for payment in payments %}
-                                <tr>
-                                    <td>{{ payment.user }}</td>
-                                    <td>{{ payment.category }}</td>
-                                    <td>{{ payment.subcategory }}</td>
-                                    <td>{{ payment.date }}</td>
-                                    <td>{{ payment.sum }}</td>
-                                    <td>{{ payment.option_pay }}</td>
-                                    <td>{{ payment.nb_option }}</td>
-                                    <td>{{ payment.comments }}</td>
-                                    <td class="td-btn">
-                                        <div class="div-btn">
-                                            <button type="button" class="btn btn-warning">Modificare</button>
-                                            <button type="button" class="btn btn-danger">Stergere</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>                             
-                        </table>
-                    </div>
+                    {% if error_message %}
+                        <div class="error_messsage"><h5>{{ error_message }}</h5></div>
+                    {% else %}
+                        <div class="div-table">
+                            <table class="table" id="monthTable">
+                                <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Categorie</th>
+                                        <th>Subcategorie</th>
+                                        <th>Data</th>
+                                        <th>Suma</th>
+                                        <th>Optiuni plata</th>
+                                        <th>Numar optiuni</th>
+                                        <th>Comentarii</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for payment in payments %}
+                                    <tr>
+                                        <td>{{ payment.user }}</td>
+                                        <td>{{ payment.category }}</td>
+                                        <td>{{ payment.subcategory }}</td>
+                                        <td>{{ payment.date }}</td>
+                                        <td>{{ payment.sum }}</td>
+                                        <td>{{ payment.option_pay }}</td>
+                                        <td>{{ payment.nb_option }}</td>
+                                        <td>{{ payment.comments }}</td>
+                                        <td class="td-btn">
+                                            <div class="div-btn">
+                                                <button type="button" class="btn btn-warning">Modificare</button>
+                                                <button type="button" class="btn btn-danger">Stergere</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </section>
