@@ -26,6 +26,7 @@ def index(request):
 
     return render(request, 'index.html', {'luni' : months_choices})
 
+
 def payment(request):
     if request.method == 'POST':
         form = PaymentForm(request.POST)
@@ -53,6 +54,7 @@ def permanent_payment(request):
         form = PermanentPaymentForm()
     return render(request,'money/payment.html',{'form': form})
 
+
 @login_required
 def delete_payment(request,id=0):
     """
@@ -74,6 +76,7 @@ def delete_payment(request,id=0):
             return redirect("/")
     else:
         return HttpResponseNotAllowed('GET')
+
 
 @login_required
 def delete_permanent_payment(request,id=0):
