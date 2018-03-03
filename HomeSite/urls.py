@@ -32,8 +32,8 @@ Main URL patterns
 """
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url('^api/subcategories/(?P<category>.+)/$', SubcategoryViewSet.as_view({'get':'category'})),
     url(r'^money/payment/$',payment,name="payment"),
+    url(r'^money/viewpayment/$',month_payments,name="view_month_payments"),
     url(r'^$',index,name="index")
 ]
 

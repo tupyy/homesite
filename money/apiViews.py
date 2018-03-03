@@ -74,7 +74,6 @@ class SubcategoryViewSet(viewsets.ViewSet,generics.ListAPIView):
     Viewset for subcategory
     """
     def create(self,request):
-
         try:
             serializer  = self.serializer_class(data=request.data)
             if serializer.is_valid():
@@ -113,13 +112,13 @@ class SubcategoryViewSet(viewsets.ViewSet,generics.ListAPIView):
 
     @detail_route(methods=['get'])
     def category(self,request,pk=None):
-        subcategory = get_object_or_404(Subcategory.objects.all(),pk=pk)
-        return Response(CategorySerializer(subcategory.category).data,status=status.HTTP_200_OK)
+        subcategory = Subcategory.objects.filter(category__name__exact=pk)
+        return Response(CategorySerializer(subcategory[0].category).data,status=status.HTTP_200_OK)
 
 
 class PaymentViewSet(viewsets.ViewSetMixin,generics.ListAPIView):
     serializer_class = PaymentModelSerialier
-    permission_classes = (IsPostOrIsAuthenticated,)
+    # permission_classes = (IsPostOrIsAuthenticated,)
 
     def create(self,request):
         serializer = self.serializer_class(data=request.data)
@@ -148,10 +147,16 @@ class PaymentViewSet(viewsets.ViewSetMixin,generics.ListAPIView):
 
     def get_queryset(self):
        queryset = PaymentModel.objects.all()
+
        start_date = self.request.query_params.get('start_date',None)
        end_date = self.request.query_params.get('end_date',None)
+       month = self.request.query_params.get('month',None)
+
        if start_date is not None and end_date is not None:
            queryset = queryset.filter(date__gte=start_date,date__lte=end_date)
+       elif month is not None:
+           queryset = queryset.filter(date__month=month)
+
        return queryset
 
 
@@ -194,7 +199,7 @@ class PaymentOptionViewSet(viewsets.ViewSet):
 
 
 class TotalViewSet(viewsets.ViewSet):
-    # permission_classes = [IsAuthenticated,]
+    permission_classes = [IsAuthenticated,]
 
     def retrieve(self,request,pk=None):
         payments = PaymentModel.objects.filter(date__month=pk)

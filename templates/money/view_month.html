@@ -1,0 +1,101 @@
+{% load static %}
+<!doctype html>
+<html lang="en" data-pgc-master="master.html">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Casuta | Vizualizare luna</title>
+        <!-- Bootstrap core CSS -->
+        <link href=" {% static "money/bootstrap/css/bootstrap.css" %}" rel="stylesheet">
+        <!-- Custom styles for this template -->
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+        <link href="{% static "money/css/view_month.css" %}" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        {% include "navbar.html" %}
+        <section class="content">
+            <div class="d-flex container-fluid justify-content-center" data-pgc-field="content">
+                <div class="main_container">
+                    <div class="filtru">
+                        <form role="form"> 
+                            <div class="form-group form-group-left"> 
+                                <label for="select_luna">Luna</label>
+                                <select class="form-control filtru-ctrl filtru-luna" id="select_luna">
+                                    {% for luna in luni %}
+                                        <option>{{ luna }}</option>
+                                    {% endfor %}
+                                </select>                                                                  
+                            </div>
+                            <div class="form-group"> 
+                                <label for="select_categorie">Categorie</label>
+                                <select class="form-control filtru-ctrl" id="select_categorie">
+                                    <option></option>
+                                    {% for categorie in categorii %}
+                                        <option>{{ categorie }}</option>
+                                    {% endfor %}
+                                </select>                                                                  
+                            </div>
+                            <div class="form-group"> 
+                                <label for="select_subcategorie">Subcategorie</label>
+                                <select class="form-control filtru-ctrl" id="select_subcategorie">
+                                </select>                                                                  
+                            </div>                                                                                                                                                 
+                        </form>
+                    </div>
+                    <div class="div-table">
+                        <table class="table" id="monthTable">
+                            <thead> 
+                                <tr>
+                                    <th>User</th>
+                                    <th>Categorie</th> 
+                                    <th>Subcategorie</th>
+                                    <th>Data</th>
+                                    <th>Suma</th>
+                                    <th>Optiuni plata</th>
+                                    <th>Numar optiuni</th>
+                                    <th>Comentarii</th> 
+                                    <th></th> 
+                                </tr>                                 
+                            </thead>                             
+
+                            <tbody>
+                                {% for payment in payments %}
+                                <tr>
+                                    <td>{{ payment.user }}</td>
+                                    <td>{{ payment.category }}</td>
+                                    <td>{{ payment.subcategory }}</td>
+                                    <td>{{ payment.date }}</td>
+                                    <td>{{ payment.sum }}</td>
+                                    <td>{{ payment.option_pay }}</td>
+                                    <td>{{ payment.nb_option }}</td>
+                                    <td>{{ payment.comments }}</td>
+                                    <td class="td-btn">
+                                        <div class="div-btn">
+                                            <button type="button" class="btn btn-warning">Modificare</button>
+                                            <button type="button" class="btn btn-danger">Stergere</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>                             
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Bootstrap core JavaScript
+    ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="{% static  "money/js/jquery.min.js" %}"></script>
+        <script src="{% static "money/bootstrap/js/bootstrap.min.js" %}"></script>
+        <script src="{% static "money/js/view_month.js" %}"></script>
+    </body>
+</html>

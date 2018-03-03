@@ -67,7 +67,7 @@ def delete_payment(request,pk):
 @login_required
 def delete_permanent_payment(request,pk):
     """
-    Delete a permanent paymen
+    Delete a permanent payment
     :param request:
     :param pk:
     :return:
@@ -78,10 +78,19 @@ def delete_permanent_payment(request,pk):
 
 @login_required
 def month_payments(request):
-    table = MonthTable(PaymentModel.objects.filter(date__month=date.today().month))
-    return render(request,'money/month_payments.html',{'month_table':table,
-                                                       'nav_bar_title':date.today().strftime('%B') + " payments"
-                                                       })
+    categories = Category.objects.all()
+
+    months_choices = []
+    for i in range(1, date.today().month + 1):
+        months_choices.append(calendar.month_name[i])
+
+    # Get payments for the current month
+    payments = PaymentModel.objects.filter(date__month=date.today().month)
+    return render(request,'money/view_month.html',{
+                                                    'categorii':categories,
+                                                   'luni':months_choices,
+                                                    'payments' : payments
+                                                  })
 
 @login_required
 def view_permanent_payments(request):

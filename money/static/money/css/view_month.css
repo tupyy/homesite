@@ -1,0 +1,187 @@
+.main_container {
+    width: 100%;
+    margin-top: 40px;
+    padding-top: 15px;
+}
+
+.filtru {
+}
+
+.form-group {
+    max-width: 400px;
+    display: inline-flex;
+    margin-left: 40px;
+    align-items: center;
+}
+
+.filtru-ctrl {
+    width: 150px;
+    display: inline;
+    margin-left: 10px;
+}
+
+label {
+    display: inline;
+    margin-bottom: 0;
+}
+
+form {
+}
+
+.div-table {
+    margin-top: 15px;
+}
+
+.form-group-left {
+    margin-left: 0;
+}
+
+.btn {
+    margin-left: 10px;
+    min-width: 100px;
+}
+
+.div-btn {
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tr > td:last-of-type {
+    table-layout: fixed;
+    width: 150px;
+}
+
+.td-btn {
+    table-layout: fixed;
+    width: 300px;
+}
+
+td {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+    text-align: center;
+    line-height: 39px;
+    table-layout: fixed;
+    width: 150px;
+}
+
+tr {
+    text-align: center;
+}
+
+/* Zebra striping */
+tr:nth-of-type(odd) {
+    background: #eee;
+}
+
+/* 
+Max width before this PARTICULAR table gets nasty
+This query will take effect for any screen smaller than 760px
+and also iPads specifically.
+*/
+@media only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+    /* Force table to not be like tables anymore */
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+    }
+
+    /* Hide table headers (but not display: none;, for accessibility) */
+    thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    tr {
+        border: 1px solid #ccc;
+    }
+
+    td {
+        /* Behave  like a "row" */
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+        overflow: hidden;
+        width: 100%;
+        text-align: center;
+    }
+
+    .td-btn {
+        width: 100%;
+    }
+
+    td:before {
+        /* Now like a table header */
+        position: absolute;
+
+        /* Top/left values mimic padding */
+        top: 13px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+    }
+
+    /*
+	Label the data
+	*/
+    td:nth-of-type(1):before {
+        content: "User";
+    }
+
+    td:nth-of-type(2):before {
+        content: "Categorie";
+    }
+
+    td:nth-of-type(3):before {
+        content: "Subcategorie";
+    }
+
+    td:nth-of-type(4):before {
+        content: "Data";
+    }
+
+    td:nth-of-type(5):before {
+        content: "Suma";
+    }
+
+    td:nth-of-type(6):before {
+        content: "Optiuni plata";
+    }
+
+    td:nth-of-type(7):before {
+        content: "Numar optiuni";
+    }
+
+    td:nth-of-type(8):before {
+        content: "Comentarii";
+    }
+
+    td:nth-of-type(9):before {
+        content: "";
+    }
+}
+
+.filtru-luna {
+    width: 150px;
+}
+
+@media screen and (max-width:766.99px) {
+    .form-group {
+        margin-left: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+}
