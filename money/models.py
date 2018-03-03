@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.contrib.auth.models import User
 from django.db import models
 from authentication.models import Account
 
@@ -44,7 +45,7 @@ class PaymentModel(models.Model):
     Model for the spending entry
     """
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(Account,null=True,on_delete=models.SET_NULL)
+    user = models.ForeignKey(User,null=True,on_delete=models.SET_NULL)
     category = models.ForeignKey(Category,null=True,on_delete=models.SET_NULL)
     subcategory = models.ForeignKey(Subcategory,null=True,on_delete=models.SET_NULL)
     date = models.DateField()
@@ -65,7 +66,7 @@ class PermanentPaymentModel(models.Model):
     Model a permanent payment. It supposed to be payed each month
     """
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(Account, null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
     subcategory = models.ForeignKey(Subcategory, null=True, on_delete=models.SET_NULL)
     sum = models.DecimalField(max_digits=5, decimal_places=2)

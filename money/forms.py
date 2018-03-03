@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.models import User
 
 from authentication.models import Account
 from money.models import Category,Subcategory,PaymentOption,PaymentModel,PermanentPaymentModel
@@ -11,7 +12,7 @@ class ModelChoiceNoValidation(forms.ModelChoiceField):
 
 
 class PaymentForm(forms.Form):
-    user = forms.ModelChoiceField(label="User",queryset=Account.objects.all(),empty_label=None)
+    user = forms.ModelChoiceField(label="User",queryset=User.objects.all(),empty_label=None)
     category = forms.ModelChoiceField(queryset = Category.objects.all(),empty_label=None)
 
     subcategories = Subcategory.objects.filter(category__name__exact='Alimente')
@@ -43,7 +44,7 @@ class PaymentForm(forms.Form):
 
 
 class PermanentPaymentForm(forms.Form):
-    user = forms.ModelChoiceField(label="User",queryset=Account.objects.all(),empty_label=None)
+    user = forms.ModelChoiceField(label="User",queryset=User.objects.all(),empty_label=None)
     category = forms.ModelChoiceField(queryset = Category.objects.all(),empty_label=None)
 
     subcategories = Subcategory.objects.filter(category__name__exact='Alimente')
