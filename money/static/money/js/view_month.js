@@ -1,12 +1,25 @@
 $(document).ready(function() {
     document.getElementById('select_categorie').options[0].selected='selected';
+
     var month_select = document.getElementById('select_luna');
     month_select.addEventListener("change", function() {
-        month_index = month_select.selectedIndex + 1;
-        window.location.href='/money/payment/view/'+ month_index + '/';
+       month_index = month_select.selectedIndex + 1;
+       window.location.href='/money/payment/view/'+ month_index + '/';
     });
+
+    var delete_button = document.getElementById('delete_button');
+    attach_delete_event(delete_button);
 });
 
+/**
+ * Attach on click event
+ * @param button
+ */
+function attach_delete_event(button) {
+    button.addEventListener("click",function() {
+       delete_payment(delete_button.getAttribute("payment_id"));
+    });
+}
 /*
 
  */
@@ -46,18 +59,16 @@ function filter_payments(category,subcategory,month) {
                     '<td>' + value.option_pay + '</td>' +
                     '<td>' + value.nb_option + '</td>' +
                     '<td>' + value.comments + '</td>' +
-                    '<td class="td-btn">'+
-                        '<div class="div-btn">'+
-                            '<button type="button" class="btn btn-warning">Modificare</button>' +
-                            '<form method="POST" action="{% url "delete_payment" id=payment.id %}">' +
-                                '{% csrf_token %}' +
-                                '<input type="hidden" name="next_url" value="{{request.path}}"/>' +
-                                '<button type="submit" class="btn btn-danger ">Sterge</button>' +
-                            '</form>' +
-                        '</div>' +
-                    '</td>'+
+                    '<td class="td-btn">\n' +
+                    '<div class="div-btn">\n' +
+                    '<button type="button" class="btn btn-warning" id="modify_button">Modificare</button>\n' +
+                    '<button type="button" class="btn btn-danger" id="delete_button" payment_id="'+ value.id +'">Stergere</button>\n' +
+                    '</div>\n' +
+                    '</td>' +
                     '<\tr>'
                 );
+                var delete_button = document.getElementById('delete_button');
+                attach_delete_event(delete_button);
             });
             $('#monthTable').focus();
         }
@@ -88,6 +99,60 @@ function get_month() {
     return month_select.selectedIndex + 1;
 }
 
+function csrfSafeMethod(method) {
+   return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+/**
+ * Delete a payment
+ * Make a DELETE call to /money/payment/{id}/
+ * @param id
+ */
+function delete_payment(id) {
+
+    var csrftoken = getCookie('csrftoken');
+    $.ajax({
+        url: '/api/money/payment/' + id + '/',
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        },
+        type: 'DELETE',
+        data: {},
+        error:function(XMLHttpRequest, textStatus, errorThrown){
+           console.log(XMLHttpRequest.responseText);
+        }
+    }).done(function() {
+
+        if ( !get_category() ) {
+            filter_payments("","",get_month());
+        }
+        else {
+            filter_payments(get_category(),get_subcategory(),get_month());
+        }
+
+    });
+}
+/**
+ * Append subcategories when category changes
+ */
 $(function() {
    var categorySelect = document.getElementById('select_categorie');
    var subcategorySelect = document.getElementById('select_subcategorie');

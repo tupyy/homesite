@@ -16,4 +16,4 @@ class IsPostOrIsAuthenticated(permissions.BasePermission):
             return True
 
         # Otherwise, only allow authenticated requests
-        return request.user and request.user.is_authenticated()
+        return request.user and request.user.is_authenticated

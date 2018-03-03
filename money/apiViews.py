@@ -122,7 +122,7 @@ class SubcategoryViewSet(viewsets.ViewSet, generics.ListAPIView):
 class PaymentViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     serializer_class = PaymentModelSerialier
 
-    # permission_classes = (IsPostOrIsAuthenticated,)
+    permission_classes = (IsPostOrIsAuthenticated,)
 
     def create(self, request):
         serializer = self.serializer_class(data=request.data)

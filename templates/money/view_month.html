@@ -86,12 +86,8 @@
                                         <td>{{ payment.comments }}</td>
                                         <td class="td-btn">
                                             <div class="div-btn">
-                                                <button type="button" class="btn btn-warning">Modificare</button>
-                                                <form method="POST" action="{% url "delete_payment" id=payment.id %}">
-                                                    {% csrf_token %}
-                                                    <input type="hidden" name="next_url" value="{{request.path}}"/>
-                                                    <button type="submit" class="btn btn-danger ">Sterge</button>
-                                                </form>
+                                                <button type="button" class="btn btn-warning" id="modify_button">Modificare</button>
+                                                <button type="submit" class="btn btn-danger " id="delete_button" payment_id="{{ payment.id }}">Sterge</button>
                                             </div>
                                         </td>
                                     </tr>
