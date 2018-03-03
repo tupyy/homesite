@@ -4,8 +4,9 @@ from __future__ import unicode_literals
 from datetime import date
 import calendar
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.http import HttpResponseRedirect,HttpResponseNotAllowed
+from django.shortcuts import render, redirect
+from django.utils.http import is_safe_url
 
 from money.forms import PaymentForm,PermanentPaymentForm
 from money.models import PaymentModel, Category, PermanentPaymentModel
@@ -53,28 +54,38 @@ def permanent_payment(request):
     return render(request,'money/payment.html',{'form': form})
 
 @login_required
-def delete_payment(request,pk):
+def delete_payment(request,id=0):
     """
     Delete a payment
     :param request:
     :param pk: PrimaryKey
     :return:
     """
-    payment = get_object_or_404(PaymentModel,pk=pk)
-    payment.delete()
-    return HttpResponseRedirect('/month')
+
+    if request.method == 'POST':
+        payment = get_object_or_404(PaymentModel,pk=id)
+        payment.delete()
+
+        redirect_to = request.POST.get('next_url')
+        url_is_safe = is_safe_url(redirect_to)
+        if redirect_to and url_is_safe:
+            return HttpResponseRedirect(redirect_to)
+        else:
+            return redirect("/")
+    else:
+        return HttpResponseNotAllowed('GET')
 
 @login_required
-def delete_permanent_payment(request,pk):
+def delete_permanent_payment(request,id=0):
     """
     Delete a permanent payment
     :param request:
     :param pk:
     :return:
     """
-    payment=get_object_or_404(PermanentPaymentModel,pk=pk)
+    payment=get_object_or_404(PermanentPaymentModel,pk=id)
     payment.delete()
-    return HttpResponseRedirect('/view_permanent_payments')
+    return HttpResponseRedirect(request.path)
 
 @login_required
 def month_payments(request,month=13):

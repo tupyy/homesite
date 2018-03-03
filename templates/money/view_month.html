@@ -87,7 +87,11 @@
                                         <td class="td-btn">
                                             <div class="div-btn">
                                                 <button type="button" class="btn btn-warning">Modificare</button>
-                                                <button type="button" class="btn btn-danger">Stergere</button>
+                                                <form method="POST" action="{% url "delete_payment" id=payment.id %}">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="next_url" value="{{request.path}}"/>
+                                                    <button type="submit" class="btn btn-danger ">Sterge</button>
+                                                </form>
                                             </div>
                                         </td>
                                     </tr>
