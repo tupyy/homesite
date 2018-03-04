@@ -1,0 +1,99 @@
+{% load static %}
+{% load widget_tweaks %}
+<!doctype html>
+<html lang="en" data-pgc-master="master.html">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Casuta | Adauga plata</title>
+        <link href=" {% static "money/bootstrap/css/bootstrap.css" %}" rel="stylesheet">
+        <link href="{% static "money/css/navbar.css" %}" rel="stylesheet">
+        <link href="{% static "money/css/add_payment.css" %}" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    </head>
+    <body>
+        {% include "navbar.html" %}
+        <section class="content">
+            <div class="d-flex container-fluid justify-content-center" data-pgc-field="content">
+                <div class="main_container">
+                    <form role="form" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" id="next" value="{{ next_url }}">
+                        <div class="row row-1">
+                            <div class="col-md-6 form-column"> 
+                                <div class="form-group"> 
+                                    <label for="username">Name</label>
+                                    {% render_field form.user class="form-control" %}
+                                </div>
+                                <div class="form-group"> 
+                                    <label for="categorie">Categorie</label>
+                                    {% render_field form.category class="form-control" id="category" %}
+                                </div>
+                                <div class="form-group"> 
+                                    <label for="subcategorie">Subcategorie</label>
+                                    {% render_field form.subcategory class="form-control" id="subcategory" %}
+                                </div>
+                                <div class="form-group"> 
+                                    <label for="suma">Suma</label>
+                                    {% render_field form.suma class="form-control" id="suma" %}
+                                </div>
+                                <div class="form-group"> 
+                                    <label for="date">Data</label>
+                                    {% render_field form.date class="form-control" id="date" %}
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-column"> 
+                                <div>
+                                    <div class="div-collapse" data-toggle="collapse" data-target="#paymentOptions">
+                                        <div class="">Optiuni de plata</div>
+                                        <div>
+                                            <i class="fa fa-chevron-down text-muted"></i>
+                                        </div>
+                                    </div>
+                                    <div id="paymentOptions" class="collapse div-collapse2">
+                                        <div class="form-group">
+                                            {% render_field form.payment_option class="form-control" id="paymentOptions" %}
+                                        </div>
+                                        <div class="form-group"> 
+                                            <label for="nb_payment_option">Numar optiuni</label>
+                                            {% render_field form.nb_payment_option class="form-control" id="nb_payment_option" %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="height: 100%;">
+                                    <div class="div-collapse" data-toggle="collapse" data-target="#comments">
+                                        <div>Comentariu</div>
+                                        <div>
+                                            <i class="fa fa-chevron-down text-muted"></i>
+                                        </div>
+                                    </div>
+                                    <div id="comments" class="collapse div-collapse2">
+                                        <div class="form-group" style="height: 100%;"> 
+                                           {% render_field form.comments class="form-control" id="comments" %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-2">
+                            <div class="div-btn">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <a href="/" type="button" class="btn btn-danger">Close</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+            <!-- Bootstrap core JavaScript
+    ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="{% static  "money/js/jquery.min.js" %}"></script>
+        <script src="{% static "money/bootstrap/js/bootstrap.min.js" %}"></script>
+        <script src="{% static "money/js/select_subcategories.js" %}"></script>
+    </body>
+</html>

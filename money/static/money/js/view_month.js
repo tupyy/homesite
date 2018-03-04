@@ -17,7 +17,7 @@ $(document).ready(function() {
  */
 function attach_delete_event(button) {
     button.addEventListener("click",function() {
-       delete_payment(delete_button.getAttribute("payment_id"));
+       delete_payment(button.getAttribute("payment_id"));
     });
 }
 /*

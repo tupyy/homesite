@@ -32,13 +32,10 @@ def payment(request):
         form = PaymentForm(request.POST)
         if form.is_valid():
             form.save()
-            if 'submit' in request.POST:
-                form = PaymentForm()
-            else:
-                return HttpResponseRedirect('/')
-    else:
-        form = PaymentForm()
-    return render(request,'money/payment.html',{'form': form})
+
+    form = PaymentForm()
+    return render(request,'money/add_payment.html',{'form':form,
+                                                    'next_url':request.path})
 
 
 def permanent_payment(request):
