@@ -13,6 +13,7 @@
         <link href="{% static "money/css/navbar.css" %}" rel="stylesheet">
         <link href="{% static "money/css/add_payment.css" %}" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     </head>
     <body>
         {% include "navbar.html" %}
@@ -38,7 +39,7 @@
                                 </div>
                                 <div class="form-group"> 
                                     <label for="suma">Suma</label>
-                                    {% render_field form.suma class="form-control" id="suma" %}
+                                    {% render_field form.sum class="form-control" id="sum" %}
                                 </div>
                                 <div class="form-group"> 
                                     <label for="date">Data</label>
@@ -47,27 +48,27 @@
                             </div>
                             <div class="col-md-6 form-column"> 
                                 <div>
-                                    <div class="div-collapse" data-toggle="collapse" data-target="#paymentOptions">
+                                    <div class="div-collapse" data-toggle="collapse" data-target="#paymentOptions" id="test">
                                         <div class="">Optiuni de plata</div>
                                         <div>
-                                            <i class="fa fa-chevron-down text-muted"></i>
+                                            <i class="fa fa-chevron-down text-muted" id="paymentOptionIcon"></i>
                                         </div>
                                     </div>
                                     <div id="paymentOptions" class="collapse div-collapse2">
                                         <div class="form-group">
-                                            {% render_field form.payment_option class="form-control" id="paymentOptions" %}
+                                            {% render_field form.option_pay class="form-control" id="paymentOptions" %}
                                         </div>
                                         <div class="form-group"> 
                                             <label for="nb_payment_option">Numar optiuni</label>
-                                            {% render_field form.nb_payment_option class="form-control" id="nb_payment_option" %}
+                                            {% render_field form.nb_option class="form-control" id="nb_payment_option" %}
                                         </div>
                                     </div>
                                 </div>
-                                <div style="height: 100%;">
+                                <div class="div-opt" style="height: 100%;">
                                     <div class="div-collapse" data-toggle="collapse" data-target="#comments">
                                         <div>Comentariu</div>
                                         <div>
-                                            <i class="fa fa-chevron-down text-muted"></i>
+                                            <i class="fa fa-chevron-down text-muted" id="commentIcon"></i>
                                         </div>
                                     </div>
                                     <div id="comments" class="collapse div-collapse2">
@@ -81,7 +82,7 @@
                         <div class="row row-2">
                             <div class="div-btn">
                                 <button type="submit" class="btn btn-primary">Submit</button>
-                                <a href="/" type="button" class="btn btn-danger">Close</a>
+                                <a href="/" role="button" class="btn btn-danger" id="close">Close</a>
                             </div>
                         </div>
                     </form>
@@ -93,7 +94,27 @@
         <!-- Placed at the end of the document so the pages load faster -->
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="{% static  "money/js/jquery.min.js" %}"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <script src="{% static "money/bootstrap/js/bootstrap.min.js" %}"></script>
         <script src="{% static "money/js/select_subcategories.js" %}"></script>
+        <script src="{% static "money/js/parse_next_url.js" %}"></script>
+        <script>
+            $(document).ready(function() {
+                $('#paymentOptions').on('hidden.bs.collapse',function() {
+                    $('#paymentOptionIcon').attr('class','fa fa-chevron-down text-muted');
+                });
+                $('#paymentOptions').on('show.bs.collapse',function() {
+                    $('#paymentOptionIcon').attr('class','fa fa-chevron-up text-muted')
+                });
+                $('#comments').on('hidden.bs.collapse',function() {
+                    $('#commentIcon').attr('class','fa fa-chevron-down text-muted');
+                });
+                $('#comments').on('show.bs.collapse',function() {
+                    $('#commentIcon').attr('class','fa fa-chevron-up text-muted')
+                });
+
+                $('#close').attr("href",parse_next_url(window.location.href));
+            });
+        </script>
     </body>
 </html>

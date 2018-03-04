@@ -126,3 +126,10 @@ def view_permanent_payments(request):
                                                         'nav_bar_title':'Viramente periodice lunare'
                                                         })
 
+
+@login_required
+def update_payment(request,payment_id):
+    payment = get_object_or_404(PaymentModel,pk=payment_id)
+    form = PaymentForm(instance=payment)
+
+    return render("money/add_payment.html",{'form':form})

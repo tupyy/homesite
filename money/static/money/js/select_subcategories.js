@@ -1,6 +1,6 @@
 $(function () {
         $('#date').datepicker({
-            'dateFormat' : 'd/m/y'
+            'dateFormat' : 'dd/mm/yy'
         });
 });
 
@@ -26,7 +26,6 @@ $(document).ready(function() {
                for (var j = 0; j < data.subcategories.length; j++) {
                    var dict = data.subcategories[j];
                    var opt = document.createElement('option');
-                   // opt.value = j+1;
                    opt.innerHTML = dict;
                    subcategorySelect.appendChild(opt);
                }

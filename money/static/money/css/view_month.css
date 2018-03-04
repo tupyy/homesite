@@ -156,7 +156,7 @@ and also iPads specifically.
 	Label the data
 	*/
     td:nth-of-type(1):before {
-        content: "User";
+        content: "Nume";
     }
 
     td:nth-of-type(2):before {
@@ -184,7 +184,7 @@ and also iPads specifically.
     }
 
     td:nth-of-type(8):before {
-        content: "Comentarii";
+        content: "Comentariu";
     }
 
     td:nth-of-type(9):before {
