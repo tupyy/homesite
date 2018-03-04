@@ -24,14 +24,6 @@ td {
     margin-left: 15px;
 }
 
-.dropdown {
-    cursor: pointer;
-}
-
-.dropdown-item:hover {
-    background-color: #7e7e7e;
-}
-
 .col-main {
     display: inline-table;
     margin-left: 0;

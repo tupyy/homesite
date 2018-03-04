@@ -1,6 +1,10 @@
+.body {
+    background-color: #f3efef;
+}
+
 .main_container {
+    margin: 50px;
     width: 100%;
-    margin-top: 40px;
     padding-top: 15px;
 }
 
@@ -20,6 +24,10 @@
     margin-left: 10px;
 }
 
+.filtru-subcategorie {
+    width: 200px;
+}
+
 label {
     display: inline;
     margin-bottom: 0;
@@ -30,6 +38,8 @@ form {
 
 .div-table {
     margin-top: 15px;
+    box-shadow: 0px 10px 6px -6px #777;
+    border: 1px black;
 }
 
 .form-group-left {
@@ -53,11 +63,6 @@ form {
     width: 150px;
 }
 
-.td-btn {
-    table-layout: fixed;
-    width: 300px;
-}
-
 td {
     box-sizing: border-box;
     margin: 0;
@@ -69,8 +74,21 @@ td {
     width: 150px;
 }
 
+.td-btn {
+    table-layout: fixed;
+    width: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.td-comments {
+    width: auto;
+}
+
 tr {
     text-align: center;
+     display: table-row;
 }
 
 /* Zebra striping */
@@ -115,6 +133,7 @@ and also iPads specifically.
         overflow: hidden;
         width: 100%;
         text-align: right;
+        font-size:15px;
     }
 
     .td-btn {
@@ -177,10 +196,10 @@ and also iPads specifically.
     width: 150px;
 }
 
-.error_messsage {
+.empty {
     text-align: center;
     color: grey;
-    margin-top: 50px;
+    background-color: white;
 }
 
 @media screen and (max-width:766.99px) {

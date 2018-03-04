@@ -58,11 +58,11 @@ function filter_payments(category,subcategory,month) {
                     '<td>' + value.sum + '</td>' +
                     '<td>' + value.option_pay + '</td>' +
                     '<td>' + value.nb_option + '</td>' +
-                    '<td>' + value.comments + '</td>' +
+                    '<td class="td-comments">' + value.comments + '</td>' +
                     '<td class="td-btn">\n' +
                     '<div class="div-btn">\n' +
-                    '<button type="button" class="btn btn-warning" id="modify_button">Modificare</button>\n' +
-                    '<button type="button" class="btn btn-danger" id="delete_button" payment_id="'+ value.id +'">Stergere</button>\n' +
+                    '<button type="button" class="btn btn-warning btn-sm" id="modify_button">Modificare</button>\n' +
+                    '<button type="button" class="btn btn-danger btn-sm" id="delete_button" payment_id="'+ value.id +'">Stergere</button>\n' +
                     '</div>\n' +
                     '</td>' +
                     '<\tr>'
