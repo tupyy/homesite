@@ -20,6 +20,7 @@ function attach_delete_event(button) {
        delete_payment(button.getAttribute("payment_id"));
     });
 }
+
 /*
 
  */

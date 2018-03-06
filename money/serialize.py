@@ -4,35 +4,6 @@ from datetime import datetime
 from money.models import *
 
 
-class CategorySerializer(serializers.ModelSerializer):
-    """
-    Serializer for Category
-    """
-    subcategories = serializers.StringRelatedField(read_only=True, many=True)
-    id = serializers.IntegerField(read_only=True)
-
-    def create(self, validated_data):
-        (obj, created) = Category.objects.get_or_create(**validated_data)
-        return obj
-
-    def update(self, instance, validated_data):
-        """
-        Update and return an existing Category instance
-        :param instance:
-        :type instance Category
-        :param validated_data:
-        :return:
-        """
-        instance.name = validated_data.get('name', instance.name)
-        instance.description = validated_data.get('description', instance.description)
-        instance.save()
-        return instance
-
-    class Meta:
-        model = Category
-        fields = ('id', 'name', 'description', 'subcategories')
-
-
 class SubcategorySerializer(serializers.ModelSerializer):
     category = serializers.StringRelatedField(read_only=True)
     id = serializers.StringRelatedField(read_only=True)
@@ -79,6 +50,34 @@ class SubcategorySerializer(serializers.ModelSerializer):
             return self.initial_data['category']
         except KeyError:
             return None
+
+class CategorySerializer(serializers.ModelSerializer):
+    """
+    Serializer for Category
+    """
+    subcategories = SubcategorySerializer(read_only=True, many=True)
+    id = serializers.IntegerField(read_only=True)
+
+    def create(self, validated_data):
+        (obj, created) = Category.objects.get_or_create(**validated_data)
+        return obj
+
+    def update(self, instance, validated_data):
+        """
+        Update and return an existing Category instance
+        :param instance:
+        :type instance Category
+        :param validated_data:
+        :return:
+        """
+        instance.name = validated_data.get('name', instance.name)
+        instance.description = validated_data.get('description', instance.description)
+        instance.save()
+        return instance
+
+    class Meta:
+        model = Category
+        fields = ('id', 'name', 'description', 'subcategories')
 
 
 class PaymentOptionSerializer(serializers.ModelSerializer):

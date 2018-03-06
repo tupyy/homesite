@@ -22,12 +22,20 @@ class Subcategory(models.Model):
     """
     Model for the subcategories
     """
+    id = models.AutoField(primary_key=True)
     category = models.ForeignKey(Category,related_name='subcategories',on_delete=models.CASCADE)
     name = models.CharField(max_length=30,null=False)
     description = models.CharField(max_length=30,null=True,blank=True)
 
+    class Meta:
+        unique_together = ('name','id')
+        ordering = ['id']
+
     def __str__(self):
         return self.name
+
+    def __unicode__(self):
+        return "{} {}".format(self.id,self.name)
 
 
 class PaymentOption(models.Model):

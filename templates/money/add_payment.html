@@ -22,7 +22,7 @@
                 <div class="main_container">
                     <form role="form" method="post">
                         {% csrf_token %}
-                        <input type="hidden" id="next" value="{{ next_url }}">
+                        <input type="hidden" name="next_url" value="{{ next_url }}">
                         <div class="row row-1">
                             <div class="col-md-6 form-column"> 
                                 <div class="form-group"> 

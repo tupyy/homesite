@@ -14,6 +14,7 @@ class PaymentForm(forms.ModelForm):
         model = PaymentModel
         fields = '__all__'
 
+    next_url = forms.CharField(max_length=200)
     user = forms.ModelChoiceField(label="Name",queryset=User.objects.all(),empty_label=None)
     category = forms.ModelChoiceField(queryset = Category.objects.all(),empty_label=None)
     subcategory = SubcategoryModelChoice(queryset=Subcategory.objects.all(),empty_label=None)

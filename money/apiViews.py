@@ -170,7 +170,6 @@ class PaymentViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
 
         return queryset
 
-
 class PaymentOptionViewSet(viewsets.ViewSet):
     permission_classes = (IsAuthenticated,)
 

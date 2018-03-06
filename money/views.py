@@ -37,6 +37,30 @@ def payment(request):
     return render(request,'money/add_payment.html',{'form':form,
                                                     'next_url':request.path})
 
+@login_required
+def update_payments(request, id=0):
+
+    if request.method == 'GET':
+        payment = get_object_or_404(PaymentModel,pk=id)
+        form = PaymentForm(instance=payment)
+        return render(request,'money/add_payment.html',{'form':form,
+                                                        'next_url': request.path})
+    elif request.method == 'POST':
+        form = PaymentForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+            redirect_to = request.POST.get('next')
+            url_is_safe = is_safe_url(redirect_to)
+            if redirect_to and url_is_safe:
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return redirect("/")
+
+        else:
+            form = PermanentPaymentForm()
+        return render(request, 'money/payment.html', {'form': form})
+
 
 def permanent_payment(request):
     if request.method == 'POST':
@@ -88,7 +112,7 @@ def delete_permanent_payment(request,id=0):
     return HttpResponseRedirect(request.path)
 
 @login_required
-def month_payments(request,month=13):
+def view_payments(request, month=13):
     categories = Category.objects.all()
 
     months_choices = []

@@ -83,7 +83,7 @@
                                                 <td class="td-comments">{{ payment.comments }}</td>
                                                 <td class="td-btn">
                                                     <div class="div-btn">
-                                                        <button type="button" class="btn btn-warning btn-sm" id="modify_button">Modificare</button>
+                                                        <a href="{% url "update_payment" id=payment.id %}" role="button" class="btn btn-warning btn-sm" id="modify_button">Modificare</a>
                                                         <button type="submit" class="btn btn-danger btn-sm" id="delete_button" payment_id="{{ payment.id }}">Sterge</button>
                                                     </div>
                                                 </td>
