@@ -5,10 +5,6 @@ from authentication.models import Account
 from money.models import Category,Subcategory,PaymentOption,PaymentModel,PermanentPaymentModel
 import datetime
 
-class SubcategoryModelChoice(forms.ModelChoiceField):
-    def to_python(self, value):
-        return value
-
 class PaymentForm(forms.ModelForm):
     class Meta:
         model = PaymentModel
@@ -17,7 +13,7 @@ class PaymentForm(forms.ModelForm):
     next_url = forms.CharField(max_length=200)
     user = forms.ModelChoiceField(label="Name",queryset=User.objects.all(),empty_label=None)
     category = forms.ModelChoiceField(queryset = Category.objects.all(),empty_label=None)
-    subcategory = SubcategoryModelChoice(queryset=Subcategory.objects.all(),empty_label=None)
+    subcategory = forms.ModelChoiceField(queryset=Subcategory.objects.all(),empty_label=None)
 
     sum = forms.DecimalField(max_digits=5,decimal_places=2,label="Suma",min_value=0)
     option_pay = forms.ModelChoiceField(queryset=PaymentOption.objects.all(),empty_label=None)
@@ -30,40 +26,6 @@ class PaymentForm(forms.ModelForm):
         help_text="Comentariu",
         required=False
     )
-
-    def clean(self):
-        cleaned_data = super(PaymentForm,self).clean()
-        category_name = self.cleaned_data.get('category')
-        subcategory_id = self.data.get('subcategory')
-        try:
-            subcategory_key = int(subcategory_id)
-            try:
-                subcategory = Subcategory.objects.get(category__name__exact=category_name, id__exact=subcategory_key)
-                cleaned_data['subcategory'] = subcategory
-            except Subcategory.DoesNotExist:
-                raise forms.ValidationError("Subcategory don't exists")
-        except ValueError:
-            subcategory_name = subcategory_id
-            try:
-                subcategory = Subcategory.objects.get(category__name__exact=category_name, name__exact=subcategory_name)
-                cleaned_data['subcategory'] = subcategory
-            except Subcategory.DoesNotExist:
-                raise forms.ValidationError("Subcategory don't exists")
-        return cleaned_data
-
-    def save(self,commit=True):
-        data = self.cleaned_data
-        payment = PaymentModel(user=data['user'],
-                               category=data['category'],
-                               subcategory=data['subcategory'],
-                               sum=data['sum'],
-                               option_pay=data['option_pay'],
-                               nb_option=data['nb_option'],
-                               date=data['date'],
-                               comments=data['comments'])
-        if commit:
-            payment.save()
-        return payment
 
 
 class PermanentPaymentForm(forms.Form):

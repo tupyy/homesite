@@ -62,7 +62,7 @@ function filter_payments(category,subcategory,month) {
                     '<td class="td-comments">' + value.comments + '</td>' +
                     '<td class="td-btn">\n' +
                     '<div class="div-btn">\n' +
-                    '<button type="button" class="btn btn-warning btn-sm" id="modify_button">Modificare</button>\n' +
+                    '<a role="button" class="btn btn-warning btn-sm" id="modify_button" href="/money/payment/update/'+ value.id + '">Modificare</a>\n' +
                     '<button type="button" class="btn btn-danger btn-sm" id="delete_button" payment_id="'+ value.id +'">Stergere</button>\n' +
                     '</div>\n' +
                     '</td>' +
@@ -168,7 +168,8 @@ $(function() {
                    for (var j = 0; j < data.subcategories.length; j++) {
                        var dict = data.subcategories[j];
                        var opt = document.createElement('option');
-                       opt.innerHTML = dict;
+                       opt.value = dict.id;
+                       opt.innerHTML = dict.name;
                        subcategorySelect.appendChild(opt);
                    }
                    filter_payments(get_category(),get_subcategory(),get_month())

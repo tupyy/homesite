@@ -20,7 +20,7 @@
         <section class="content">
             <div class="d-flex container-fluid justify-content-center" data-pgc-field="content">
                 <div class="main_container">
-                    <form role="form" method="post">
+                    <form role="form" method="post" action="{{ action }}">
                         {% csrf_token %}
                         <input type="hidden" name="next_url" value="{{ next_url }}">
                         <div class="row row-1">

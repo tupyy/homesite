@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from datetime import date
 import calendar
+from datetime import date
+
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect,HttpResponseNotAllowed
+from django.http import HttpResponseRedirect, HttpResponseNotAllowed
 from django.shortcuts import render, redirect
 from django.utils.http import is_safe_url
 
-from money.forms import PaymentForm,PermanentPaymentForm
-from money.models import PaymentModel, Category, PermanentPaymentModel
+from money.forms import PaymentForm, PermanentPaymentForm
 from money.serialize import *
-from money.tables import MonthTable, TotalTable,ViewPermanentPaymentTable
-from money.utils import compute_total, append_to_total
+from money.tables import ViewPermanentPaymentTable
 
 """
     Djano classic view
@@ -35,22 +34,25 @@ def payment(request):
 
     form = PaymentForm()
     return render(request,'money/add_payment.html',{'form':form,
-                                                    'next_url':request.path})
+                                                    'next_url':request.path,
+                                                    'action' : '/money/payment/'})
 
 @login_required
-def update_payments(request, id=0):
+def update_payments2(request, id=0):
 
     if request.method == 'GET':
         payment = get_object_or_404(PaymentModel,pk=id)
         form = PaymentForm(instance=payment)
         return render(request,'money/add_payment.html',{'form':form,
-                                                        'next_url': request.path})
+                                                        'next_url': request.path,
+                                                        'action' : '/money/payment/update/' + str(id) + '/'})
     elif request.method == 'POST':
-        form = PaymentForm(request.POST)
+        payment = get_object_or_404(PaymentModel, pk=id)
+        form = PaymentForm(request.POST,instance=payment)
         if form.is_valid():
             form.save()
 
-            redirect_to = request.POST.get('next')
+            redirect_to = request.POST.get('next_url')
             url_is_safe = is_safe_url(redirect_to)
             if redirect_to and url_is_safe:
                 return HttpResponseRedirect(redirect_to)

@@ -35,7 +35,7 @@ urlpatterns = [
     url(r'^money/payment/$',payment,name="payment"),
     path('money/payment/delete/<int:id>/',delete_payment,name="delete_payment"),
     path('money/payment/view/<int:month>/', view_payments, name="view_month_payments"),
-    path('money/payment/update/<int:id>/', update_payments, name="update_payment"),
+    path('money/payment/update/<int:id>/', update_payments2, name="update_payment"),
     url(r'^$',index,name="index")
 ]
 
