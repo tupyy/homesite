@@ -34,8 +34,8 @@ def payment(request):
 
     form = PaymentForm()
     return render(request,'money/add_payment.html',{'form':form,
-                                                    'next_url':request.path,
-                                                    'action' : '/money/payment/'})
+                                                    'next_url':request.GET["next"],
+                                                    'action' : '/money/payment/?next='+request.GET["next"]})
 
 @login_required
 def update_payments2(request, id=0):
@@ -44,7 +44,7 @@ def update_payments2(request, id=0):
         payment = get_object_or_404(PaymentModel,pk=id)
         form = PaymentForm(instance=payment)
         return render(request,'money/add_payment.html',{'form':form,
-                                                        'next_url': request.path,
+                                                        'next_url' : request.GET["next"],
                                                         'action' : '/money/payment/update/' + str(id) + '/'})
     elif request.method == 'POST':
         payment = get_object_or_404(PaymentModel, pk=id)

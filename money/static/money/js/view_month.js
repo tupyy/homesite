@@ -11,6 +11,12 @@ $(document).ready(function() {
     attach_delete_event(delete_button);
 });
 
+function get_current_url() {
+    var url = window.location.href;
+    var n = url.indexOf("/money");
+    return url.substring(n);
+
+}
 /**
  * Attach on click event
  * @param button
@@ -62,7 +68,7 @@ function filter_payments(category,subcategory,month) {
                     '<td class="td-comments">' + value.comments + '</td>' +
                     '<td class="td-btn">\n' +
                     '<div class="div-btn">\n' +
-                    '<a role="button" class="btn btn-warning btn-sm" id="modify_button" href="/money/payment/update/'+ value.id + '">Modificare</a>\n' +
+                    '<a role="button" class="btn btn-warning btn-sm" id="modify_button" href="/money/payment/update/'+ value.id + '?next=' + get_current_url() + '">Modificare</a>\n' +
                     '<button type="button" class="btn btn-danger btn-sm" id="delete_button" payment_id="'+ value.id +'">Stergere</button>\n' +
                     '</div>\n' +
                     '</td>' +

@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
+import settings
 from authentication.models import Account
 from money.models import Category,Subcategory,PaymentOption,PaymentModel,PermanentPaymentModel
 import datetime
@@ -26,6 +27,7 @@ class PaymentForm(forms.ModelForm):
         help_text="Comentariu",
         required=False
     )
+
 
 
 class PermanentPaymentForm(forms.Form):
