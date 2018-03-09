@@ -19,7 +19,7 @@ class PaymentForm(forms.ModelForm):
     sum = forms.DecimalField(max_digits=5,decimal_places=2,label="Suma",min_value=0)
     option_pay = forms.ModelChoiceField(queryset=PaymentOption.objects.all(),empty_label=None)
     nb_option = forms.IntegerField(label='Numar optiuni de plata',min_value=0,initial=0)
-    date = forms.DateField(initial=datetime.date.today().strftime('%d/%m/%Y'),input_formats=['%d/%m/%Y'])
+    date = forms.DateField(initial=datetime.date.today().strftime('%d/%m/%Y'),input_formats=settings.DATE_INPUT_FORMATS)
 
     comments = forms.CharField(
         max_length=150,
