@@ -3,7 +3,8 @@ from __future__ import unicode_literals
 
 from django.contrib.auth.models import User
 from django.db import models
-from authentication.models import Account
+from eventtools.models import BaseEvent, BaseOccurrence
+from contract.models import Contract
 
 
 class Category(models.Model):
@@ -48,19 +49,29 @@ class PaymentOption(models.Model):
         return self.name
 
 
-class PaymentModel(models.Model):
+class Payment(models.Model):
+
     """
-    Model for the spending entry
+    Abstract model for all kind of payments
+    """
+    category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
+    subcategory = models.ForeignKey(Subcategory, null=True, on_delete=models.SET_NULL)
+    date = models.DateField()
+    sum = models.DecimalField(max_digits=5, decimal_places=2)
+    comments = models.CharField(max_length=200, null=True)
+
+    class Meta:
+        abstract = True
+
+
+class SinglePayment(Payment):
+    """
+    Model for the a single payment. It can be a payment in a shop
     """
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User,null=True,on_delete=models.SET_NULL)
-    category = models.ForeignKey(Category,null=True,on_delete=models.SET_NULL)
-    subcategory = models.ForeignKey(Subcategory,null=True,on_delete=models.SET_NULL)
-    date = models.DateField()
-    sum = models.DecimalField(max_digits=8, decimal_places=2)
     option_pay = models.ForeignKey(PaymentOption,null=True, on_delete=models.SET_NULL)
     nb_option = models.IntegerField(default=0)
-    comments = models.CharField(max_length=200,null=True)
 
     class Meta:
         ordering = ['-date']
@@ -68,21 +79,21 @@ class PaymentModel(models.Model):
     def __str__(self):
         return self.user.username
 
+class MyEvent(BaseEvent):
+    title = models.CharField(max_length=100)
 
-class PermanentPaymentModel(models.Model):
+
+class RecurrentPayment(Payment,BaseEvent):
     """
-    Model a permanent payment. It supposed to be payed each month
+    Model for a recurrent payment
     """
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
-    category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
-    subcategory = models.ForeignKey(Subcategory, null=True, on_delete=models.SET_NULL)
-    sum = models.DecimalField(max_digits=5, decimal_places=2)
-    comments = models.CharField(max_length=200, null=True)
+    contract = models.ForeignKey(Contract,on_delete=models.SET_NULL,null=True,blank=True)
 
-    def __str__(self):
-        return self.user.username
 
+class PaymentOccurrence(BaseOccurrence):
+    event = models.ForeignKey(MyEvent,on_delete=models.CASCADE)
 
 
 class Total(object):

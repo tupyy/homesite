@@ -1,0 +1,55 @@
+.form-group {
+}
+
+.main_container {
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 50px;
+    width: 60vh;
+}
+
+.form-column {
+    display: block;
+}
+
+.div-collapse {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+}
+
+.div-collapse2 {
+    margin-top: 10px;
+    height: 100%;
+}
+
+.row-1 {
+    border-bottom: 1px solid #c4c4c4;
+    margin-bottom: 10px;
+}
+
+.div-btn {
+}
+
+.row-2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.btn {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 100px;
+    font-weight: bold;
+}
+
+.div-opt {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.form-comentariu {
+    height: 207px;
+    vertical-align: text-top;
+}

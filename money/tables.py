@@ -2,7 +2,7 @@ import django_tables2 as tables
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 
-from money.models import PaymentModel,PermanentPaymentModel
+from money.models import SinglePayment
 
 
 class DeleteButtonColumn(tables.Column):
@@ -20,7 +20,7 @@ class MonthTable(tables.Table):
     submit.set_url('delete_payment')
 
     class Meta:
-        model = PaymentModel
+        model = SinglePayment
         row_attrs = {
             'data-id': lambda record: record.pk
         }
@@ -35,29 +35,6 @@ class MonthTable(tables.Table):
     def getMonth(self,date):
         return date.month(date)
 
-
-class ViewPermanentPaymentTable(tables.Table):
-    """
-    It shows the permanent payments
-    """
-    submit = DeleteButtonColumn(verbose_name= '' )
-    submit.set_url('delete_permanent_payment')
-
-    class Meta:
-        model = PermanentPaymentModel
-        row_attrs = {
-            'data-id': lambda record: record.pk
-        }
-        exclude = {
-            'id'
-        }
-        attrs = {
-            'class': 'table table-condensed',
-
-        }
-
-    def getMonth(self,date):
-        return date.month(date)
 
 class TotalTable(tables.Table):
     categorie = tables.Column()

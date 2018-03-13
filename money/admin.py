@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from money.models import Category,Subcategory,PaymentModel,PaymentOption
+from money.models import Category,Subcategory,SinglePayment,PaymentOption
 
 # Register your models here.
 admin.site.register(Category)
@@ -10,7 +10,7 @@ admin.site.register(Subcategory)
 admin.site.register(PaymentOption)
 
 
-@admin.register(PaymentModel)
+@admin.register(SinglePayment)
 class PaymentModelAdmin(admin.ModelAdmin):
     list_display = ('user','category','subcategory','sum','option_pay','nb_option','date','comments')
     exclude = ('id',)

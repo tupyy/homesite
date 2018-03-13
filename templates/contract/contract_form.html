@@ -1,0 +1,106 @@
+{% load static %}
+{% load widget_tweaks %}
+<!doctype html>
+<html lang="en" data-pgc-master="master.html">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Casuta | Contract</title>
+        <link href=" {% static "money/bootstrap/css/bootstrap.css" %}" rel="stylesheet">
+        <link href="{% static "money/css/navbar.css" %}" rel="stylesheet">
+        <link href="{% static "contract/css/contract.css" %}" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    </head>
+    <body>
+        {% include "navbar.html" %}
+        <section class="content">
+            <div class="d-flex container-fluid justify-content-center" data-pgc-field="content">
+                <div class="main_container">
+                    <form role="form" method="post" action="{{ action }}">
+                        {% csrf_token %}
+                        <input type="hidden" name="next_url" value="{{ next_url }}">
+                        <div class="row row-1">
+                            <div class="col-md-6 form-column"> 
+                                <div class="form-group"> 
+                                    <label for="contract_type">Tip</label>
+                                    {% render_field form.contract_type class="form-control" id="contract_type" %}
+                                </div>
+                                <div class="form-group"> 
+                                    <label for="company_name">Companie</label>
+                                    {% render_field form.company_name class="form-control" id="company_name" %}
+                                </div>
+                                <div class="form-group"> 
+                                    <label for="contract_id">Numar contract</label>
+                                    {% render_field form.contract_id class="form-control" id="contract_id" %}
+                                </div>
+                                <div class="form-group"> 
+                                    <label for="total_sum">Suma</label>
+                                    {% render_field form.total_sum class="form-control" id="total_sum" %}
+                                </div>
+                                <div class="form-group"> 
+                                    <label for="start_date">Data</label>
+                                    {% render_field form.start_date class="form-control" id="start_date" %}
+                                </div>
+                                <div class="form-group">
+                                    <label for="pdf_contract">PDF</label>
+                                    {% render_field form.pdf_contract class="form-control" id="pdf_contract" %}
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-column">
+                                <div class="div-opt" style="height: 100%;">
+                                    <div class="div-collapse" data-toggle="collapse" data-target="#comments">
+                                        <div>Comentariu</div>
+                                        <div>
+                                            <i class="fa fa-chevron-down text-muted" id="commentIcon"></i>
+                                        </div>
+                                    </div>
+                                    <div id="comment" class="collapse div-collapse2">
+                                        <div class="form-group" style="height: 100%;"> 
+                                           {% render_field form.comment class="form-control" id="comment" %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-2">
+                            <div class="div-btn">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <a href="{{ next_url }}" role="button" class="btn btn-danger" id="close">Close</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+            <!-- Bootstrap core JavaScript
+    ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="{% static  "money/js/jquery.min.js" %}"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script src="{% static "money/bootstrap/js/bootstrap.min.js" %}"></script>
+        <script src="{% static "money/js/parse_next_url.js" %}"></script>
+        <script>
+            $(document).ready(function() {
+                $('#paymentOptions').on('hidden.bs.collapse',function() {
+                    $('#paymentOptionIcon').attr('class','fa fa-chevron-down text-muted');
+                });
+                $('#paymentOptions').on('show.bs.collapse',function() {
+                    $('#paymentOptionIcon').attr('class','fa fa-chevron-up text-muted')
+                });
+                $('#comments').on('hidden.bs.collapse',function() {
+                    $('#commentIcon').attr('class','fa fa-chevron-down text-muted');
+                });
+                $('#comments').on('show.bs.collapse',function() {
+                    $('#commentIcon').attr('class','fa fa-chevron-up text-muted')
+                });
+
+                $('#close').attr("href",parse_next_url(window.location.href));
+            });
+        </script>
+    </body>
+</html>
