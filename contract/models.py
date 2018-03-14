@@ -32,7 +32,7 @@ class Contract(models.Model):
     contract_id = models.CharField(max_length=200,null=False,blank=False)
     start_date = models.DateField(verbose_name="Data semnaturii")
     end_date = models.DateField(name="Data rezilierii",null=True,blank=True)
-    payment = models.FloatField(null=True,blank=True)
+    monthly_payment = models.FloatField(null=True,blank=True)
     comment = models.TextField(name="Comentariu",null=True,blank=True)
     pdf_contract = models.FileField(null=True,blank=True)
     status = models.ForeignKey(ContractStatus,on_delete=models.SET_NULL,null=True)

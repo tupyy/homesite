@@ -111,7 +111,7 @@ class PaymentModelSerialier(serializers.ModelSerializer):
     option_pay = serializers.StringRelatedField(read_only=True)
 
     class Meta:
-        model = SinglePayment
+        model = Payment
         fields = ('__all__')
 
     def create(self, validated_data):
@@ -123,14 +123,14 @@ class PaymentModelSerialier(serializers.ModelSerializer):
                 payment_option = self.__get_payment_option(self.initial_data['payment_option'])
                 user = self.__get_user(self.initial_data['user'])
 
-                payment = SinglePayment.objects.create(user=user,
-                                                       category=category,
-                                                       subcategory=subcategory,
-                                                       sum=float(validated_data['sum']),
-                                                       date=validated_data['date'],
-                                                       option_pay=payment_option,
-                                                       nb_option=int(validated_data['nb_option']),
-                                                       comments=validated_data['comments'])
+                payment = Payment.objects.create(user=user,
+                                                 category=category,
+                                                 subcategory=subcategory,
+                                                 sum=float(validated_data['sum']),
+                                                 date=validated_data['date'],
+                                                 option_pay=payment_option,
+                                                 nb_option=int(validated_data['nb_option']),
+                                                 comments=validated_data['comments'])
                 return payment
             else:
                 raise serializers.ValidationError(

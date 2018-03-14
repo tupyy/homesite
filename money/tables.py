@@ -2,7 +2,7 @@ import django_tables2 as tables
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 
-from money.models import SinglePayment
+from money.models import Payment
 
 
 class DeleteButtonColumn(tables.Column):
@@ -20,7 +20,7 @@ class MonthTable(tables.Table):
     submit.set_url('delete_payment')
 
     class Meta:
-        model = SinglePayment
+        model = Payment
         row_attrs = {
             'data-id': lambda record: record.pk
         }

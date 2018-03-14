@@ -49,7 +49,7 @@ class PaymentOption(models.Model):
         return self.name
 
 
-class Payment(models.Model):
+class AbstractPayment(models.Model):
 
     """
     Abstract model for all kind of payments
@@ -65,7 +65,7 @@ class Payment(models.Model):
         abstract = True
 
 
-class SinglePayment(Payment):
+class Payment(AbstractPayment):
     """
     Model for the a single payment. It can be a payment in a shop
     """
@@ -81,7 +81,7 @@ class SinglePayment(Payment):
         return self.user.username
 
 
-class RecurrentPayment(Payment,BaseEvent):
+class RecurrentPayment(AbstractPayment,BaseEvent):
     """
     Model for a recurrent payment
     """
@@ -93,12 +93,5 @@ class PaymentOccurrence(BaseOccurrence):
     event = models.ForeignKey(RecurrentPayment,on_delete=models.CASCADE)
 
 
-class Total(object):
-
-    def __init__(self,categorie,total,created=None):
-        self.categorie = categorie
-        self.total = total
-        self.total_prev_1 = ""
-        self.total_prev_2 = ""
 
 

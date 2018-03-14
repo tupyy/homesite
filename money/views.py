@@ -40,13 +40,13 @@ def payment(request):
 def update_payments2(request, id=0):
 
     if request.method == 'GET':
-        payment = get_object_or_404(SinglePayment, pk=id)
+        payment = get_object_or_404(Payment, pk=id)
         form = PaymentForm(instance=payment)
         return render(request,'money/add_payment.html',{'form':form,
                                                         'next_url' : request.GET["next"],
                                                         'action' : '/money/payment/update/' + str(id) + '/'})
     elif request.method == 'POST':
-        payment = get_object_or_404(SinglePayment, pk=id)
+        payment = get_object_or_404(Payment, pk=id)
         form = PaymentForm(request.POST,instance=payment)
         if form.is_valid():
             form.save()
@@ -75,7 +75,7 @@ def delete_payment(request,id=0):
     """
 
     if request.method == 'POST':
-        payment = get_object_or_404(SinglePayment, pk=id)
+        payment = get_object_or_404(Payment, pk=id)
         payment.delete()
 
         redirect_to = request.POST.get('next_url')
@@ -98,10 +98,10 @@ def view_payments(request, month=13):
 
     # Get payments for the current month
     if month > 12:
-        payments = SinglePayment.objects.filter(date__month=date.today().month, date__year=date.today().year)
+        payments = Payment.objects.filter(date__month=date.today().month, date__year=date.today().year)
         selected_month = date.today().month
     else:
-        payments = SinglePayment.objects.filter(date__month=month, date__year=date.today().year)
+        payments = Payment.objects.filter(date__month=month, date__year=date.today().year)
         selected_month=month
 
     if len(payments) > 0:
@@ -123,7 +123,7 @@ def view_payments(request, month=13):
 
 @login_required
 def update_payment(request,payment_id):
-    payment = get_object_or_404(SinglePayment, pk=payment_id)
+    payment = get_object_or_404(Payment, pk=payment_id)
     form = PaymentForm(instance=payment)
 
     return render("money/add_payment.html",{'form':form})

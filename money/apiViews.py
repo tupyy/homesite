@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 
-from money.models import Category, Subcategory, SinglePayment
+from money.models import Category, Subcategory, Payment
 from money.serialize import *
 from rest_framework import generics
 from rest_framework import viewsets
@@ -10,9 +10,6 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from authentication.permissions import IsPostOrIsAuthenticated
 from rest_framework.decorators import permission_classes
-
-# TODO foloseste self.serializer_class
-from money.utils import compute_total, append_to_total
 
 """
     View sets for the serializers. Except CategoryViewSet they are not used for 
@@ -132,12 +129,12 @@ class PaymentViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):
-        payment = get_object_or_404(SinglePayment, pk=pk)
+        payment = get_object_or_404(Payment, pk=pk)
         payment.delete()
         return Response(self.serializer_class(payment).data, status=status.HTTP_200_OK)
 
     def update(self, request, pk=None):
-        payment = get_object_or_404(SinglePayment.objects.all(), pk=pk)
+        payment = get_object_or_404(Payment.objects.all(), pk=pk)
 
         try:
             serializer = self.serializer_class(instance=payment, data=request.data)
@@ -158,13 +155,13 @@ class PaymentViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
         month = self.request.query_params.get('month', None)
 
         if start_date is not None and end_date is not None:
-            queryset = SinglePayment.objects.filter(date__gte=start_date, date__lte=end_date)
+            queryset = Payment.objects.filter(date__gte=start_date, date__lte=end_date)
         elif subcategorie is not None and category is not None and month is not None:
-            queryset = SinglePayment.objects.filter(subcategory__name__exact=subcategorie,
-                                                    category__name__exact=category,
-                                                    date__month=month)
+            queryset = Payment.objects.filter(subcategory__name__exact=subcategorie,
+                                              category__name__exact=category,
+                                              date__month=month)
         elif month is not None:
-            queryset = SinglePayment.objects.filter(date__month=month)
+            queryset = Payment.objects.filter(date__month=month)
         else:
             return []
 
@@ -209,7 +206,7 @@ class TotalViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated, ]
 
     def retrieve(self, request, pk=None):
-        payments = SinglePayment.objects.filter(date__month=pk)
+        payments = Payment.objects.filter(date__month=pk)
         data = compute_total(payments, Category.objects.all())
 
         # Compute totals for n-1 and n-2 month
@@ -221,7 +218,7 @@ class TotalViewSet(viewsets.ViewSet):
                 prev_month_limit = 1
 
             for i in range(month - prev_month_limit, month):
-                payments_prev = SinglePayment.objects.filter(date__month=i)
+                payments_prev = Payment.objects.filter(date__month=i)
                 data_previous_month = compute_total(payments_prev, Category.objects.all())
                 append_to_total(data, data_previous_month, i)
 

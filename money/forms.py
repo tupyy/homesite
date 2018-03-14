@@ -3,12 +3,12 @@ from django.contrib.auth.models import User
 
 import HomeSite.settings
 
-from money.models import Category,Subcategory,PaymentOption,SinglePayment
+from money.models import Category,Subcategory,PaymentOption,Payment
 import datetime
 
 class PaymentForm(forms.ModelForm):
     class Meta:
-        model = SinglePayment
+        model = Payment
         fields = '__all__'
 
     next_url = forms.CharField(max_length=200)
