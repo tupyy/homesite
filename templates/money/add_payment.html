@@ -46,7 +46,20 @@
                                     {% render_field form.date class="form-control" id="date" %}
                                 </div>
                             </div>
-                            <div class="col-md-6 form-column"> 
+                            <div class="col-md-6 form-column">
+                                <div class="div-opt">
+                                    <div class="div-collapse" data-toggle="collapse" data-target="#contract">
+                                        <div>Contract</div>
+                                        <div>
+                                            <i class="fa fa-chevron-down text-muted" id="contractIcon"></i>
+                                        </div>
+                                    </div>
+                                    <div id="contract" class="collapse div-collapse2">
+                                        <div class="form-group">
+                                           {% render_field form.contract class="form-control" id="contract" %}
+                                        </div>
+                                    </div>
+                                </div>
                                 <div>
                                     <div class="div-collapse" data-toggle="collapse" data-target="#paymentOptions" id="test">
                                         <div class="">Optiuni de plata</div>

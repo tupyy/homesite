@@ -54,6 +54,7 @@ class Payment(models.Model):
     """
     Abstract model for all kind of payments
     """
+    contract = models.ForeignKey(Contract,null=True,blank=True,on_delete=models.SET_NULL)
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
     subcategory = models.ForeignKey(Subcategory, null=True, on_delete=models.SET_NULL)
     date = models.DateField()
@@ -79,9 +80,6 @@ class SinglePayment(Payment):
     def __str__(self):
         return self.user.username
 
-class MyEvent(BaseEvent):
-    title = models.CharField(max_length=100)
-
 
 class RecurrentPayment(Payment,BaseEvent):
     """
@@ -89,11 +87,10 @@ class RecurrentPayment(Payment,BaseEvent):
     """
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
-    contract = models.ForeignKey(Contract,on_delete=models.SET_NULL,null=True,blank=True)
 
 
 class PaymentOccurrence(BaseOccurrence):
-    event = models.ForeignKey(MyEvent,on_delete=models.CASCADE)
+    event = models.ForeignKey(RecurrentPayment,on_delete=models.CASCADE)
 
 
 class Total(object):

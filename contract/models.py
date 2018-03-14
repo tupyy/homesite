@@ -3,7 +3,7 @@ from django.db import models
 
 class ContractType(models.Model):
     """
-    Contractul poate sa fie cu plata lunar sau ocazional (gen EDF APA)
+    Tipul contractului: Asigurare credit
     """
     id = models.AutoField(primary_key=True)
     contract_type = models.CharField(max_length=100,null=False,blank=False)
@@ -38,5 +38,5 @@ class Contract(models.Model):
     status = models.ForeignKey(ContractStatus,on_delete=models.SET_NULL,null=True)
 
     def __str__(self):
-        return self.contract_type.contract_type + "_" + self.contract_id
+        return self.name + "_" + self.contract_id
 
