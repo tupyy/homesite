@@ -80,35 +80,13 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'description', 'subcategories')
 
 
-class PaymentOptionSerializer(serializers.ModelSerializer):
 
-    def create(self, validated_data):
-        (obj,created) = PaymentOption.objects.get_or_create(**validated_data)
-        return obj
-
-    def update(self, instance, validated_data):
-        """
-        Update and return an existing Category instance
-        :param instance:
-        :type instance Category
-        :param validated_data:
-        :return:
-        """
-        instance.name = validated_data.get('name', instance.name)
-        instance.save()
-        return instance
-
-    class Meta:
-        model = PaymentOption
-        fields = ('__all__')
-
-
-class PaymentModelSerialier(serializers.ModelSerializer):
+class PaymentSerialier(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
+    contract = serializers.StringRelatedField(read_only=True)
     category = serializers.StringRelatedField(read_only=True)
     subcategory = serializers.StringRelatedField(read_only=True)
     user = serializers.StringRelatedField(read_only=True)
-    option_pay = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = Payment
@@ -120,7 +98,6 @@ class PaymentModelSerialier(serializers.ModelSerializer):
             subcategory = self.__get_subcategory(self.initial_data['subcategory'])
 
             if self.__is_valid_subcategory(category.name, subcategory.name):
-                payment_option = self.__get_payment_option(self.initial_data['payment_option'])
                 user = self.__get_user(self.initial_data['user'])
 
                 payment = Payment.objects.create(user=user,
@@ -128,8 +105,7 @@ class PaymentModelSerialier(serializers.ModelSerializer):
                                                  subcategory=subcategory,
                                                  sum=float(validated_data['sum']),
                                                  date=validated_data['date'],
-                                                 option_pay=payment_option,
-                                                 nb_option=int(validated_data['nb_option']),
+                                                 nb_tickete=int(validated_data['nb_tickete']),
                                                  comments=validated_data['comments'])
                 return payment
             else:
@@ -144,15 +120,13 @@ class PaymentModelSerialier(serializers.ModelSerializer):
             subcategory = self.__get_subcategory(self.initial_data['subcategory'])
 
             if self.__is_valid_subcategory(category.name, subcategory.name):
-                payment_option = self.__get_payment_option(self.initial_data['payment_option'])
                 user = self.__get_user(self.initial_data['user'])
 
                 instance.category = category
                 instance.user = user
                 instance.subcategory = subcategory
                 instance.sum = validated_data.get("sum", instance.sum)
-                instance.option_pay = payment_option
-                instance.nb_option = validated_data.get('nb_option', instance.nb_option)
+                instance.nb_tickete = validated_data.get('nb_tickete', instance.nb_tickete)
                 instance.date = validated_data.get('date', instance.date)
                 instance.comments = validated_data.get('comments', instance.comments)
                 instance.save()
@@ -184,10 +158,10 @@ class PaymentModelSerialier(serializers.ModelSerializer):
         return Subcategory.objects.filter(name__exact=subcategory)[0]
 
     def __get_user(self, username):
-        return Account.objects.filter(username__exact=username)[0]
+        return User.objects.filter(username__exact=username)[0]
 
-    def __get_payment_option(self, payment_option):
-        return PaymentOption.objects.filter(name__exact=payment_option)[0]
+    def __get_contract(self, contract_id):
+        return User.objects.filter(contract_id__exact=contract_id)[0]
 
 
 class TotalSerializer(serializers.Serializer):

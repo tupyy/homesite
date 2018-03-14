@@ -160,27 +160,27 @@ and also iPads specifically.
     }
 
     td:nth-of-type(2):before {
-        content: "Categorie";
+        content: "Contract";
     }
 
     td:nth-of-type(3):before {
-        content: "Subcategorie";
+        content: "Categorie";
     }
 
     td:nth-of-type(4):before {
-        content: "Data";
+        content: "Subcategorie";
     }
 
     td:nth-of-type(5):before {
-        content: "Suma";
+        content: "Data";
     }
 
     td:nth-of-type(6):before {
-        content: "Optiuni plata";
+        content: "Suma";
     }
 
     td:nth-of-type(7):before {
-        content: "Numar optiuni";
+        content: "Tichete";
     }
 
     td:nth-of-type(8):before {

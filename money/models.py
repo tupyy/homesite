@@ -39,16 +39,6 @@ class Subcategory(models.Model):
         return "{} {}".format(self.id,self.name)
 
 
-class PaymentOption(models.Model):
-    """
-    Model for payment options: tickete si check vacance
-    """
-    name = models.CharField(max_length=15,null=False)
-
-    def __str__(self):
-        return self.name
-
-
 class AbstractPayment(models.Model):
 
     """
@@ -71,8 +61,7 @@ class Payment(AbstractPayment):
     """
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User,null=True,on_delete=models.SET_NULL)
-    option_pay = models.ForeignKey(PaymentOption,null=True, on_delete=models.SET_NULL)
-    nb_option = models.IntegerField(default=0)
+    nb_tickete = models.IntegerField(default=0,null=True,blank=True)
 
     class Meta:
         ordering = ['-date']

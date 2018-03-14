@@ -59,12 +59,12 @@ function filter_payments(category,subcategory,month) {
                 $('#monthTable').find('>tbody:last-child').append(
                     '<tr>' +
                     '<td>' + value.user + '</td>' +
+                    '<td>' + value.contract + '</td>' +
                     '<td>' + value.category + '</td>' +
                     '<td>' + value.subcategory + '</td>' +
                     '<td>' + value.date + '</td>' +
                     '<td>' + value.sum + '</td>' +
-                    '<td>' + value.option_pay + '</td>' +
-                    '<td>' + value.nb_option + '</td>' +
+                    '<td>' + value.nb_tickete + '</td>' +
                     '<td class="td-comments">' + value.comments + '</td>' +
                     '<td class="td-btn">\n' +
                     '<div class="div-btn">\n' +

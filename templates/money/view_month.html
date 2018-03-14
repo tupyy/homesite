@@ -54,12 +54,12 @@
                                 <thead>
                                     <tr>
                                         <th>Nume</th>
+                                        <th>Contract</th>
                                         <th>Categorie</th>
                                         <th>Subcategorie</th>
                                         <th>Data</th>
                                         <th>Suma</th>
-                                        <th>Optiuni plata</th>
-                                        <th>Numar optiuni</th>
+                                        <th>Tichete</th>
                                         <th>Comentariu</th>
                                         <th></th>
                                     </tr>
@@ -74,12 +74,16 @@
                                         {% for payment in payments %}
                                             <tr>
                                                 <td>{{ payment.user }}</td>
+                                                {% if payment.contract is None %}
+                                                    <td>-</td>
+                                                {% else %}
+                                                    <td>{{ payment.contract }}</td>
+                                                {% endif %}
                                                 <td>{{ payment.category }}</td>
                                                 <td>{{ payment.subcategory }}</td>
                                                 <td>{{ payment.date }}</td>
                                                 <td>{{ payment.sum }}</td>
-                                                <td>{{ payment.option_pay }}</td>
-                                                <td>{{ payment.nb_option }}</td>
+                                                <td>{{ payment.nb_tickete }}</td>
                                                 <td class="td-comments">{{ payment.comments }}</td>
                                                 <td class="td-btn">
                                                     <div class="div-btn">
