@@ -34,7 +34,7 @@ class Contract(models.Model):
     end_date = models.DateField(name="Data rezilierii",null=True,blank=True)
     monthly_payment = models.FloatField(null=True,blank=True)
     comment = models.TextField(name="Comentariu",null=True,blank=True)
-    pdf_contract = models.FileField(null=True,blank=True)
+    pdf_contract = models.FileField(upload_to="contract/", null=True,blank=True)
     status = models.ForeignKey(ContractStatus,on_delete=models.SET_NULL,null=True)
 
     def __str__(self):
