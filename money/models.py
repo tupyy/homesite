@@ -44,7 +44,7 @@ class AbstractPayment(models.Model):
     """
     Abstract model for all kind of payments
     """
-    contract = models.ForeignKey(Contract,null=True,blank=True,on_delete=models.SET_NULL)
+    contract = models.ForeignKey(Contract,null=True, blank=True, on_delete=models.SET_NULL)
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
     subcategory = models.ForeignKey(Subcategory, null=True, on_delete=models.SET_NULL)
     date = models.DateField()

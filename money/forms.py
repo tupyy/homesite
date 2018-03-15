@@ -15,7 +15,7 @@ class PaymentForm(forms.ModelForm):
     next_url = forms.CharField(max_length=200)
     user = forms.ModelChoiceField(label="Name",queryset=User.objects.all(),empty_label=None)
     category = forms.ModelChoiceField(queryset = Category.objects.all(),empty_label=None)
-    contract = forms.ModelChoiceField(queryset=Contract.objects.filter(status__status__exact="Active"))
+    contract = forms.ModelChoiceField(queryset=Contract.objects.filter(status__status__exact="Active"),required=False)
     subcategory = forms.ModelChoiceField(queryset=Subcategory.objects.all(),empty_label=None)
     date = forms.DateField(initial=datetime.date.today().strftime('%d/%m/%Y'), input_formats=HomeSite.settings.DATE_INPUT_FORMATS)
 

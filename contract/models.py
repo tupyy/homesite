@@ -31,7 +31,7 @@ class Contract(models.Model):
     name = models.CharField(max_length=200,default="Nume contract",null=False,blank=False)
     contract_id = models.CharField(max_length=200,null=False,blank=False)
     start_date = models.DateField(verbose_name="Data semnaturii")
-    end_date = models.DateField(name="Data rezilierii",null=True,blank=True)
+    end_date = models.DateField(verbose_name="Data rezilierii",null=True,blank=True)
     monthly_payment = models.FloatField(null=True,blank=True)
     comment = models.TextField(name="Comentariu",null=True,blank=True)
     pdf_contract = models.FileField(upload_to="contract/", null=True,blank=True)
@@ -40,3 +40,5 @@ class Contract(models.Model):
     def __str__(self):
         return self.name + "_" + self.contract_id
 
+    class Meta:
+        ordering = ['-status']

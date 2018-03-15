@@ -1,0 +1,87 @@
+{% load static %}
+<!doctype html>
+<html lang="en" data-pgc-master="master.html">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Casuta | Vizualizare contracte</title>
+        <link href=" {% static "money/bootstrap/css/bootstrap.css" %}" rel="stylesheet">
+        <link href="{% static "money/css/navbar.css" %}" rel="stylesheet">
+        <link href="{% static "contract/css/view_contract.css" %}" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        {% include "navbar.html" %}
+        <section class="content">
+            <div class="d-flex container-fluid justify-content-center" data-pgc-field="content">
+                <div class="main_container">
+                    <div class="div-table">
+                        <table class="table" id="contractTable">
+                            <thead>
+                                <tr>
+                                    <th>Tip</th>
+                                    <th>Nume</th>
+                                    <th>Companie</th>
+                                    <th>Numar</th>
+                                    <th>Data semnarii</th>
+                                    <th>Data rezilierii</th>
+                                    <th>Plata lunara</th>
+                                    <th>Comentariu</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% if error_message %}
+                                    <tr class="empty">
+                                        <td class="empty" colspan="10"><h5>{{ error_message }}</h5></td>
+                                    </tr>
+                                {% else %}
+                                    {% for contract in contracts %}
+                                        <tr>
+                                            <td>{{ contract.contract_type }}</td>
+                                            <td>{{ contract.name }}</td>
+                                            <td>{{ contract.company_name }}</td>
+                                            <td>{{ contract.contract_id }}</td>
+                                            <td>{{ contract.start_date }}</td>
+                                            {% if contract.end_date %}
+                                                <td>{{ contract.end_date }}</td>
+                                            {% else %}
+                                                <td>-</td>
+                                            {% endif %}
+                                            {% if contract.monthly_payment %}
+                                                <td>{{ contract.monthly_payment }}</td>
+                                            {% else %}
+                                                <td>-</td>
+                                            {% endif %}
+                                            <td class="td-comments">{{ contract.comment }}</td>
+                                            <td>{{ contract.status }}</td>
+                                            {% if contract.pdf %}
+                                                <td class="td-btn">
+                                                    <div class="div-btn">
+                                                        <a href="{% url "update_payment" id=contract.id %}?next={{ request.path }}" role="button" class="btn btn-warning btn-sm" id="view_pdf">Pdf</a>
+                                                    </div>
+                                                </td>
+                                            {% else %}
+                                                <td></td>
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Bootstrap core JavaScript
+    ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="{% static  "money/js/jquery.min.js" %}"></script>
+        <script src="{% static "money/bootstrap/js/bootstrap.min.js" %}"></script>
+    </body>
+</html>

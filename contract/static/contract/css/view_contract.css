@@ -92,10 +92,10 @@ form {
 
 tr {
     text-align: center;
-     display: table-row;
+    display: table-row;
 }
 
-/*!* Zebra striping *!*/
+/* Zebra striping */
 tr:nth-of-type(odd) {
     background: #eee;
 }
