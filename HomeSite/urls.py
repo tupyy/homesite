@@ -30,7 +30,7 @@ urlpatterns_account = [
     Url for contracts
 """
 urlpatterns_contracts = [
-    url(r'^contract/contract', view_contracts, name="view_contracts")
+    url(r'^contract/contracts', view_contracts, name="view_contracts")
 ]
 """
 Main URL patterns
