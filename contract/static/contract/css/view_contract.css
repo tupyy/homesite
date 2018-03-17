@@ -199,9 +199,6 @@ and also iPads specifically.
         content: "";
     }
 
-    td:nth-of-type(11):before {
-        content: "";
-    }
 }
 
 .filtru-luna {

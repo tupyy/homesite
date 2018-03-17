@@ -1,50 +1,28 @@
-.body {
-    background-color: #f3efef;
-}
-
 .main_container {
-    margin: 50px;
     width: 100%;
     padding-top: 15px;
-}
-
-.filtru {
+    margin: 15px;
+    display: flex;
 }
 
 .form-group {
-    max-width: 400px;
-    display: inline-flex;
-    margin-left: 40px;
-    align-items: center;
-}
-
-.filtru-ctrl {
-    width: 150px;
-    display: inline;
-    margin-left: 10px;
-}
-
-.filtru-subcategorie {
-    width: 200px;
+    margin-top: 15px;
+    margin-left: 15px;
+    margin-right: 15px;
+    display: block;
+    font-size: 0.8rem;
 }
 
 label {
-    display: inline;
-    margin-bottom: 0;
-}
-
-form {
+    margin-bottom: 5px;
 }
 
 .div-table {
-    margin-top: 15px;
-    box-shadow: 0px 10px 6px -6px #777;
-    border: 1px black;
+    display: table-cell;
+    background-color: #ffffff;
+    font-size: 0.8rem;
 }
 
-.form-group-left {
-    margin-left: 0;
-}
 
 .btn {
     margin-left: 10px;
@@ -58,48 +36,56 @@ form {
     justify-content: center;
 }
 
-.table {
-    font-size: 0.8rem;
-}
-
 .tr > td:last-of-type {
-    table-layout: fixed;
-    width: 150px;
-}
-
-.td {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    vertical-align: middle;
-    text-align: center;
-    line-height: 39px;
     table-layout: fixed;
     width: 150px;
 }
 
 .td-btn {
     table-layout: fixed;
-    width: 250px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.td-comments {
-    width: auto;
+table {
+    table-layout: fixed;
+    width: 75%;
+}
+
+td {
+    box-sizing: border-box;
+    line-height: 13px;
+    table-layout: fixed;
+    font-size: 15px;
 }
 
 tr {
     text-align: center;
-     display: table-row;
 }
 
-/*!* Zebra striping *!*/
+thead {
+    background-color: #ececec;
+    border-top:0;
+}
+
+.form-filter {
+    width: 250px;
+    min-width: 250px;
+    box-shadow: 4px 4px 14px #a19d9d;
+    margin-right: 15px;
+    height: 500px;
+    font-size: 15px;
+}
+
+.form-control-sm {
+    width: 100%;
+    border-color:#c1c1c1;
+}
+/* Zebra striping 
 tr:nth-of-type(odd) {
     background: #eee;
-}
-
+}*/
 /* 
 Max width before this PARTICULAR table gets nasty
 This query will take effect for any screen smaller than 760px
@@ -126,6 +112,7 @@ and also iPads specifically.
 
     tr {
         border: 1px solid #ccc;
+        margin-bottom: 10px;
     }
 
     td {
@@ -133,11 +120,9 @@ and also iPads specifically.
         border: none;
         border-bottom: 1px solid #eee;
         position: relative;
-        padding-left: 50%;
         overflow: hidden;
-        width: 100%;
+        padding-left: 48%;
         text-align: right;
-        font-size:15px;
     }
 
     .td-btn {
@@ -150,8 +135,9 @@ and also iPads specifically.
 
         /* Top/left values mimic padding */
         top: 13px;
-        left: 10px;
-        width: 10%;
+        left: 5px;
+
+        /* width: 35% */
         padding-right: 10px;
         white-space: nowrap;
     }
@@ -188,7 +174,7 @@ and also iPads specifically.
     }
 
     td:nth-of-type(8):before {
-        content: "Comentariu";
+        content: "";
     }
 
     td:nth-of-type(9):before {
@@ -196,21 +182,43 @@ and also iPads specifically.
     }
 }
 
-.filtru-luna {
-    width: 150px;
-}
-
-.empty {
-    text-align: center;
-    color: grey;
-    background-color: white;
-}
-
 @media screen and (max-width:766.99px) {
     .form-group {
         margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+    }
+}
+
+@media screen and (max-width:574.99px) {
+    .main_container {
+        display: block;
         width: 100%;
-        display: flex;
-        justify-content: space-between;
+    }
+
+    .filtru {
+        height: 250px;
+        display: block;
+        margin-left: 15px;
+        margin-right: 15px;
+        box-shadow: 0 0;
+        margin-bottom: 15px;
+    }
+
+    .div-table {
+        display: block;
+    }
+
+    form {
+        display: block;
+    }
+}
+
+@media screen and (max-width:574.99px) {
+    .form-filter {
+        max-height: 250px;
+        box-shadow: 0 0;
+        margin-right: 0;
+        width: 100%;
     }
 }

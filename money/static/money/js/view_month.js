@@ -58,8 +58,8 @@ function filter_payments(category,subcategory,month) {
             $.each(data, function (index, value) {
                 $('#monthTable').find('>tbody:last-child').append(
                     '<tr>' +
-                    '<td>' + value.user + '</td>' +
-                    '<td>' + value.contract + '</td>' +
+                    '<td><a id="modify_button" href="/money/payment/update/'+ value.id + '?next=' + get_current_url() + '">' + value.user + '</a></td>' +
+                    '<td>' + format_null(value.contract) + '</td>' +
                     '<td>' + value.category + '</td>' +
                     '<td>' + value.subcategory + '</td>' +
                     '<td>' + value.date + '</td>' +
@@ -68,7 +68,6 @@ function filter_payments(category,subcategory,month) {
                     '<td class="td-comments">' + value.comments + '</td>' +
                     '<td class="td-btn">\n' +
                     '<div class="div-btn">\n' +
-                    '<a role="button" class="btn btn-warning btn-sm" id="modify_button" href="/money/payment/update/'+ value.id + '?next=' + get_current_url() + '">Modificare</a>\n' +
                     '<button type="button" class="btn btn-danger btn-sm" id="delete_button" payment_id="'+ value.id +'">Stergere</button>\n' +
                     '</div>\n' +
                     '</td>' +
@@ -82,6 +81,14 @@ function filter_payments(category,subcategory,month) {
     });
 }
 
+function format_null(str) {
+    if ( !str ) {
+        return "-";
+    }
+    else {
+        return str;
+    }
+}
 /*
     Get the subcategory
  */
