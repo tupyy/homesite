@@ -1,4 +1,9 @@
-.form-group {
+.content {
+    font-size: 0.8rem;
+}
+
+.form-control-sm {
+    width: 100%;
 }
 
 .main_container {
