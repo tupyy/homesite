@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import datetime
 from django.contrib.auth.models import User
 from django.db import models
 from eventtools.models import BaseEvent, BaseOccurrence
@@ -48,8 +49,8 @@ class AbstractPayment(models.Model):
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
     subcategory = models.ForeignKey(Subcategory, null=True, on_delete=models.SET_NULL)
     date = models.DateField()
-    sum = models.DecimalField(max_digits=5, decimal_places=2)
-    comments = models.CharField(max_length=200, null=True)
+    sum = models.DecimalField(max_digits=8, decimal_places=2)
+    comments = models.CharField(max_length=200, null=True, blank=True)
 
     class Meta:
         abstract = True
@@ -61,25 +62,39 @@ class Payment(AbstractPayment):
     """
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User,null=True,on_delete=models.SET_NULL)
-    nb_tickete = models.IntegerField(default=0,null=True,blank=True)
+    nb_tickete = models.IntegerField(default=0, null=True,blank=True)
 
     class Meta:
         ordering = ['-date']
 
     def __str__(self):
-        return self.user.username
+        if self.contract.name:
+            return self.contract.name
+        return self.category.name + "_" + self.subcategory.name
 
 
-class RecurrentPayment(AbstractPayment,BaseEvent):
+class RecurrentPayment(AbstractPayment, BaseEvent):
     """
     Model for a recurrent payment
     """
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
+    def __str__(self):
+        if self.contract.name:
+            return self.contract.name
+        else:
+            return self.id
+
 
 class PaymentOccurrence(BaseOccurrence):
-    event = models.ForeignKey(RecurrentPayment,on_delete=models.CASCADE)
+    payment = models.ForeignKey(RecurrentPayment, on_delete=models.CASCADE)
+
+    def __str__(self):
+        if self.payment.contract.name:
+            return self.payment.contract.name
+        else:
+            return self.payment.id
 
 
 

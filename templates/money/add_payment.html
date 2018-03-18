@@ -109,10 +109,16 @@
         <script src="{% static "money/js/parse_next_url.js" %}"></script>
         <script>
             $(document).ready(function() {
-                $('#paymentOptions').on('hidden.bs.collapse',function() {
+                $('#contract').on('hidden.bs.collapse',function() {
+                    $('#contractIcon').attr('class','fa fa-chevron-down text-muted');
+                });
+                $('#contract').on('show.bs.collapse',function() {
+                    $('#contractIcon').attr('class','fa fa-chevron-up text-muted')
+                });
+                $('#tickete').on('hidden.bs.collapse',function() {
                     $('#paymentOptionIcon').attr('class','fa fa-chevron-down text-muted');
                 });
-                $('#paymentOptions').on('show.bs.collapse',function() {
+                $('#tickete').on('show.bs.collapse',function() {
                     $('#paymentOptionIcon').attr('class','fa fa-chevron-up text-muted')
                 });
                 $('#comments').on('hidden.bs.collapse',function() {
