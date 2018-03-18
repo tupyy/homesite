@@ -1,7 +1,9 @@
 from django.conf.urls import url,include
+from django.conf.urls.static import static
 from django.contrib import admin
 
-from contract.views import view_contracts
+import settings
+from contract.views import view_contracts, view_contract_pdf
 from money.views import *
 from rest_framework.routers import DefaultRouter
 from django.urls import *
@@ -30,7 +32,8 @@ urlpatterns_account = [
     Url for contracts
 """
 urlpatterns_contracts = [
-    url(r'^contract/contracts', view_contracts, name="view_contracts")
+    url(r'^contract/contracts', view_contracts, name="view_contracts"),
+    path('contract/view_pdf/<int:id>', view_contract_pdf, name="view_contract_pdf")
 ]
 """
 Main URL patterns
@@ -48,6 +51,7 @@ urlpatterns = [
 urlpatterns += router.urls
 urlpatterns += urlpatterns_account
 urlpatterns += urlpatterns_contracts
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 

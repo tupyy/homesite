@@ -42,7 +42,13 @@
                                 {% else %}
                                     {% for contract in contracts %}
                                         <tr>
-                                            <td>{{ contract.contract_type }}</td>
+                                            {% if contract.pdf_contract %}
+                                                <td>
+                                                    <a href="{% url "view_contract_pdf" id=contract.id %}?next={{ request.path }}">{{ contract.contract_type }}</a>
+                                                </td>
+                                            {% else %}
+                                                <td>{{ contract.contract_type }}</td>
+                                            {% endif %}
                                             <td>{{ contract.name }}</td>
                                             <td>{{ contract.company_name }}</td>
                                             <td>{{ contract.contract_id }}</td>
@@ -59,15 +65,6 @@
                                             {% endif %}
                                             <td class="td-comments">{{ contract.comment }}</td>
                                             <td>{{ contract.status }}</td>
-                                            {% if contract.pdf %}
-                                                <td class="td-btn">
-                                                    <div class="div-btn">
-                                                        <a href="{% url "update_payment" id=contract.id %}?next={{ request.path }}" role="button" class="btn btn-warning btn-sm" id="view_pdf">Pdf</a>
-                                                    </div>
-                                                </td>
-                                            {% else %}
-                                                <td></td>
-                                            {% endif %}
                                         </tr>
                                     {% endfor %}
                                 {% endif %}
