@@ -5,6 +5,7 @@ import datetime
 from django.contrib.auth.models import User
 from django.db import models
 from eventtools.models import BaseEvent, BaseOccurrence
+
 from contract.models import Contract
 
 
@@ -13,8 +14,8 @@ class Category(models.Model):
     Model for the categories
     """
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=30,null=False)
-    description = models.CharField(max_length=30,null=True,blank=True)
+    name = models.CharField(max_length=30, null=False)
+    description = models.CharField(max_length=30, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -25,27 +26,26 @@ class Subcategory(models.Model):
     Model for the subcategories
     """
     id = models.AutoField(primary_key=True)
-    category = models.ForeignKey(Category,related_name='subcategories',on_delete=models.CASCADE)
-    name = models.CharField(max_length=30,null=False)
-    description = models.CharField(max_length=30,null=True,blank=True)
+    category = models.ForeignKey(Category, related_name='subcategories', on_delete=models.CASCADE)
+    name = models.CharField(max_length=30, null=False)
+    description = models.CharField(max_length=30, null=True, blank=True)
 
     class Meta:
-        unique_together = ('name','id')
+        unique_together = ('name', 'id')
         ordering = ['id']
 
     def __str__(self):
         return self.name
 
     def __unicode__(self):
-        return "{} {}".format(self.id,self.name)
+        return "{} {}".format(self.id, self.name)
 
 
 class AbstractPayment(models.Model):
-
     """
     Abstract model for all kind of payments
     """
-    contract = models.ForeignKey(Contract,null=True, blank=True, on_delete=models.SET_NULL)
+    contract = models.ForeignKey(Contract, null=True, blank=True, on_delete=models.SET_NULL)
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
     subcategory = models.ForeignKey(Subcategory, null=True, on_delete=models.SET_NULL)
     date = models.DateField()
@@ -56,13 +56,60 @@ class AbstractPayment(models.Model):
         abstract = True
 
 
+class PaymentManager(models.Manager):
+    """
+    manager to compute the totals
+    """
+
+    def compute_categories(self, month):
+        """
+        Compute the totals by categories of the month
+        :param month:
+        :return: dict with totals by categories
+        """
+
+        result = dict()
+        categories = Category.objects.all()
+        for category in categories:
+            result[category.name] = self.compute_category_total(category, month)
+
+        return result
+
+    def compute_total(self, from_date, to_date):
+        payments = Payment.objects.filter(date__gte=from_date, date__lte=to_date)
+        return self.__compute_total(payments)
+
+    def compute_category_total(self, category_name, month):
+        payments = Payment.objects.filter(category__name__exact=category_name, date__month=month)
+
+        return self.__compute_total(payments)
+
+    def compute_category_total2(self, category_name, subcategory_name, month):
+        payments = Payment.objects.filter(category__name__exact=category_name,
+                                          subcategory__name__exact=subcategory_name,
+                                          date__month=month)
+
+        return self.__compute_total(payments)
+
+    @staticmethod
+    def __compute_total(payments):
+        total = 0
+        for payment in payments:
+            total += payment.sum
+
+        return str(total)
+
+
 class Payment(AbstractPayment):
     """
     Model for the a single payment. It can be a payment in a shop
     """
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User,null=True,on_delete=models.SET_NULL)
-    nb_tickete = models.IntegerField(default=0, null=True,blank=True)
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    nb_tickete = models.IntegerField(default=0, null=True, blank=True)
+
+    objects = models.Manager()
+    totals = PaymentManager()
 
     class Meta:
         ordering = ['-date']
@@ -97,5 +144,7 @@ class PaymentOccurrence(BaseOccurrence):
             return self.payment.id
 
 
-
-
+class Total(object):
+    def __index__(self,categorie, total, total_prev1, total_prev2):
+        self.categorie = categorie
+        self.total = total

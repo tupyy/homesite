@@ -1,4 +1,6 @@
 from django.contrib.auth.decorators import login_required
+import json
+from django.http import HttpResponse
 
 from money.models import Category, Subcategory, Payment
 from money.serialize import *
@@ -168,28 +170,16 @@ class PaymentViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
         return queryset
 
 
+class TotalViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated, ]
 
-# class TotalViewSet(viewsets.ViewSet):
-#     permission_classes = [IsAuthenticated, ]
-#
-#     def retrieve(self, request, pk=None):
-#         payments = Payment.objects.filter(date__month=pk)
-#         data = compute_total(payments, Category.objects.all())
-#
-#         # Compute totals for n-1 and n-2 month
-#         try:
-#             month = int(pk)
-#             if month > 2:
-#                 prev_month_limit = 2
-#             else:
-#                 prev_month_limit = 1
-#
-#             for i in range(month - prev_month_limit, month):
-#                 payments_prev = Payment.objects.filter(date__month=i)
-#                 data_previous_month = compute_total(payments_prev, Category.objects.all())
-#                 append_to_total(data, data_previous_month, i)
-#
-#             serializer = TotalSerializer(data, many=True)
-#             return Response(serializer.data)
-#         except ValueError as e:
-#             return Response(e.__str__(), status=status.HTTP_400_BAD_REQUEST)
+    def retrieve(self, request, pk=None):
+        try:
+            month = int(pk)
+            data = Payment.totals.compute_categories(month)
+            return HttpResponse(
+                json.dumps(data),
+                content_type='application/javascript; charset=utf8'
+            )
+        except ValueError:
+            return Response('Bad month number', status=status.HTTP_400_BAD_REQUEST)
