@@ -1,5 +1,15 @@
 .content {
     margin-top: 50px;
+    font-size: 0.9rem;
+}
+
+#myTable {
+    table-layout: fixed;
+    width: 500px;
+}
+
+#myTable td, #myTable th {
+    padding: 0.4rem;
 }
 
 tfoot {
