@@ -1,17 +1,15 @@
-from django.contrib.auth.decorators import login_required
 import json
-from django.http import HttpResponse
 
-from money.models import Category, Subcategory, Payment
-from money.serialize import *
+from django.http import HttpResponse
 from rest_framework import generics
-from rest_framework import viewsets
-from rest_framework.response import Response
-from rest_framework.decorators import detail_route
 from rest_framework import status
+from rest_framework import viewsets
+from rest_framework.decorators import detail_route
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
 from authentication.permissions import IsPostOrIsAuthenticated
-from rest_framework.decorators import permission_classes
+from money.serialize import *
 
 """
     View sets for the serializers. Except CategoryViewSet they are not used for 

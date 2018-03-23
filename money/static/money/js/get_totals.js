@@ -1,38 +1,77 @@
-$(document).ready(function() {
-    $("#form_select_luna").find("option:last").attr("selected","selected");
+$(document).ready(function () {
+    $("#form_select_luna").find("option:last").attr("selected", "selected");
 
     var month_selection = document.getElementById("form_select_luna");
-    month_selection.addEventListener('change',function() {
-       fill_table(month_selection.selectedIndex);
-       set_up_columns(month_selection.selectedIndex);
+    month_selection.addEventListener('change', function () {
+        refresh_table();
     });
 
-    fill_table(month_selection.selectedIndex);
-    set_up_columns(month_selection.selectedIndex);
+    refresh_table();
 
 });
 
-/**
- * Fill up the table
- * @param month selected month
- */
-function fill_table(month) {
 
-    month += 1;
-     var ajx = $.getJSON("api/money/totals/" + month + "/",function(data,status) {
-        if (status === "success") {
-           $('#myTable').find('tbody > tr').remove();
-           $.each(data, function (index, value) {
-               $('#myTable').find('>tbody:last-child').append(
-                   '<tr>' +
-                       '<td class="align-middle">' + value.categorie+ '</td>' +
-                       '<td class="align-middle">' + value.total + '</td>' +
-                       '<td class="align-middle">' + value.total_prev_1 + '</td>' +
-                       '<td class="align-middle">' + value.total_prev_2 + '</td>' +
-                   '</tr>'
-               );
+function refresh_table() {
+    var month_selection = document.getElementById("form_select_luna");
+    var selected_month = month_selection.selectedIndex;
+
+    try {
+        erase_table();
+
+        for (var i = 0; i < 3; i++) {
+            var month_name = get_month_name(selected_month - i);
+            get_data(selected_month - i, function (month, data) {
+                fill_table(get_month_name(month), data);
             });
         }
+    }
+    catch (error) {
+        if (error instanceof RangeError) {
+            return
+        }
+        else {
+            console.log(error);
+        }
+
+    }
+}
+
+/**
+ * Return the month name
+ * @param month integer
+ * @return {string}
+ */
+function get_month_name(month) {
+    var monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+
+    if (typeof(monthNames[month]) !== "undefined") {
+        return monthNames[month];
+    }
+    else {
+        throw new RangeError("Month not found");
+    }
+}
+
+/**
+ * get the total from server
+ * @param month
+ * @return JSON with totals by category
+ */
+function get_data(month, callback) {
+
+    //month index starts at 1
+    month += 1;
+
+    $.ajax({
+        url: "api/money/total/" + month + "/",
+        type: 'GET',
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest.responseText);
+        }
+    }).done(function (data) {
+        return callback(month - 1, JSON.parse(data));
     });
 }
 
@@ -40,36 +79,34 @@ function fill_table(month) {
  * Set up table header
  * @param selected_month is based 0
  */
-function set_up_columns(selected_month) {
+function fill_table(column_name, data) {
 
-    //write in the title the month name
-    var monthNames = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ];
+    $('#myTable th:last').after('<th>' + column_name + '</th>');
+    var rowCount = $('#myTable tr').length;
 
-    $('#myTable').find('thead > tr').remove();
-
-    if (selected_month === 0) {
-        $('#myTable').find('thead').append(
-            '<tr>' +
-            '<th>Categorie</th>' +
-            '<th>' + monthNames[selected_month] +'</th>' +
-            '</tr>'
-        );
-    }
-    else if (selected_month === 1) {
-        $('#myTable').find('thead').append(
-            '<tr><th>Categorie</th>' +
-            '<th>' + monthNames[selected_month] +'</th>' +
-            '<th>' + monthNames[selected_month - 1] +'</th></tr>'
-        );
+    if (rowCount === 1) {
+        $("#myTable > thead > tr").append("<th>Categorie</th>");
+        $('#myTable th:last').after('<th>' + column_name + '</th>');
+        $.each(data, function (index, value) {
+            $("#myTable > tbody").append("<tr><td>" + index + "</td><td>" + value + "</td></tr>")
+    });
     }
     else {
-        $('#myTable').find('thead').append(
-            '<tr><th>Categorie</th>' +
-            '<th>' + monthNames[selected_month] +'</th>' +
-            '<th>' + monthNames[selected_month - 1] +'</th>' +
-            '<th>' + monthNames[selected_month - 2] +'</th></tr>'
-        );
+        $.each(data,function(key,value) {
+            var tableRow = $('#myTable tr').filter(function() {
+               return $(this).text().indexOf(key) >= 0;
+            }).closest('tr');
+            tableRow.append("<td>" + value + "</td>");
+        })
     }
+
+
+}
+
+
+function erase_table() {
+
+    $('#myTable').find('thead > tr > th').remove();
+    $('#myTable').find('tbody > tr').remove();
+
 }
