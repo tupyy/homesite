@@ -9,6 +9,7 @@ from django.http import HttpResponseRedirect, HttpResponseNotAllowed
 from django.shortcuts import render, redirect
 from django.utils.http import is_safe_url
 
+import utils
 from money.forms import PaymentForm
 from money.serialize import *
 
@@ -16,13 +17,16 @@ from money.serialize import *
     Djano classic view
 """
 
-def index(request):
 
+def index(request):
     months_choices = []
     for i in range(1, date.today().month + 1):
         months_choices.append(calendar.month_name[i])
 
-    return render(request, 'index.html', {'luni' : months_choices})
+    next_payments = utils.get_future_payments()
+
+    return render(request, 'index.html', {'luni': months_choices,
+                                          'next_payments': next_payments})
 
 
 def payment(request):
@@ -32,22 +36,22 @@ def payment(request):
             form.save()
 
     form = PaymentForm()
-    return render(request,'money/add_payment.html',{'form':form,
-                                                    'next_url':request.GET["next"],
-                                                    'action' : '/money/payment/?next='+request.GET["next"]})
+    return render(request, 'money/add_payment.html', {'form': form,
+                                                      'next_url': request.GET["next"],
+                                                      'action': '/money/payment/?next=' + request.GET["next"]})
+
 
 @login_required
 def update_payments2(request, id=0):
-
     if request.method == 'GET':
         payment = get_object_or_404(Payment, pk=id)
         form = PaymentForm(instance=payment)
-        return render(request,'money/add_payment.html',{'form':form,
-                                                        'next_url' : request.GET["next"],
-                                                        'action' : '/money/payment/update/' + str(id) + '/'})
+        return render(request, 'money/add_payment.html', {'form': form,
+                                                          'next_url': request.GET["next"],
+                                                          'action': '/money/payment/update/' + str(id) + '/'})
     elif request.method == 'POST':
         payment = get_object_or_404(Payment, pk=id)
-        form = PaymentForm(request.POST,instance=payment)
+        form = PaymentForm(request.POST, instance=payment)
         if form.is_valid():
             form.save()
 
@@ -63,10 +67,8 @@ def update_payments2(request, id=0):
         return render(request, 'money/payment.html', {'form': form})
 
 
-
-
 @login_required
-def delete_payment(request,id=0):
+def delete_payment(request, id=0):
     """
     Delete a payment
     :param request:
@@ -102,28 +104,28 @@ def view_payments(request, month=13):
         selected_month = date.today().month
     else:
         payments = Payment.objects.filter(date__month=month, date__year=date.today().year)
-        selected_month=month
+        selected_month = month
 
     if len(payments) > 0:
-        return render(request,'money/view_month.html',{
-                                                        'categorii':categories,
-                                                       'luni':months_choices,
-                                                        'selected_month':selected_month,
-                                                        'payments' : payments
-                                                      })
+        return render(request, 'money/view_month.html', {
+            'categorii': categories,
+            'luni': months_choices,
+            'selected_month': selected_month,
+            'payments': payments
+        })
     else:
         return render(request, 'money/view_month.html', {
-                                                        'categorii': categories,
-                                                        'luni': months_choices,
-                                                        'selected_month': selected_month,
-                                                        'payments': payments,
-                                                        'error_message' : 'Nothing to show'
-                                                    })
+            'categorii': categories,
+            'luni': months_choices,
+            'selected_month': selected_month,
+            'payments': payments,
+            'error_message': 'Nothing to show'
+        })
 
 
 @login_required
-def update_payment(request,payment_id):
+def update_payment(request, payment_id):
     payment = get_object_or_404(Payment, pk=payment_id)
     form = PaymentForm(instance=payment)
 
-    return render("money/add_payment.html",{'form':form})
+    return render("money/add_payment.html", {'form': form})

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import datetime
 from django.contrib.auth.models import User
 from django.db import models
 from eventtools.models import BaseEvent, BaseOccurrence
+
 
 from contract.models import Contract
 
@@ -145,6 +145,6 @@ class PaymentOccurrence(BaseOccurrence):
 
 
 class Total(object):
-    def __index__(self,categorie, total, total_prev1, total_prev2):
+    def __index__(self, categorie, total, total_prev1, total_prev2):
         self.categorie = categorie
         self.total = total

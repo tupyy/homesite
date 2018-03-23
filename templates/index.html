@@ -32,7 +32,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-main col-md-6 col-lg-5" style="margin-top: 15px;">
+                        <div class="col-main col-md-6 col-lg-5">
                             <h4 class="div-title">Cheltuieli</h4>
                             <table class="table" id="myTable">
                                 <thead>
@@ -43,6 +43,33 @@
                                 <tbody>
                                 </tbody>
 
+                            </table>
+                        </div>
+                         <div class="col-main col-md-6 col-lg-5">
+                            <h4 class="div-title">Plati viitoare</h4>
+                            <table class="table" id="futurePaymentsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Contract</th>
+                                        <th>Companie</th>
+                                        <th>Data</th>
+                                        <th>Suma</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                     {% if next_payments %}
+                                         {% for next_payment,date in next_payments %}
+                                            <tr>
+                                                <td>{{ next_payment.contract.name }}</td>
+                                                <td>{{ next_payment.contract.company_name }}</td>
+                                                <td>{{ date }}</td>
+                                                <td>{{ next_payment.sum }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                     {% else %}
+                                         <tr><td colspan="4" id="no_payment_cell"><h5>Nu exista plati viitoare</h5></td></tr>
+                                    {% endif %}
+                                </tbody>
                             </table>
                         </div>
                     </div>

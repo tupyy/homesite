@@ -1,5 +1,7 @@
 from django.db import models
 
+# from money.models import RecurrentPayment
+
 
 class ContractType(models.Model):
     """
@@ -36,6 +38,20 @@ class Contract(models.Model):
     comment = models.TextField(name="Comentariu", null=True, blank=True)
     pdf_contract = models.FileField(upload_to="contract/", null=True, blank=True)
     status = models.ForeignKey(ContractStatus, on_delete=models.SET_NULL, null=True)
+
+    def save(self, *args, **kwargs):
+        """
+        If the status is cancelled, delete all the payments associated with this contract
+        else proceed as normal
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        if self.status.status == "Cancelled":
+            from money.models import RecurrentPayment
+            RecurrentPayment.objects.filter(contract__id=self.id).delete()
+
+        super(Contract, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name

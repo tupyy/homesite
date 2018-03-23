@@ -15,7 +15,6 @@
 tfoot {
 }
 
-
 .row {
     width: 100%;
 }
@@ -40,6 +39,7 @@ td {
     margin-top: 15px;
     padding-left: 30px;
     border-left: 1px solid #bdbaba;
+    height: 100%;
 }
 
 .col-control {
@@ -48,6 +48,9 @@ td {
     margin-right: 15px;
 }
 
+#no_payment_cell {
+    text-align: center;
+}
 @media screen and (max-width:574.99px) {
     .div-title {
         font-size: 15px;
