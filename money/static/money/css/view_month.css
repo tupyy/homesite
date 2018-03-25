@@ -67,6 +67,7 @@ tr {
 thead {
     background-color: #ececec;
     border-top:0;
+    font-size: 0.85rem;
 }
 
 .form-filter {

@@ -96,7 +96,7 @@ def view_payments(request, month=13):
 
     months_choices = []
     for i in range(1, date.today().month + 1):
-        months_choices.append(my_calendar.month_name[i])
+        months_choices.append(calendar.month_name[i])
 
     # Get payments for the current month
     if month > 12:

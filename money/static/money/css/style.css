@@ -3,24 +3,47 @@
     font-size: 0.9rem;
 }
 
+h4 {
+    margin-bottom: 30px;
+}
+
+/*
+    Future payments section
+*/
+
+#futurePaymentsTable thead {
+    background-color: #aac9e9;
+}
+
+#futurePayments td, #futurePaymentsTable th {
+    padding: 0.4rem;
+    text-align: center;
+}
+
+/*
+    MyTable section
+*/
+
 #myTable {
     table-layout: fixed;
     width: 500px;
 }
 
+#myTable thead {
+    background-color: #aac9e9;
+}
+
+
 #myTable td, #myTable th {
     padding: 0.4rem;
+    text-align: center;
 }
-
-tfoot {
-}
-
 .row {
     width: 100%;
 }
 
 td {
-    text-align: left;
+    text-align: center;
     height: 20px;
 }
 

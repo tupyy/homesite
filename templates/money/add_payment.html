@@ -73,7 +73,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="div-opt" style="height: 100%;">
+                                <div class="div-opt">
                                     <div class="div-collapse" data-toggle="collapse" data-target="#comments">
                                         <div>Comentariu</div>
                                         <div>
@@ -89,10 +89,10 @@
                             </div>
                         </div>
                         <div class="row row-2">
-                            <div class="div-btn">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                                <a href="{{ next_url }}" role="button" class="btn btn-danger" id="close">Close</a>
-                            </div>
+{#                            <div class="div-btn">#}
+                                <button type="submit" class="myButton">Submit</button>
+                                <button type="button" onclick="window.location.href='{{ next_url }}'" class="cancelButton">Close</button>
+{#                            </div>#}
                         </div>
                     </form>
                 </div>

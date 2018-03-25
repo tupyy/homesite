@@ -9,7 +9,6 @@ from money.models import Category, Subcategory, Payment, RecurrentPayment, Payme
 # Register your models here.
 admin.site.register(Category)
 admin.site.register(Subcategory)
-admin.site.register(PaymentOccurrence)
 
 
 @admin.register(Payment)
@@ -22,14 +21,32 @@ class PaymentModelAdmin(admin.ModelAdmin):
 
 @admin.register(RecurrentPayment)
 class RecurrentPaymentAdmin(admin.ModelAdmin):
-    list_display = ('user', 'category', 'subcategory', 'sum', 'date', 'comments')
+    list_display = ('user', 'category', 'subcategory', 'sum', 'date', 'comments', 'get_name')
     exclude = ('id',)
     list_filter = ('category', 'subcategory', 'date')
     search_fields = ['category', 'subcategory', 'date']
 
+    def get_name(self, obj):
+        return obj.contract.name
+
+    get_name.admin_order_field = 'contract'  # Allows column order sorting
+    get_name.short_description = 'Contract Name'  # Renames column head
+
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "contract":
             kwargs["queryset"] = Contract.objects.filter(status__status__exact="Active")
-        return super(RecurrentPaymentAdmin ,self).formfield_for_foreignkey(db_field, request, **kwargs)
+        return super(RecurrentPaymentAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 
+@admin.register(PaymentOccurrence)
+class PaymentOccurrence(admin.ModelAdmin):
+    list_display = ("start", "end", "repeat", "get_name", "get_payment_id")
+
+    def get_payment_id(self,obj):
+        return obj.payment.id
+
+    def get_name(self,obj):
+        return obj.payment.contract.name
+
+    get_name.short_description = 'Contract name'
+    get_payment_id.short_description = 'Payment ID'
