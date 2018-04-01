@@ -2,6 +2,7 @@ import datetime
 from calendar import monthrange
 
 from money.models import PaymentOccurrence, RecurrentPayment
+from operator import itemgetter
 
 
 def format_number(number):
@@ -35,9 +36,8 @@ def get_future_payments():
 
         # get and format the last day of the month
         number_days_month = monthrange(datetime.date.today().year, datetime.date.today().month)[1]
-        #end_date = datetime.datetime.now() + datetime.timedelta(number_days_month - datetime.date.today().day)
+        end_date = datetime.datetime.now() + datetime.timedelta(number_days_month - datetime.date.today().day)
 
-        end_date = datetime.datetime(2018,5,1,0,0)
         occurrence_gen = occ.all_occurrences(from_date=datetime.datetime.now(),
                                              to_date=end_date)
 
@@ -47,4 +47,4 @@ def get_future_payments():
                 payment = RecurrentPayment.objects.get(pk=occurrence[0])
                 return_list.append([payment, occurrence[1]])
 
-    return return_list
+    return sorted(return_list, key=itemgetter(1))
