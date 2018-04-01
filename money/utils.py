@@ -4,7 +4,6 @@ from calendar import monthrange
 from money.models import PaymentOccurrence, RecurrentPayment
 from operator import itemgetter
 
-
 def format_number(number):
     return "{:4.1f}".format(number)
 

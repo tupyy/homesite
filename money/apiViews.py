@@ -157,13 +157,13 @@ class PaymentViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
         if start_date is not None and end_date is not None:
             queryset = Payment.objects.filter(date__gte=start_date, date__lte=end_date)
         elif subcategorie is not None and category is not None and month is not None:
-            if subcategorie == "all":
-                queryset = Payment.objects.filter(category__name__exact=category,
-                                                  date__month=month)
-            else:
+	    if subcategorie == "all":
+		queryset = Payment.objects.filter(category__name__exact=category,
+						    date__month=month)
+	    else:
                 queryset = Payment.objects.filter(subcategory__name__exact=subcategorie,
-                                                  category__name__exact=category,
-                                                  date__month=month)
+                                              category__name__exact=category,
+                                              date__month=month)
         elif month is not None:
             queryset = Payment.objects.filter(date__month=month)
         else:

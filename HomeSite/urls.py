@@ -1,6 +1,6 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
+from django.conf.urls.static import static
 from django.contrib import admin
-
 
 from contract.views import view_contracts, view_contract_pdf
 from money.views import *
@@ -50,3 +50,4 @@ urlpatterns = [
 urlpatterns += router.urls
 urlpatterns += urlpatterns_account
 urlpatterns += urlpatterns_contracts
+

@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect, HttpResponseNotAllowed
 from django.shortcuts import render, redirect
 from django.utils.http import is_safe_url
 
-import utils
+from money import utils
 from money.forms import PaymentForm
 from money.serialize import *
 
