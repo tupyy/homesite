@@ -94,7 +94,11 @@ function format_null(str) {
  */
 function get_subcategory() {
     var subcategorySelect = document.getElementById('select_subcategorie');
-    return subcategorySelect.item(subcategorySelect.selectedIndex).text;
+    var subcateogy_name = subcategorySelect.item(subcategorySelect.selectedIndex).text;
+    if (subcateogy_name === "") {
+        subcateogy_name = "all";
+    }
+    return subcateogy_name;
 }
 
 /*
@@ -178,10 +182,16 @@ $(function() {
                if (status === "success") {
 
                    remove_subcategories(subcategorySelect);
+                   //add the empty subcategory used as "all"
+                   var opt = document.createElement('option');
+                   opt.value = 0;
+                   opt.innerHTML = " ";
+                   subcategorySelect.appendChild(opt);
+
                    for (var j = 0; j < data.subcategories.length; j++) {
                        var dict = data.subcategories[j];
-                       var opt = document.createElement('option');
-                       opt.value = dict.id;
+                       opt = document.createElement('option');
+                       opt.value = dict.id + 1;
                        opt.innerHTML = dict.name;
                        subcategorySelect.appendChild(opt);
                    }
