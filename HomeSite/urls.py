@@ -1,8 +1,7 @@
-from django.conf.urls import url, include
-from django.conf.urls.static import static
+from django.conf.urls import url
 from django.contrib import admin
 
-import settings
+
 from contract.views import view_contracts, view_contract_pdf
 from money.views import *
 from rest_framework.routers import DefaultRouter
@@ -51,4 +50,3 @@ urlpatterns = [
 urlpatterns += router.urls
 urlpatterns += urlpatterns_account
 urlpatterns += urlpatterns_contracts
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
