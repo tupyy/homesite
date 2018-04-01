@@ -50,4 +50,3 @@ urlpatterns = [
 urlpatterns += router.urls
 urlpatterns += urlpatterns_account
 urlpatterns += urlpatterns_contracts
-
