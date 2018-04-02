@@ -21,7 +21,7 @@ function refresh_table() {
         for (var i = 0; i < 3; i++) {
             var month_name = get_month_name(selected_month - i);
             get_data(selected_month - i, function (month, data) {
-                fill_table(get_month_name(month), data);
+                fill_table(get_month_name(month), data, i);
             });
         }
     }
@@ -79,30 +79,61 @@ function get_data(month, callback) {
  * Set up table header
  * @param selected_month is based 0
  */
-function fill_table(column_name, data) {
+function fill_table(column_name, data, column_index) {
 
-    $('#myTable th:last').after('<th>' + column_name + '</th>');
-    var rowCount = $('#myTable tr').length;
+     var rowCount = $('#myTable tr').length;
 
     if (rowCount === 1) {
         $("#myTable > thead > tr").append("<th>Categorie</th>");
         $('#myTable th:last').after('<th>' + column_name + '</th>');
         $.each(data, function (index, value) {
             $("#myTable > tbody").append("<tr><td>" + index + "</td><td>" + value + "</td></tr>")
-    });
+        });
     }
     else {
-        $.each(data,function(key,value) {
-            var tableRow = $('#myTable tr').filter(function() {
-               return $(this).text().indexOf(key) >= 0;
+
+        var current_index = -1;
+        $('#myTable tr:first th').each(function () {
+            if (comp_month(column_name, $(this).text())) {
+               current_index = $(this).index();
+            }
+        });
+
+        if (current_index === -1) {
+            $('#myTable th:last').after('<th>' + column_name + '</th>');
+        }
+        else {
+            $('#myTable').find('th').eq(current_index).after('<th>' + column_name + '</th>');
+        }
+
+        $.each(data, function (key, value) {
+            var tableRow = $('#myTable tr').filter(function () {
+                return $(this).text().indexOf(key) >= 0;
             }).closest('tr');
-            tableRow.append("<td>" + value + "</td>");
+
+            if (current_index === -1) {
+                tableRow.append("<td>" + value + "</td>");
+            }
+            else {
+                tableRow.find('td').eq(current_index).after("<td>" + value + "</td>");
+            }
+
         })
     }
 
 
 }
 
+function comp_month(month1, month2) {
+    var monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+
+    var index1 = monthNames.indexOf(month1);
+    var index2 = monthNames.indexOf(month2);
+
+    return index1 > index2;
+}
 
 function erase_table() {
 
