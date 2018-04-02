@@ -87,8 +87,9 @@ td {
         padding-left: 15px;
     }
 
-    .table {
+     #myTable {
         table-layout: fixed;
+         width: 100%;
     }
 
     thead {
