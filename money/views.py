@@ -129,3 +129,15 @@ def update_payment(request, payment_id):
     form = PaymentForm(instance=payment)
 
     return render("money/add_payment.html", {'form': form})
+
+
+def category_total(request):
+
+    months_choices = []
+    for i in range(1, date.today().month + 1):
+        months_choices.append(calendar.month_name[i])
+
+    return render(request, "money/category_total.html", {
+        'luni': months_choices,
+        'categorii': Category.objects.all(),
+    })

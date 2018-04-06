@@ -1,0 +1,60 @@
+{% load static %}
+{% load widget_tweaks %}
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Casuta | Total {{ categorie }}</title>
+        <link href=" {% static "money/bootstrap/css/bootstrap.css" %}" rel="stylesheet">
+        <link href="{% static "money/css/navbar.css" %}" rel="stylesheet">
+        <link href="{% static "money/css/view_month.css" %}" rel="stylesheet" type="text/css">
+        <link href="{% static "money/css/category_chart.css" %}" rel="stylesheet">
+    </head>
+    <body>
+        {% include "navbar.html" %}
+        <section class="content">
+            <div class="d-flex container-fluid justify-content-center" data-pgc-field="content">
+                <div class="main_container">
+                    <form role="form" class="form-filter">
+                        <div class="form-group">
+                            <label for="select_luna">Luna</label>
+                            <select class="form-control-sm filtru-ctrl filtru-luna" id="select_luna">
+                                {% for luna in luni %}
+                                    {% if forloop.counter == selected_month %}
+                                        <option selected>{{ luna }}</option>
+                                    {% else %}
+                                        <option>{{ luna }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                         </div>
+                        <div class="form-group">
+                            <label for="select_categorie">Categorie</label>
+                            <select class="form-control-sm filtru-ctrl" id="select_categorie">
+                                {% for categorie in categorii %}
+                                    <option>{{ categorie }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </form>
+                    <div id="piechart"></div>
+                </div>
+            </div>
+        </section>
+            <!-- Bootstrap core JavaScript
+    ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="{% static  "money/js/jquery.min.js" %}"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script src="{% static "money/bootstrap/js/bootstrap.min.js" %}"></script>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript" src="{% static "money/js/category_chart.js" %}"></script>
+        <script type="text/javascript" src="{% static "money/js/utils.js" %}"></script>
+
+    </body>
+</html>

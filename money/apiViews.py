@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from rest_framework import generics
 from rest_framework import status
 from rest_framework import viewsets
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -21,7 +21,7 @@ class CategoryViewSet(viewsets.ViewSet):
     """
     View set for categories
     """
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
     serializer_class = CategorySerializer
 
     def create(self, request):
@@ -63,6 +63,36 @@ class CategoryViewSet(viewsets.ViewSet):
             return Response(serializer.data)
         except ValueError:
             return Response("Argument must be an int", status=status.HTTP_400_BAD_REQUEST)
+
+    @action(methods=['get'], detail=True, url_path="total")
+    def get_totals(self, request, pk=None):
+
+        category_name = self.request.query_params.get("category")
+        if category_name is None:
+            return Response("Category is null", status=status.HTTP_400_BAD_REQUEST)
+        else:
+            payments = Payment.objects.filter(date__month=pk, category__name__exact=category_name)
+
+            subcategory_total = dict()
+            subcategories = Subcategory.objects.filter(category__name__exact=category_name)
+
+            total1 = 0
+            for subcategory in subcategories:
+                total = 0
+                for payment in payments:
+                    if payment.subcategory.name == subcategory.name:
+                        total += payment.sum
+                total1 += total
+                subcategory_total[subcategory.name] = str(total)
+
+            # check if we have some total <> 0
+            if total1 == 0:
+                subcategory_total = dict()
+
+            return HttpResponse(
+                json.dumps(subcategory_total),
+                content_type='application/javascript; charset=utf8'
+            )
 
 
 class SubcategoryViewSet(viewsets.ViewSet, generics.ListAPIView):
@@ -110,7 +140,7 @@ class SubcategoryViewSet(viewsets.ViewSet, generics.ListAPIView):
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
-    @detail_route(methods=['get'])
+    @action(methods=['get'], detail=True)
     def category(self, request, pk=None):
         subcategory = Subcategory.objects.filter(category__name__exact=pk)
         return Response(CategorySerializer(subcategory[0].category).data, status=status.HTTP_200_OK)
