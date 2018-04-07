@@ -1,3 +1,4 @@
+import calendar
 import json
 
 from django.http import HttpResponse
@@ -66,6 +67,12 @@ class CategoryViewSet(viewsets.ViewSet):
 
     @action(methods=['get'], detail=True, url_path="total")
     def get_totals(self, request, pk=None):
+        """
+        Get the totals for a given month by subcategories
+        :param request:
+        :param pk: month id
+        :return:
+        """
 
         category_name = self.request.query_params.get("category")
         if category_name is None:
@@ -94,9 +101,47 @@ class CategoryViewSet(viewsets.ViewSet):
                 content_type='application/javascript; charset=utf8'
             )
 
+    @action(methods=['GET'], detail=True, url_path="year_total")
+    def get_year_total(self,request, pk=None):
+        """
+        Compute the totals for each month of the current year for each subcategory
+        :param request:
+        :param pk: category name
+        :return:
+        """
+
+        subcategory_total = dict()
+
+        subcategories = Subcategory.objects.filter(category__name__exact=pk)
+        titles = []
+        for subcategory in subcategories:
+            titles.append(subcategory.name)
+
+        subcategory_total['subcategories'] = titles
+        for month in range(1, datetime.today().month+1):
+            month_total = []
+            for subcategory in subcategories:
+                total = 0
+                payments = Payment.objects.filter(date__year=datetime.today().year,
+                                                  date__month=month,
+                                                  category__name__exact=pk,
+                                                  subcategory__name__exact=subcategory.name)
+                for payment in payments:
+                    total += payment.sum
+
+                month_total.append(str(total))
+            subcategory_total[calendar.month_name[month]] = month_total
+
+
+        # check if we have some total <> 0
+
+        return HttpResponse(
+            json.dumps(subcategory_total),
+            content_type='application/javascript; charset=utf8'
+        )
 
 class SubcategoryViewSet(viewsets.ViewSet, generics.ListAPIView):
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
     serializer_class = SubcategorySerializer
 
     """
