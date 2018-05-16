@@ -38,6 +38,12 @@ h4 {
     padding: 0.4rem;
     text-align: center;
 }
+
+#myTable tbody > tr:last-child {
+    font-weight: bold;
+    background-color: #aac9e9;
+}
+
 .row {
     width: 100%;
 }

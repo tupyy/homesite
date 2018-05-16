@@ -102,7 +102,7 @@ class CategoryViewSet(viewsets.ViewSet):
             )
 
     @action(methods=['GET'], detail=True, url_path="year_total")
-    def get_year_total(self,request, pk=None):
+    def get_year_total(self, request, pk=None):
         """
         Compute the totals for each month of the current year for each subcategory
         :param request:
@@ -118,7 +118,7 @@ class CategoryViewSet(viewsets.ViewSet):
             titles.append(subcategory.name)
 
         subcategory_total['subcategories'] = titles
-        for month in range(1, datetime.today().month+1):
+        for month in range(1, datetime.today().month + 1):
             month_total = []
             for subcategory in subcategories:
                 total = 0
@@ -132,13 +132,13 @@ class CategoryViewSet(viewsets.ViewSet):
                 month_total.append(str(total))
             subcategory_total[calendar.month_name[month]] = month_total
 
-
         # check if we have some total <> 0
 
         return HttpResponse(
             json.dumps(subcategory_total),
             content_type='application/javascript; charset=utf8'
         )
+
 
 class SubcategoryViewSet(viewsets.ViewSet, generics.ListAPIView):
     # permission_classes = (IsAuthenticated,)
@@ -248,15 +248,25 @@ class PaymentViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
 
 
 class TotalViewSet(viewsets.ViewSet):
-    permission_classes = [IsAuthenticated, ]
+    # permission_classes = [IsAuthenticated, ]
 
     def retrieve(self, request, pk=None):
         try:
             month = int(pk)
             data = Payment.totals.compute_categories(month)
+            data["Total"] = Payment.totals.compute_total2(month)
             return HttpResponse(
                 json.dumps(data),
                 content_type='application/javascript; charset=utf8'
             )
         except ValueError:
             return Response('Bad month number', status=status.HTTP_400_BAD_REQUEST)
+
+    @action(methods=['GET'], detail=True, url_path="month_total")
+    def get_month_total(self, request, pk=None):
+        try:
+            month = int(pk)
+            data = Payment.totals.compute_total2(int(month))
+            return HttpResponse(json.dumps({calendar.month_name[int(month)]: data}), content_type='application/javascript; charset=utf8')
+        except ValueError:
+            return Response("Bad month number", status=status.HTTP_400_BAD_REQUEST)

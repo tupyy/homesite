@@ -20,8 +20,12 @@ function refresh_table() {
 
         for (var i = 0; i < 3; i++) {
             var month_name = get_month_name(selected_month - i);
-            get_data(selected_month - i, function (month, data) {
-                fill_table(get_month_name(month), data, i);
+            get_data("api/money/total/" + String(selected_month - i + 1) + "/", selected_month - i, function (month, data) {
+                fill_table(get_month_name(month), data);
+            });
+
+            get_data("/api/money/total/" + + String(selected_month - i + 1) + "/month_total/",selected_month - i, function (month, data) {
+                add_foot_data(data);
             });
         }
     }
@@ -59,19 +63,16 @@ function get_month_name(month) {
  * @param month
  * @return JSON with totals by category
  */
-function get_data(month, callback) {
-
-    //month index starts at 1
-    month += 1;
+function get_data(my_url, month, callback) {
 
     $.ajax({
-        url: "api/money/total/" + month + "/",
+        url: my_url,
         type: 'GET',
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             console.log(XMLHttpRequest.responseText);
         }
     }).done(function (data) {
-        return callback(month - 1, JSON.parse(data));
+        return callback(month, JSON.parse(data));
     });
 }
 
@@ -79,9 +80,9 @@ function get_data(month, callback) {
  * Set up table header
  * @param selected_month is based 0
  */
-function fill_table(column_name, data, column_index) {
+function fill_table(column_name, data) {
 
-     var rowCount = $('#myTable tr').length;
+     var rowCount = $('#myTable tr').length ;
 
     if (rowCount === 1) {
         $("#myTable > thead > tr").append("<th>Categorie</th>");
@@ -120,8 +121,18 @@ function fill_table(column_name, data, column_index) {
 
         })
     }
+}
 
+function add_foot_data(data) {
 
+        var current_index = -1;
+        $('#myTable tr:first th').each(function () {
+            if (comp_month(Object.keys(data)[0], $(this).text())) {
+               current_index = $(this).index();
+            }
+        });
+
+         $('#myTable > tfoot').find('th').eq(current_index).after('<th>' + data[0] + '</th>');
 }
 
 function comp_month(month1, month2) {

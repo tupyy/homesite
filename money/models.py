@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from django.db import models
 from eventtools.models import BaseEvent, BaseOccurrence
 
-
 from contract.models import Contract
 
 
@@ -76,7 +75,22 @@ class PaymentManager(models.Manager):
         return result
 
     def compute_total(self, from_date, to_date):
+        """
+        Compute total between two dates
+        :param from_date:
+        :param to_date:
+        :return:
+        """
         payments = Payment.objects.filter(date__gte=from_date, date__lte=to_date)
+        return self.__compute_total(payments)
+
+    def compute_total2(self, month):
+        """
+        Compute grand total for a month
+        :param month:
+        :return:
+        """
+        payments = Payment.objects.filter(date__month=month)
         return self.__compute_total(payments)
 
     def compute_category_total(self, category_name, month):
