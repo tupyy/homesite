@@ -41,8 +41,11 @@
                             </select>
                         </div>
                     </form>
-                    <div class="chart" id="piechart"></div>
-                    <div class="chart" id="curve_chart"></div>
+                    <div class="chart_container">
+                        <div class="chart" id="piechart"></div>
+                        <div class="chart" id="curve_chart"></div>
+                        <div class="chart" id="total_chart"></div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -55,6 +58,7 @@
         <script src="{% static "money/bootstrap/js/bootstrap.min.js" %}"></script>
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script type="text/javascript" src="{% static "money/js/category_chart.js" %}"></script>
+        <script type="text/javascript" src="{% static "money/js/total_chart.js" %}"></script>
         <script type="text/javascript" src="{% static "money/js/utils.js" %}"></script>
 
     </body>

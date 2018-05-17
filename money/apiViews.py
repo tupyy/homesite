@@ -270,3 +270,21 @@ class TotalViewSet(viewsets.ViewSet):
             return HttpResponse(json.dumps({calendar.month_name[int(month)]: data}), content_type='application/javascript; charset=utf8')
         except ValueError:
             return Response("Bad month number", status=status.HTTP_400_BAD_REQUEST)
+
+    @action(methods=['GET'], detail=True, url_path="months_total")
+    def get_months_total(self, request, pk=None):
+        """
+        Compute the totals for each month prior to pk
+        :param request:
+        :param pk: last month
+        :return:
+        """
+        try:
+            last_month = int(pk)
+            totals = dict()
+            for i in range(1, last_month + 1):
+                data = Payment.totals.compute_total2(i)
+                totals[calendar.month_name[i]] = data
+            return HttpResponse(json.dumps(totals),content_type='application/javascript; charset=utf8')
+        except ValueError:
+            return Response('Bad month number', status=status.HTTP_400_BAD_REQUEST)
