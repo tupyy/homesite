@@ -6,7 +6,7 @@ from money.views import *
 from rest_framework.routers import DefaultRouter
 from django.urls import *
 from money.views import *
-from money.apiViews import CategoryViewSet, PaymentViewSet, SubcategoryViewSet, TotalViewSet
+from money.apiViews import CategoryViewSet, PaymentViewSet, SubcategoryViewSet, TotalViewSet, RevenuesViewSet
 from authentication.views import login_view, logout_view
 
 """
@@ -17,6 +17,7 @@ router.register(r'api/money/category', CategoryViewSet, base_name="money_categor
 router.register(r'api/money/subcategory', SubcategoryViewSet, base_name="money_subcategory")
 router.register(r'api/money/payment', PaymentViewSet, base_name='money_payment')
 router.register(r'api/money/total', TotalViewSet, base_name="payment_total")
+router.register(r'api/money/revenues',RevenuesViewSet, base_name="revenues_total")
 
 """
     Url patterns for account

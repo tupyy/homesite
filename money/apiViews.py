@@ -280,11 +280,24 @@ class TotalViewSet(viewsets.ViewSet):
         :return:
         """
         try:
+
+            total_revenues = Revenue.total.total()
+
             last_month = int(pk)
             totals = dict()
             for i in range(1, last_month + 1):
                 data = Payment.totals.compute_total2(i)
                 totals[calendar.month_name[i]] = data
+            totals['revenues'] = str(Revenue.total.total())
             return HttpResponse(json.dumps(totals),content_type='application/javascript; charset=utf8')
         except ValueError:
             return Response('Bad month number', status=status.HTTP_400_BAD_REQUEST)
+
+
+class RevenuesViewSet(viewsets.ViewSet):
+    # permission_classes = [IsAuthenticated, ]
+
+    @action(methods=['GET'], detail=False, url_path='total_revenues')
+    def get_revenues_total(self, request):
+        data = Revenue.total.total()
+        return HttpResponse(json.dumps({'revenues': str(data)}), content_type='application/javascript; charset=utf8')

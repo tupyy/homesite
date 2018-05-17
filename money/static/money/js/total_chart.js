@@ -56,11 +56,15 @@ function drawMonthTotalChart(data) {
 
     //add data
     for (var key in data) {
-        var row = [key];
-        row.push(parseFloat(data[key]));
-        row.push(parseFloat(4400));
+        if ( key !== 'revenues') {
+            var row = [key];
+            row.push(parseFloat(data[key]));
+            row.push(parseFloat(data['revenues']));
 
-        data_array.push(row);
+            data_array.push(row);
+        }
+
+
     }
 
     var chart_data = google.visualization.arrayToDataTable(data_array);
