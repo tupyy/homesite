@@ -48,6 +48,9 @@ function get_month_totals(month) {
  */
 function drawMonthTotalChart(data) {
 
+    var monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December", "revenues"
+    ];
     var chart_array = [];
     var title_array = ['Month', 'Total', 'Venituri'];
     var data_array = [];
@@ -55,10 +58,10 @@ function drawMonthTotalChart(data) {
     data_array.push(title_array);
 
     //add data
-    for (var key in data) {
-        if ( key !== 'revenues') {
-            var row = [key];
-            row.push(parseFloat(data[key]));
+    for (var month in monthNames) {
+        if ( monthNames[month] !== 'revenues' && monthNames[month] in data) {
+            var row = [monthNames[month]];
+            row.push(parseFloat(data[monthNames[month]]));
             row.push(parseFloat(data['revenues']));
 
             data_array.push(row);

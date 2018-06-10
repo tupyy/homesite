@@ -69,6 +69,9 @@ function drawChart(data, categorie) {
  */
 function drawYearChart(data, category) {
 
+    var monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December", "revenues"
+    ];
     var chart_array = [];
     var title_array = ['Luna'];
 
@@ -81,13 +84,15 @@ function drawYearChart(data, category) {
     chart_array.push(title_array);
 
     //add data
-    for (var key in data) {
-        var month_list = [];
-        month_list.push(key);
-        for (var j = 0; j < data[key].length; j++) {
-            month_list.push(parseFloat(data[key][j]));
+    for (var month in monthNames) {
+        if (monthNames[month] in data) {
+             var month_list = [];
+            month_list.push(monthNames[month]);
+            for (var j = 0; j < data[monthNames[month]].length; j++) {
+                month_list.push(parseFloat(data[monthNames[month]][j]));
+            }
+            chart_array.push(month_list);
         }
-        chart_array.push(month_list);
     }
 
     var chart_data = google.visualization.arrayToDataTable(chart_array);

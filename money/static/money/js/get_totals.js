@@ -31,7 +31,6 @@ function refresh_table() {
     }
     catch (error) {
         if (error instanceof RangeError) {
-            return
         }
         else {
             console.log(error);
@@ -67,6 +66,7 @@ function get_data(my_url, month, callback) {
 
     $.ajax({
         url: my_url,
+        async: false,
         type: 'GET',
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             console.log(XMLHttpRequest.responseText);
@@ -87,9 +87,10 @@ function fill_table(column_name, data) {
     if (rowCount === 1) {
         $("#myTable > thead > tr").append("<th>Categorie</th>");
         $('#myTable th:last').after('<th>' + column_name + '</th>');
-        $.each(data, function (index, value) {
-            $("#myTable > tbody").append("<tr><td>" + index + "</td><td>" + value + "</td></tr>")
-        });
+
+        for (var key in data) {
+            $("#myTable > tbody").append("<tr><td>" + key + "</td><td>" + data[key] + "</td></tr>")
+        }
     }
     else {
 
@@ -132,6 +133,9 @@ function add_foot_data(data) {
             }
         });
 
+        if (current_index === -1) {
+            $('#myTable > tfoot').append('<th>' + data[0] + '</th>');
+        }
          $('#myTable > tfoot').find('th').eq(current_index).after('<th>' + data[0] + '</th>');
 }
 
