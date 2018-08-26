@@ -250,6 +250,23 @@ class PaymentViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
 class TotalViewSet(viewsets.ViewSet):
     # permission_classes = [IsAuthenticated, ]
 
+    def list(self, request):
+        try:
+            data = {}
+            months = request.GET.get("month", "").split(",")
+
+            for m in months:
+                month_index = int(m)
+                if 0 < month_index < 13:
+                    month_data = Payment.totals.compute_categories(month_index)
+                    month_data["Total"] = Payment.totals.compute_total2(month_index)
+                    data[m] = month_data
+
+            return HttpResponse(json.dumps(data), content_type='application/javascript; charset=utf8')
+
+        except ValueError:
+            return Response("Bad request", status=status.HTTP_400_BAD_REQUEST)
+
     def retrieve(self, request, pk=None):
         try:
             month = int(pk)
@@ -267,7 +284,8 @@ class TotalViewSet(viewsets.ViewSet):
         try:
             month = int(pk)
             data = Payment.totals.compute_total2(int(month))
-            return HttpResponse(json.dumps({calendar.month_name[int(month)]: data}), content_type='application/javascript; charset=utf8')
+            return HttpResponse(json.dumps({calendar.month_name[int(month)]: data}),
+                                content_type='application/javascript; charset=utf8')
         except ValueError:
             return Response("Bad month number", status=status.HTTP_400_BAD_REQUEST)
 
@@ -289,7 +307,7 @@ class TotalViewSet(viewsets.ViewSet):
                 data = Payment.totals.compute_total2(i)
                 totals[calendar.month_name[i]] = data
             totals['revenues'] = str(Revenue.total.total())
-            return HttpResponse(json.dumps(totals),content_type='application/javascript; charset=utf8')
+            return HttpResponse(json.dumps(totals), content_type='application/javascript; charset=utf8')
         except ValueError:
             return Response('Bad month number', status=status.HTTP_400_BAD_REQUEST)
 
