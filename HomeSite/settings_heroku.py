@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'contract.apps.ContractConfig',
     'rest_framework',
     'authentication.apps.AuthConfig',
-    'eventtools'
+    'eventtools',
+    'widget_tweaks'
 ]
 
 MIDDLEWARE = [
