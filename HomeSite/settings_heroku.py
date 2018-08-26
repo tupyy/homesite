@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'money.apps.MoneyConfig',
     'contract.apps.ContractConfig',
     'rest_framework',
-    'widget_tweaks',
     'authentication.apps.AuthConfig',
     'eventtools'
 ]

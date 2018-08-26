@@ -4,6 +4,8 @@ django-webpack-loader==0.6.0
 whitenoise==3.3.1
 psycopg2==2.7.4
 djangorestframework==3.8.2
+django-eventtools==0.9.11
+
 
 
 
