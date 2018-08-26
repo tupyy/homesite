@@ -1,0 +1,227 @@
+.main_container {
+    width: 100%;
+    padding-top: 15px;
+    margin: 15px;
+    display: flex;
+}
+
+.form-group {
+    margin-top: 15px;
+    margin-left: 15px;
+    margin-right: 15px;
+    display: block;
+    font-size: 0.8rem;
+}
+
+label {
+    margin-bottom: 5px;
+}
+
+.div-table {
+    display: table-cell;
+    background-color: #ffffff;
+    font-size: 0.8rem;
+}
+
+
+.btn {
+    margin-left: 10px;
+    min-width: 100px;
+}
+
+.div-btn {
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tr > td:last-of-type {
+    table-layout: fixed;
+    width: 150px;
+}
+
+.td-btn {
+    table-layout: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.table {
+    table-layout: fixed;
+    width: 75%;
+    margin:auto;
+}
+
+td {
+    box-sizing: border-box;
+    line-height: 13px;
+    table-layout: fixed;
+    font-size: 15px;
+}
+
+tr {
+    text-align: center;
+}
+
+thead {
+    background-color: #ececec;
+    border-top:0;
+    font-size: 0.85rem;
+}
+
+.form-filter {
+    width: 250px;
+    min-width: 250px;
+    box-shadow: 4px 4px 14px #a19d9d;
+    margin-right: 15px;
+    height: 500px;
+    font-size: 15px;
+}
+
+.form-control-sm {
+    width: 100%;
+    border-color:#c1c1c1;
+}
+/* Zebra striping 
+tr:nth-of-type(odd) {
+    background: #eee;
+}*/
+/* 
+Max width before this PARTICULAR table gets nasty
+This query will take effect for any screen smaller than 760px
+and also iPads specifically.
+*/
+@media only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+    /* Force table to not be like tables anymore */
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+    }
+
+    /* Hide table headers (but not display: none;, for accessibility) */
+    thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    tr {
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+    }
+
+    td {
+        /* Behave  like a "row" */
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        overflow: hidden;
+        padding-left: 48%;
+        text-align: right;
+    }
+
+    .td-btn {
+        width: 100%;
+    }
+
+    td:before {
+        /* Now like a table header */
+        position: absolute;
+
+        /* Top/left values mimic padding */
+        top: 13px;
+        left: 5px;
+
+        /* width: 35% */
+        padding-right: 10px;
+        white-space: nowrap;
+    }
+
+    /*
+	Label the data
+	*/
+    td:nth-of-type(1):before {
+        content: "Nume";
+    }
+
+    td:nth-of-type(2):before {
+        content: "Contract";
+    }
+
+    td:nth-of-type(3):before {
+        content: "Categorie";
+    }
+
+    td:nth-of-type(4):before {
+        content: "Subcategorie";
+    }
+
+    td:nth-of-type(5):before {
+        content: "Data";
+    }
+
+    td:nth-of-type(6):before {
+        content: "Suma";
+    }
+
+    td:nth-of-type(7):before {
+        content: "Tichete";
+    }
+
+    td:nth-of-type(8):before {
+        content: "";
+    }
+
+    td:nth-of-type(9):before {
+        content: "";
+    }
+}
+
+@media screen and (max-width:766.99px) {
+    .form-group {
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+    }
+}
+
+@media screen and (max-width:574.99px) {
+    .main_container {
+        display: block;
+        width: 100%;
+    }
+
+    .filtru {
+        height: 250px;
+        display: block;
+        margin-left: 15px;
+        margin-right: 15px;
+        box-shadow: 0 0;
+        margin-bottom: 15px;
+    }
+
+    .div-table {
+        display: block;
+    }
+
+    form {
+        display: block;
+    }
+}
+
+@media screen and (max-width:574.99px) {
+    .form-filter {
+        max-height: 250px;
+        box-shadow: 0 0;
+        margin-right: 0;
+        width: 100%;
+        height: auto;
+    }
+}
