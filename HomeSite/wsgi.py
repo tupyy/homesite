@@ -16,6 +16,6 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../"
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "HomeSite.settings_heroku")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "HomeSite.settings")
 
 application = get_wsgi_application()
