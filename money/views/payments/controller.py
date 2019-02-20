@@ -9,24 +9,8 @@ from django.http import HttpResponseRedirect, HttpResponseNotAllowed
 from django.shortcuts import render, redirect
 from django.utils.http import is_safe_url
 
-from money import utils
 from money.forms import PaymentForm
 from money.serialize import *
-
-"""
-    Djano classic view
-"""
-
-
-def index(request):
-    months_choices = []
-    for i in range(1, date.today().month + 1):
-        months_choices.append(calendar.month_name[i])
-
-    next_payments = utils.get_future_payments()
-
-    return render(request, 'index.html', {'luni': months_choices,
-                                          'next_payments': next_payments})
 
 
 def payment(request):
@@ -129,15 +113,3 @@ def update_payment(request, payment_id):
     form = PaymentForm(instance=payment)
 
     return render("money/add_payment.html", {'form': form})
-
-
-def category_total(request):
-
-    months_choices = []
-    for i in range(1, date.today().month + 1):
-        months_choices.append(calendar.month_name[i])
-
-    return render(request, "money/category_total.html", {
-        'luni': months_choices,
-        'categorii': Category.objects.all(),
-    })
