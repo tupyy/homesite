@@ -5,7 +5,7 @@ from eventtools.models import BaseEvent, BaseOccurrence
 
 from contract.models import Contract
 from money.models.category import Category, Subcategory
-from money.models.payment_managers import PaymentManager, PaymentTotalManager
+from money.models.payment_managers import PaymentTotalManager
 
 
 class Payment(Model):
@@ -52,8 +52,6 @@ class RecurrentPayment(BaseEvent):
     sum = models.DecimalField(max_digits=8, decimal_places=2)
     comments = models.CharField(max_length=200, null=True, blank=True)
     contract = models.ForeignKey(Contract, null=True, blank=True, on_delete=models.SET_NULL, default='')
-
-    objects = PaymentManager()
 
     def __str__(self):
         if self.contract.name:
