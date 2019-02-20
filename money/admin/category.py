@@ -11,4 +11,12 @@ admin.site.register(Category)
 
 @admin.register(Subcategory)
 class SubcategoryAdminModel(admin.ModelAdmin):
-    pass
+    list_display = ("name", 'get_category')
+    search_fields = ['get_category']
+    list_filter = ("category",)
+
+    def get_category(self, obj):
+        return obj.category.name
+
+    get_category.short_description = "Category"
+    get_category.admin_order_field = "category"
