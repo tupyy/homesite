@@ -1,12 +1,11 @@
-from django.db import models
 from django.contrib.auth.models import User
-from django.db.models import Manager
+from django.db import models
 from django.db.models import Model
 from eventtools.models import BaseEvent, BaseOccurrence
 
 from contract.models import Contract
 from money.models.category import Category, Subcategory
-from money.models.payment_managers import PaymentManager
+from money.models.payment_managers import PaymentManager, PaymentTotalManager
 
 
 class Payment(Model):
@@ -17,7 +16,7 @@ class Payment(Model):
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
     subcategory = models.ForeignKey(Subcategory, null=True, on_delete=models.SET_NULL)
-    date = models.DateField()
+    date = models.DateField(auto_now_add=True)
     sum = models.DecimalField(max_digits=8, decimal_places=2)
     comments = models.CharField(max_length=200, null=True, blank=True)
 
@@ -33,11 +32,20 @@ class Payment(Model):
         return self.category.name + "_" + self.subcategory.name
 
 
-class RecurrentPayment(Payment, BaseEvent):
+class RecurrentPayment(BaseEvent):
     """
     Model for a recurrent payment
     """
-    contract = models.ForeignKey(Contract, null=True, blank=True, on_delete=models.SET_NULL)
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
+    subcategory = models.ForeignKey(Subcategory, null=True, on_delete=models.SET_NULL)
+    date = models.DateField(auto_now_add=True)
+    sum = models.DecimalField(max_digits=8, decimal_places=2)
+    comments = models.CharField(max_length=200, null=True, blank=True)
+    contract = models.ForeignKey(Contract, null=True, blank=True, on_delete=models.SET_NULL, default='')
+
+    objects = PaymentManager()
 
     def __str__(self):
         if self.contract.name:

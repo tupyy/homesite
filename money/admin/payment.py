@@ -9,7 +9,7 @@ from money.models import Payment, RecurrentPayment, PaymentOccurrence
 
 @admin.register(Payment)
 class PaymentModelAdmin(admin.ModelAdmin):
-    list_display = ('user', 'category', 'subcategory', 'sum', 'nb_tickete', 'date', 'comments')
+    list_display = ('user', 'category', 'subcategory', 'sum', 'date', 'comments')
     exclude = ('id',)
     list_filter = ('category', 'subcategory', 'date')
     search_fields = ['category', 'subcategory', 'date']
