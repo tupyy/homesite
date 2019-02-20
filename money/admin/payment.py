@@ -4,12 +4,7 @@ from __future__ import unicode_literals
 from django.contrib import admin
 
 from contract.models import Contract
-from money.models import Category, Subcategory, Payment, RecurrentPayment, PaymentOccurrence, Revenue
-
-# Register your models here.
-admin.site.register(Category)
-admin.site.register(Subcategory)
-admin.site.register(Revenue)
+from money.models import Payment, RecurrentPayment, PaymentOccurrence
 
 
 @admin.register(Payment)
