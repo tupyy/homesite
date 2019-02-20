@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
-import HomeSite.settings
+import server.settings
 from contract.models import Contract
 
 from money.models import Category, Subcategory, Payment
@@ -19,7 +19,7 @@ class PaymentForm(forms.ModelForm):
     contract = forms.ModelChoiceField(queryset=Contract.objects.filter(status__status__exact="Active"), required=False)
     subcategory = forms.ModelChoiceField(queryset=Subcategory.objects.all(), empty_label=None)
     date = forms.DateField(initial=datetime.date.today().strftime('%d/%m/%Y'),
-                           input_formats=HomeSite.settings.DATE_INPUT_FORMATS)
+                           input_formats=server.settings.DATE_INPUT_FORMATS)
 
     comments = forms.CharField(
         max_length=120,

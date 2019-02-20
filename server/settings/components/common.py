@@ -57,7 +57,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'HomeSite.wsgi.application'
+WSGI_APPLICATION = 'server.wsgi.application'
 
 DATE_INPUT_FORMATS = ['%d/%m/%Y', '%m/%d/%Y']
 
