@@ -1,16 +1,17 @@
 import calendar
 import json
+from datetime import datetime
 
 from django.http import HttpResponse
-from rest_framework import generics
+from django.shortcuts import get_object_or_404
+from rest_framework import generics, serializers
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from authentication.permissions import IsPostOrIsAuthenticated
-from money.serialize import *
+from money.models import Category, Payment, Subcategory
+from money.serializer import CategorySerializer, SubcategorySerializer
 
 """
     View sets for the serializers. Except CategoryViewSet they are not used for 
@@ -189,133 +190,3 @@ class SubcategoryViewSet(viewsets.ViewSet, generics.ListAPIView):
     def category(self, request, pk=None):
         subcategory = Subcategory.objects.filter(category__name__exact=pk)
         return Response(CategorySerializer(subcategory[0].category).data, status=status.HTTP_200_OK)
-
-
-class PaymentViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
-    serializer_class = PaymentSerialier
-
-    permission_classes = (IsPostOrIsAuthenticated,)
-
-    def create(self, request):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def destroy(self, request, pk=None):
-        payment = get_object_or_404(Payment, pk=pk)
-        payment.delete()
-        return Response(self.serializer_class(payment).data, status=status.HTTP_200_OK)
-
-    def update(self, request, pk=None):
-        payment = get_object_or_404(Payment.objects.all(), pk=pk)
-
-        try:
-            serializer = self.serializer_class(instance=payment, data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except serializers.ValidationError as ex:
-            return Response(ex.detail, status=status.HTTP_400_BAD_REQUEST)
-
-    def get_queryset(self):
-
-        start_date = self.request.query_params.get('start_date', None)
-        end_date = self.request.query_params.get('end_date', None)
-        subcategorie = self.request.query_params.get('subcategory', None)
-        category = self.request.query_params.get('category', None)
-        month = self.request.query_params.get('month', None)
-
-        if start_date is not None and end_date is not None:
-            queryset = Payment.objects.filter(date__gte=start_date, date__lte=end_date)
-        elif subcategorie is not None and category is not None and month is not None:
-            if subcategorie == "all":
-                queryset = Payment.objects.filter(category__name__exact=category,
-                                                  date__month=month)
-            else:
-                queryset = Payment.objects.filter(subcategory__name__exact=subcategorie,
-                                                  category__name__exact=category,
-                                                  date__month=month)
-        elif month is not None:
-            queryset = Payment.objects.filter(date__month=month)
-        else:
-            return []
-
-        return queryset
-
-
-class TotalViewSet(viewsets.ViewSet):
-    # permission_classes = [IsAuthenticated, ]
-
-    def list(self, request):
-        try:
-            data = {}
-            months = request.GET.get("month", "").split(",")
-
-            for m in months:
-                month_index = int(m)
-                if 0 < month_index < 13:
-                    month_data = Payment.totals.compute_categories(month_index)
-                    month_data["Total"] = Payment.totals.compute_total2(month_index)
-                    data[m] = month_data
-
-            return HttpResponse(json.dumps(data), content_type='application/javascript; charset=utf8')
-
-        except ValueError:
-            return Response("Bad request", status=status.HTTP_400_BAD_REQUEST)
-
-    def retrieve(self, request, pk=None):
-        try:
-            month = int(pk)
-            data = Payment.totals.compute_categories(month)
-            data["Total"] = Payment.totals.compute_total2(month)
-            return HttpResponse(
-                json.dumps(data),
-                content_type='application/javascript; charset=utf8'
-            )
-        except ValueError:
-            return Response('Bad month number', status=status.HTTP_400_BAD_REQUEST)
-
-    @action(methods=['GET'], detail=True, url_path="month_total")
-    def get_month_total(self, request, pk=None):
-        try:
-            month = int(pk)
-            data = Payment.totals.compute_total2(int(month))
-            return HttpResponse(json.dumps({calendar.month_name[int(month)]: data}),
-                                content_type='application/javascript; charset=utf8')
-        except ValueError:
-            return Response("Bad month number", status=status.HTTP_400_BAD_REQUEST)
-
-    @action(methods=['GET'], detail=True, url_path="months_total")
-    def get_months_total(self, request, pk=None):
-        """
-        Compute the totals for each month prior to pk
-        :param request:
-        :param pk: last month
-        :return:
-        """
-        try:
-
-            total_revenues = Revenue.total.total()
-
-            last_month = int(pk)
-            totals = dict()
-            for i in range(1, last_month + 1):
-                data = Payment.totals.compute_total2(i)
-                totals[calendar.month_name[i]] = data
-            totals['revenues'] = str(Revenue.total.total())
-            return HttpResponse(json.dumps(totals), content_type='application/javascript; charset=utf8')
-        except ValueError:
-            return Response('Bad month number', status=status.HTTP_400_BAD_REQUEST)
-
-
-class RevenuesViewSet(viewsets.ViewSet):
-    # permission_classes = [IsAuthenticated, ]
-
-    @action(methods=['GET'], detail=False, url_path='total_revenues')
-    def get_revenues_total(self, request):
-        data = Revenue.total.total()
-        return HttpResponse(json.dumps({'revenues': str(data)}), content_type='application/javascript; charset=utf8')

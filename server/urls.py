@@ -2,11 +2,10 @@ from django.conf.urls import url
 from django.contrib import admin
 
 from contract.views import view_contracts, view_contract_pdf
-from money.views import *
 from rest_framework.routers import DefaultRouter
 from django.urls import *
 from money.views import *
-from money.apiViews import CategoryViewSet, PaymentViewSet, SubcategoryViewSet, TotalViewSet, RevenuesViewSet
+from money.views.api import CategoryViewSet, PaymentViewSet, SubcategoryViewSet, TotalViewSet, RevenuesViewSet
 from authentication.views import login_view, logout_view
 
 """
