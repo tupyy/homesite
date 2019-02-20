@@ -20,13 +20,21 @@ class Payment(Model):
     sum = models.DecimalField(max_digits=8, decimal_places=2)
     comments = models.CharField(max_length=200, null=True, blank=True)
 
-    objects = PaymentManager()
+    objects = models.Manager()
     totals = PaymentTotalManager()
 
     class Meta:
         ordering = ['-date']
         verbose_name = "payment"
         verbose_name_plural = "payments"
+
+    def values(self):
+        return dict(user=self.user.username,
+                    category=self.category.name,
+                    subcategory=self.subcategory.name,
+                    date=self.date,
+                    sum=self.sum,
+                    comments=self.comments)
 
     def __str__(self):
         return self.category.name + "_" + self.subcategory.name

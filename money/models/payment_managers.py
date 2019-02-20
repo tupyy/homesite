@@ -3,16 +3,6 @@ from django.db.models import Manager
 from money.models import Category
 
 
-class PaymentManager(Manager):
-    def qet_queryset(self):
-        return super().get_queryset().values('user__username',
-                                             'category__name',
-                                             'subcategory__name',
-                                             'date',
-                                             'sum',
-                                             'comments')
-
-
 class PaymentTotalManager(Manager):
     """
     manager to compute the totals
