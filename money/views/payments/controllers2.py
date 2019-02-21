@@ -1,7 +1,12 @@
 import calendar
 from datetime import date
 
-from django.views.generic import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import redirect
+from django.utils.http import is_safe_url
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import ListView, DetailView
 
 from money.models import Payment, Category
 
@@ -58,3 +63,22 @@ class PaymentView(MonthViewMixin, CategoryViewMixin, ListView):
         context['table_title'] = 'Cheltuieli'
         context['columns_labels'] = ['Nume', 'Categorie', 'Subcategorie', 'Data', 'Suma', 'Comentariu']
         return context
+
+
+class DeletePaymentView(LoginRequiredMixin, DetailView):
+    login_url = '/accounts/login/'
+    redirect_field_name = 'redirect_to'
+    model = Payment
+
+    def delete(self, *args, **kwargs):
+        redirect_to = self.request.GET.get('next', "/")
+
+        payment_id = self.kwargs.get('payment_id')
+        if payment_id:
+            payment = Payment.objects.get(id=payment_id)
+            payment.delete()
+            return JsonResponse({'next': redirect_to,
+                                 'status_code': 200})
+        else:
+            return JsonResponse({'next': redirect_to,
+                                 'status_code': 404})

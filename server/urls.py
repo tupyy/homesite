@@ -7,7 +7,7 @@ from django.urls import *
 from money.views import *
 from money.views.api import CategoryViewSet, PaymentViewSet, SubcategoryViewSet, TotalViewSet, RevenuesViewSet
 from authentication.views import login_view, logout_view
-from money.views.payments.controllers2 import PaymentView
+from money.views.payments.controllers2 import PaymentView, DeletePaymentView
 
 """
     Restful urls
@@ -41,7 +41,7 @@ Main URL patterns
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^money/payment/$', payment, name="money.payment.add"),
-    path('money/payment/delete/<int:id>/', delete_payment, name="money.payment.delete"),
+    path('money/payment/delete/<int:payment_id>/', DeletePaymentView.as_view(), name="money.payment.delete"),
     path('money/payment/view/<int:month>/', PaymentView.as_view(), name="money.payment.view"),
     path('money/payment/update/<int:id>/', update_payments2, name="money.payment.update"),
     path('money/payment/category/total/', category_total, name="category_total"),
