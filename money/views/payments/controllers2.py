@@ -34,12 +34,12 @@ class MonthViewMixin(object):
         return months_choices
 
     def get_selected_month(self):
-        try:
-            _selected_month_id = self.kwargs.get('month', None)
-            if _selected_month_id:
+        _selected_month_id = self.kwargs.get('month', None)
+        if _selected_month_id:
+            try:
                 return calendar.month_name[_selected_month_id]
-        except IndexError:
-            raise Http404
+            except IndexError:
+                raise Http404
 
 
 class CategoryViewMixin(object):
