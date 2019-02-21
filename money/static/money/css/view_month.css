@@ -17,58 +17,9 @@ label {
     margin-bottom: 5px;
 }
 
-.div-table {
-    display: table-cell;
-    background-color: #ffffff;
-    font-size: 0.8rem;
-}
-
-
 .btn {
     margin-left: 10px;
     min-width: 100px;
-}
-
-.div-btn {
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.tr > td:last-of-type {
-    table-layout: fixed;
-    width: 150px;
-}
-
-.td-btn {
-    table-layout: fixed;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.table {
-    table-layout: fixed;
-    width: 75%;
-    margin:auto;
-}
-
-td {
-    box-sizing: border-box;
-    line-height: 13px;
-    table-layout: fixed;
-    font-size: 15px;
-}
-
-tr {
-    text-align: center;
-}
-
-thead {
-    background-color: #ececec;
-    border-top:0;
-    font-size: 0.85rem;
 }
 
 .form-filter {
@@ -82,9 +33,18 @@ thead {
 
 .form-control-sm {
     width: 100%;
-    border-color:#c1c1c1;
+    border-color: #c1c1c1;
 }
-/* Zebra striping 
+
+.table-container {
+    display: block;
+    width: 100%;
+}
+
+.pagination-container {
+    margin: 20px 20px auto 20px;
+}
+/* Zebra striping
 tr:nth-of-type(odd) {
     background: #eee;
 }*/
@@ -94,7 +54,7 @@ This query will take effect for any screen smaller than 760px
 and also iPads specifically.
 */
 @media only screen and (max-width: 760px),
-(min-device-width: 768px) and (max-device-width: 1024px)  {
+(min-device-width: 768px) and (max-device-width: 1024px) {
     /* Force table to not be like tables anymore */
     table,
     thead,
@@ -184,7 +144,7 @@ and also iPads specifically.
     }
 }
 
-@media screen and (max-width:766.99px) {
+@media screen and (max-width: 766.99px) {
     .form-group {
         margin-left: 0;
         margin-right: 0;
@@ -192,7 +152,7 @@ and also iPads specifically.
     }
 }
 
-@media screen and (max-width:574.99px) {
+@media screen and (max-width: 574.99px) {
     .main_container {
         display: block;
         width: 100%;
@@ -216,7 +176,7 @@ and also iPads specifically.
     }
 }
 
-@media screen and (max-width:574.99px) {
+@media screen and (max-width: 574.99px) {
     .form-filter {
         max-height: 250px;
         box-shadow: 0 0;
