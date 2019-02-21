@@ -2,7 +2,7 @@ import calendar
 from datetime import date
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.views.generic import ListView, DetailView
 
 from money.models import Payment, Category
@@ -34,9 +34,12 @@ class MonthViewMixin(object):
         return months_choices
 
     def get_selected_month(self):
-        _selected_month_id = self.kwargs.get('month', None)
-        if _selected_month_id:
-            return calendar.month_name[_selected_month_id]
+        try:
+            _selected_month_id = self.kwargs.get('month', None)
+            if _selected_month_id:
+                return calendar.month_name[_selected_month_id]
+        except IndexError:
+            raise Http404
 
 
 class CategoryViewMixin(object):
