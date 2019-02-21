@@ -67,7 +67,6 @@ class CategoryViewMixin(object):
         return qs
 
 
-
 class PaymentView(MonthViewMixin, CategoryViewMixin, LoginRequiredMixin, ListView):
     login_url = '/accounts/login/'
     redirect_field_name = 'redirect_to'
