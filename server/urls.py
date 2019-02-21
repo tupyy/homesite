@@ -40,10 +40,10 @@ Main URL patterns
 """
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^money/payment/$', payment, name="payment"),
-    path('money/payment/delete/<int:id>/', delete_payment, name="delete_payment"),
-    path('money/payment/view/<int:month>/', PaymentView.as_view(), name="view_month_payments"),
-    path('money/payment/update/<int:id>/', update_payments2, name="update_payment"),
+    url(r'^money/payment/$', payment, name="money.payment.add"),
+    path('money/payment/delete/<int:id>/', delete_payment, name="money.payment.delete"),
+    path('money/payment/view/<int:month>/', PaymentView.as_view(), name="money.payment.view"),
+    path('money/payment/update/<int:id>/', update_payments2, name="money.payment.update"),
     path('money/payment/category/total/', category_total, name="category_total"),
     url(r'^$', index, name="index")
 ]
