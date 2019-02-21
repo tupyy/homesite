@@ -22,7 +22,7 @@
         <div class="main_container">
             <div class="table-container">
                 {% include 'money/payment/payment_table.html' %}
-                <div class="pagination-container">
+                <div class="pagination-container {% if not payments %} no-data {% endif %}">
                     {% include 'money/payment/pagination.html' %}
                 </div>
             </div>

@@ -121,6 +121,10 @@
         display: flex;
         justify-content: center;
     }
+
+    .no-data {
+        display: none !important;
+    }
     /* Force table to not be like tables anymore */
     table,
     thead,
