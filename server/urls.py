@@ -7,6 +7,7 @@ from django.urls import *
 from money.views import *
 from money.views.api import CategoryViewSet, PaymentViewSet, SubcategoryViewSet, TotalViewSet, RevenuesViewSet
 from authentication.views import login_view, logout_view
+from money.views.payments.controllers2 import PaymentView
 
 """
     Restful urls
@@ -16,7 +17,7 @@ router.register(r'api/money/category', CategoryViewSet, base_name="money_categor
 router.register(r'api/money/subcategory', SubcategoryViewSet, base_name="money_subcategory")
 router.register(r'api/money/payment', PaymentViewSet, base_name='money_payment')
 router.register(r'api/money/total', TotalViewSet, base_name="payment_total")
-router.register(r'api/money/revenues',RevenuesViewSet, base_name="revenues_total")
+router.register(r'api/money/revenues', RevenuesViewSet, base_name="revenues_total")
 
 """
     Url patterns for account
@@ -41,7 +42,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^money/payment/$', payment, name="payment"),
     path('money/payment/delete/<int:id>/', delete_payment, name="delete_payment"),
-    path('money/payment/view/<int:month>/', view_payments, name="view_month_payments"),
+    path('money/payment/view/<int:month>/', PaymentView.as_view(), name="view_month_payments"),
     path('money/payment/update/<int:id>/', update_payments2, name="update_payment"),
     path('money/payment/category/total/', category_total, name="category_total"),
     url(r'^$', index, name="index")
