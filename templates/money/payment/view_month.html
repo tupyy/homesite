@@ -20,29 +20,6 @@
 <section class="content">
     <div class="d-flex container-fluid justify-content-center" data-pgc-field="content">
         <div class="main_container">
-            <form role="form" class="form-filter">
-                <div class="form-group">
-                    <label for="select_luna">Luna</label>
-                    <select class="form-control-sm filtru-ctrl filtru-luna" id="select_luna">
-                        {% for luna in luni %}
-                            {% if forloop.counter == selected_month %}
-                                <option selected>{{ luna }}</option>
-                            {% else %}
-                                <option>{{ luna }}</option>
-                            {% endif %}
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="select_categorie">Categorie</label>
-                    <select class="form-control-sm filtru-ctrl" id="select_categorie">
-                        <option></option>
-                        {% for categorie in categorii %}
-                            <option>{{ categorie }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </form>
             <div class="table-container">
                 {% include 'money/payment/payment_table.html' %}
                 <div class="pagination-container">

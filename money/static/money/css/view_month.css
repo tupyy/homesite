@@ -5,35 +5,13 @@
     display: flex;
 }
 
-.form-group {
-    margin-top: 15px;
-    margin-left: 15px;
-    margin-right: 15px;
-    display: block;
-    font-size: 0.8rem;
-}
-
-label {
-    margin-bottom: 5px;
+.panel-title {
+    display: flex;
 }
 
 .btn {
     margin-left: 10px;
     min-width: 100px;
-}
-
-.form-filter {
-    width: 250px;
-    min-width: 250px;
-    box-shadow: 4px 4px 14px #a19d9d;
-    margin-right: 15px;
-    height: 500px;
-    font-size: 15px;
-}
-
-.form-control-sm {
-    width: 100%;
-    border-color: #c1c1c1;
 }
 
 .table-container {
@@ -58,19 +36,13 @@ label {
 .pagination li.page-item .page-link {
     color: #2e507a;
 }
-
-.action-buttons-container {
-    display: flex;
+.action-container {
+    margin: auto;
 }
-/* Zebra striping
-tr:nth-of-type(odd) {
-    background: #eee;
-}*/
-/* 
-Max width before this PARTICULAR table gets nasty
-This query will take effect for any screen smaller than 760px
-and also iPads specifically.
-*/
+
+.action-container-create {
+    margin-right: 20px;
+}
 
 @media screen and (max-width: 766.99px) {
     .form-group {
@@ -93,6 +65,15 @@ and also iPads specifically.
         width: 100%;
     }
 
+    .form-filter {
+        display: block;
+        max-height: 250px;
+        box-shadow: 0 0;
+        margin-right: 0;
+        width: 100%;
+        height: auto;
+    }
+
     .filtru {
         height: 250px;
         display: block;
@@ -108,15 +89,5 @@ and also iPads specifically.
 
     form {
         display: block;
-    }
-}
-
-@media screen and (max-width: 574.99px) {
-    .form-filter {
-        max-height: 250px;
-        box-shadow: 0 0;
-        margin-right: 0;
-        width: 100%;
-        height: auto;
     }
 }

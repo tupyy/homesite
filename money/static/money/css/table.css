@@ -1,23 +1,23 @@
 .row .btn-create {
-        background-color: #2E507A;
-    }
+    background-color: #2E507A;
+}
 
-    .row .btn-create:hover {
-        background-color: #03465C;
-    }
+.row .btn-create:hover {
+    background-color: #03465C;
+}
 
-    .row-actions .btn-create {
-        background-color: #2E507A;
-    }
+.row-actions .btn-create {
+    background-color: #2E507A;
+}
 
-    .table .btn-primary {
-        margin-right: 5px;
-        background-color: #2E507A;
-    }
+.table .btn-primary {
+    margin-right: 5px;
+    background-color: #2E507A;
+}
 
-    .table .btn-primary:hover {
-        background-color: #03465C;
-    }
+.table .btn-primary:hover {
+    background-color: #03465C;
+}
 
 @media only screen and (min-width: 760px) {
     .payments-table {
@@ -117,6 +117,10 @@
 
 @media only screen and (max-width: 760px),
 (min-device-width: 768px) and (max-device-width: 1024px) {
+    .action-container-create {
+        display: flex;
+        justify-content: center;
+    }
     /* Force table to not be like tables anymore */
     table,
     thead,
