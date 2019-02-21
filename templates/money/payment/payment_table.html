@@ -46,12 +46,12 @@
                                     <div class="row-actions">
 {#                                        check if action is allowed for payment.id#}
                                         <a class="btn btn-primary"
-                                           href="{{ payment.url_update }}">
+                                           href="{% url 'update_payment' id=payment.id %}">
                                             <img class="img-action-product"
                                                  src="{% static "money/image/pencil.png" %}">
                                         </a>
                                         <a class="btn btn-danger btn-delete"
-                                           href="{{ payment.url_delete }}">
+                                           href="{% url 'delete_payment' id=payment.id %}">
                                             <img class="img-action-product"
                                                  src="{% static "money/image/trash_can.png" %}">
                                         </a>

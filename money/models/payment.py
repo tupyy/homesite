@@ -29,7 +29,8 @@ class Payment(Model):
         verbose_name_plural = "payments"
 
     def values(self):
-        return dict(user=self.user.username,
+        return dict(id=self.id,
+                    user=self.user.username,
                     category=self.category.name,
                     subcategory=self.subcategory.name,
                     date=self.date,
