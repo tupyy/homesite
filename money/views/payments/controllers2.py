@@ -9,7 +9,7 @@ from money.models import Payment, Category
 
 
 class MonthViewMixin(object):
-    """Mixin class to get month names from jan to today"""
+    """Mixin class to filter the queryset by month"""
 
     def get_context_data(self, **kwargs):
         context = super(MonthViewMixin, self).get_context_data(**kwargs)
@@ -48,10 +48,6 @@ class CategoryViewMixin(object):
         context['categories'] = Category.objects.values('name')
         return context
 
-
-class FilterPaymentViewMixin(object):
-    model = Payment
-
     def get_queryset(self):
         qs = super().get_queryset()
         query = self.request.GET.get('category', None)
@@ -60,7 +56,7 @@ class FilterPaymentViewMixin(object):
         return qs.filter(category__name__exact=query)
 
 
-class PaymentView(FilterPaymentViewMixin, MonthViewMixin, CategoryViewMixin, LoginRequiredMixin, ListView):
+class PaymentView(MonthViewMixin, CategoryViewMixin, LoginRequiredMixin, ListView):
     login_url = '/accounts/login/'
     redirect_field_name = 'redirect_to'
     model = Payment
