@@ -44,6 +44,19 @@ label {
 .pagination-container {
     margin: 20px 20px auto 20px;
 }
+
+.pagination li.page-item.active .page-link {
+    background-color: #2e507a;
+    border-color: #2e507a;
+    color: white;
+}
+
+.pagination li.page-item.active .page-link:hover {
+     background-color: #03465C;
+}
+.pagination li.page-item .page-link {
+    color: #2e507a;
+}
 /* Zebra striping
 tr:nth-of-type(odd) {
     background: #eee;
