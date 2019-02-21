@@ -57,14 +57,12 @@ class CategoryViewMixin(object):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        query = self.request.GET.get('category', None) or self.request.GET.get('subcategory', None)
-        if query:
-            if 'category' in self.request.GET:
-                qs = qs.filter(category__name__exact=self.request.GET.get('category'))
-            elif 'subcategory' in self.request.GET:
-                qs = qs.filter(subcategory__name__exact=self.request.GET.get('subcategory'))
-            return qs
+        if 'category' in self.request.GET:
+            qs = qs.filter(category__name__exact=self.request.GET.get('category'))
+        elif 'subcategory' in self.request.GET:
+            qs = qs.filter(subcategory__name__exact=self.request.GET.get('subcategory'))
         return qs
+
 
 
 class PaymentView(MonthViewMixin, CategoryViewMixin, LoginRequiredMixin, ListView):
