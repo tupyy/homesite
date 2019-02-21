@@ -51,7 +51,7 @@
                                                  src="{% static "money/image/pencil.png" %}">
                                         </a>
                                         <a class="btn btn-danger btn-delete"
-                                           href="{% url 'money.payment.delete' id=payment.id %}">
+                                           href="{% url 'money.payment.delete' payment_id=payment.id %}?next={{ request.path }}">
                                             <img class="img-action-product"
                                                  src="{% static "money/image/trash_can.png" %}">
                                         </a>

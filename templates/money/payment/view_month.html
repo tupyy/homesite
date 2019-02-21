@@ -55,6 +55,7 @@
                 </div>
             </div>
         </div>
+        {% include "money/payment/msg_box_delete.html" %}
     </div>
 </section>
 <!-- Bootstrap core JavaScript
@@ -64,5 +65,13 @@
 <script src="{% static  "money/js/jquery.min.js" %}"></script>
 <script src="{% static "money/bootstrap/js/bootstrap.min.js" %}"></script>
 <script src="{% static "money/js/view_month.js" %}"></script>
+<script src="{% static "money/js/payment/confirm_delete.js" %}"></script>
+
+{% csrf_token %}
+<script type="text/javascript">
+    // using jQuery
+    var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+</script>
+
 </body>
 </html>
