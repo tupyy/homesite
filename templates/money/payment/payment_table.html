@@ -6,14 +6,22 @@
                 <div class="col col-xs-6">
                     <h4 class="panel-title">{{ table_title }}</h4>
                 </div>
-                {% if create_button is defined %}
+                <div class="action-buttons-container">
+                    {% if all_filter %}
+                        <div class="col col-xs-6 text-right">
+                            <a type="button" class="btn btn-sm btn-primary btn-create"
+                               href="{{ all_filter }}">
+                                Sterge filtru
+                            </a>
+                        </div>
+                    {% endif %}
                     <div class="col col-xs-6 text-right">
                         <a type="button" class="btn btn-sm btn-primary btn-create"
                            href="{% url 'money.payment.add' %}?next={{ request.path }}">
                             Adaugare
                         </a>
                     </div>
-                {% endif %}
+                </div>
             </div>
         </div>
         <div class="card-body">
@@ -36,15 +44,22 @@
                     {% for payment in payments %}
                         <tr>
                             <td>{{ payment.user }}</td>
-                            <td>{{ payment.category }}</td>
-                            <td>{{ payment.subcategory }}</td>
+                            <td><a href="{{ request.path }}?category={{ payment.category }}">
+                                {{ payment.category }}
+                            </a>
+                            </td>
+                            <td>
+                                <a href="{{ request.path }}?subcategory={{ payment.subcategory }}">
+                                    {{ payment.subcategory }}
+                                </a>
+                            </td>
                             <td>{{ payment.date|date:"D, d M Y" }}</td>
                             <td>{{ payment.sum }}</td>
                             <td>{{ payment.comments|truncatechars:50 }}</td>
                             {% if actions is defined %}
                                 <td align="center" class="action-cell">
                                     <div class="row-actions">
-{#                                        check if action is allowed for payment.id#}
+                                        {#                                        check if action is allowed for payment.id#}
                                         <a class="btn btn-primary"
                                            href="{% url 'money.payment.update' id=payment.id %}">
                                             <img class="img-action-product"
