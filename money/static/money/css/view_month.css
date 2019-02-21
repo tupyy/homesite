@@ -52,11 +52,13 @@ label {
 }
 
 .pagination li.page-item.active .page-link:hover {
-     background-color: #03465C;
+    background-color: #03465C;
 }
+
 .pagination li.page-item .page-link {
     color: #2e507a;
 }
+
 /* Zebra striping
 tr:nth-of-type(odd) {
     background: #eee;
@@ -66,96 +68,6 @@ Max width before this PARTICULAR table gets nasty
 This query will take effect for any screen smaller than 760px
 and also iPads specifically.
 */
-@media only screen and (max-width: 760px),
-(min-device-width: 768px) and (max-device-width: 1024px) {
-    /* Force table to not be like tables anymore */
-    table,
-    thead,
-    tbody,
-    th,
-    td,
-    tr {
-        display: block;
-    }
-
-    /* Hide table headers (but not display: none;, for accessibility) */
-    thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-    }
-
-    tr {
-        border: 1px solid #ccc;
-        margin-bottom: 10px;
-    }
-
-    td {
-        /* Behave  like a "row" */
-        border: none;
-        border-bottom: 1px solid #eee;
-        position: relative;
-        overflow: hidden;
-        padding-left: 48%;
-        text-align: right;
-    }
-
-    .td-btn {
-        width: 100%;
-    }
-
-    td:before {
-        /* Now like a table header */
-        position: absolute;
-
-        /* Top/left values mimic padding */
-        top: 13px;
-        left: 5px;
-
-        /* width: 35% */
-        padding-right: 10px;
-        white-space: nowrap;
-    }
-
-    /*
-	Label the data
-	*/
-    td:nth-of-type(1):before {
-        content: "Nume";
-    }
-
-    td:nth-of-type(2):before {
-        content: "Contract";
-    }
-
-    td:nth-of-type(3):before {
-        content: "Categorie";
-    }
-
-    td:nth-of-type(4):before {
-        content: "Subcategorie";
-    }
-
-    td:nth-of-type(5):before {
-        content: "Data";
-    }
-
-    td:nth-of-type(6):before {
-        content: "Suma";
-    }
-
-    td:nth-of-type(7):before {
-        content: "Tichete";
-    }
-
-    td:nth-of-type(8):before {
-        content: "";
-    }
-
-    td:nth-of-type(9):before {
-        content: "";
-    }
-}
 
 @media screen and (max-width: 766.99px) {
     .form-group {
@@ -163,6 +75,13 @@ and also iPads specifically.
         margin-right: 0;
         margin-top: 0;
     }
+
+    .pagination-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
 }
 
 @media screen and (max-width: 574.99px) {
