@@ -9,7 +9,7 @@
                 {% if create_button is defined %}
                     <div class="col col-xs-6 text-right">
                         <a type="button" class="btn btn-sm btn-primary btn-create"
-                           href="{{ create_button.url }}">
+                           href="{% url 'payment' %}?next={{ request.path }}">
                             Adaugare
                         </a>
                     </div>
