@@ -32,7 +32,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% if payments is not none %}
+                {% if payments %}
                     {% for payment in payments %}
                         <tr>
                             <td>{{ payment.user }}</td>
@@ -62,11 +62,7 @@
                     {% endfor %}
                 {% else %}
                     <tr>
-                        {% if actions is defined %}
-                            <td colspan="{{ columns_labels|length|add:1 }}">{{ no_items_label }}</td>
-                        {% else %}
-                            <td colspan="{{ columns_labels|length }}">{{ no_items_label }}</td>
-                        {% endif %}
+                        <td colspan="{{ columns_labels|length|add:1 }}">No payments found.</td>
                     </tr>
                 {% endif %}
                 </tbody>
