@@ -54,7 +54,7 @@
                             </td>
                             <td>{{ payment.date|date:"D, d M Y" }}</td>
                             <td>{{ payment.sum }}</td>
-                            <td>{{ payment.comments|truncatechars:50 }}</td>
+                            <td>{{ payment.comments|truncatechars:25 }}</td>
                             {% if actions is defined %}
                                 <td align="center" class="action-cell">
                                     <div class="row-actions">
