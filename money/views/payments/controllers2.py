@@ -44,7 +44,9 @@ class CategoryViewMixin(object):
         return context
 
 
-class PaymentView(MonthViewMixin, CategoryViewMixin, ListView):
+class PaymentView(LoginRequiredMixin, MonthViewMixin, CategoryViewMixin, ListView):
+    login_url = '/accounts/login/'
+    redirect_field_name = 'redirect_to'
     model = Payment
     paginate_by = 10
     context_object_name = 'payments'
