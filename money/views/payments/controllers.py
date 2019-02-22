@@ -3,7 +3,7 @@ from datetime import date
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse, Http404
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
 
@@ -124,3 +124,6 @@ class PaymentView(DetailView):
     def get(self, *args, **kwargs):
         form = PaymentForm()
         return render(self.request, 'money/payment/add_payment.html', {'form': form})
+
+    def post(self):
+        return redirect('/')
