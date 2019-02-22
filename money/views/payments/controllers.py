@@ -74,7 +74,7 @@ class PaymentsIndexView(MonthViewMixin, CategoryViewMixin, LoginRequiredMixin, L
     login_url = '/accounts/login/'
     redirect_field_name = 'redirect_to'
     model = Payment
-    paginate_by = 10
+    paginate_by = 2
     context_object_name = 'payments'
     template_name = 'money/payment/view_month.html'
 
@@ -82,8 +82,12 @@ class PaymentsIndexView(MonthViewMixin, CategoryViewMixin, LoginRequiredMixin, L
         context = super().get_context_data(**kwargs)
         context['table_title'] = 'Cheltuieli'
         context['columns_labels'] = ['Nume', 'Categorie', 'Subcategorie', 'Data', 'Suma', 'Comentariu']
-        total = self.compute_total(context['payments'])['total']
+
+        # get the whole queryset not just the page qs
+        paginator = context['paginator']
+        total = self.compute_total(paginator.object_list)['total']
         context['total'] = total if total else "0"
+
         return context
 
     def compute_total(self, queryset):
