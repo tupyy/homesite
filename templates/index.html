@@ -11,49 +11,21 @@
     <!-- Bootstrap core CSS -->
     <link href="{% static 'money/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <!-- Custom styles for this template -->
-    <link href="{% static "money/css/style.css" %}" rel="stylesheet">
+    <link href="{% static "money/css/index.css" %}" rel="stylesheet">
+    <link href="{% static "money/css/table.css" %}" rel="stylesheet">
     <link href="{% static "money/css/navbar.css" %}" rel="stylesheet">
 </head>
 <body>
 {% include "navbar.html" %}
 <section class="content">
     {% if user.is_authenticated %}
-        <div class="d-flex container-fluid justify-content-center">
-            <div class="row" id="mainComponent">
-                <div class="col-main col-md-6 col-lg-4" id="mainTableContainer">
-                    <h4 class="div-title">Cheltuieli</h4>
-                    <div>
-                        {% include "money/template-table.html" %}
-                    </div>
+        <div class="col-xl-9 col-lg-9 mainComponent">
+            <div class="row">
+                <div class="col" id="mainTableContainer">
+                    {% include "money/index/total_categories_table.html" %}
                 </div>
-                <div class="col-main col-md-6 col-lg-5">
-                    <h4 class="div-title">Plati viitoare</h4>
-                    <table class="table" id="futurePaymentsTable">
-                        <thead>
-                        <tr>
-                            <th>Contract</th>
-                            <th>Companie</th>
-                            <th>Data</th>
-                            <th>Suma</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% if next_payments %}
-                            {% for next_payment,date in next_payments %}
-                                <tr>
-                                    <td>{{ next_payment.contract.name }}</td>
-                                    <td>{{ next_payment.contract.company_name }}</td>
-                                    <td>{{ date }}</td>
-                                    <td>{{ next_payment.sum }}</td>
-                                </tr>
-                            {% endfor %}
-                        {% else %}
-                            <tr>
-                                <td colspan="4" id="no_payment_cell"><h5>Nu exista plati viitoare</h5></td>
-                            </tr>
-                        {% endif %}
-                        </tbody>
-                    </table>
+                <div class="col">
+                    {% include "money/index/future_payments.html" %}
                 </div>
             </div>
         </div>

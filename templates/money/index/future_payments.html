@@ -1,0 +1,40 @@
+{% load static %}
+<div class="future-payments-table">
+    <div class="card panel-default panel-table">
+        <div class="card-header">
+            <div class="row">
+                <div class="col action-container">
+                    <h6 class="panel-title">Plati viitoare</h6>
+                </div>
+            </div>
+        </div>
+        <div class="card-body  {% if not next_payments %} no-data {% endif %}">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-light">
+                <tr>
+                    <th>Contract</th>
+                    <th>Companie</th>
+                    <th>Data</th>
+                    <th>Suma</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if next_payments %}
+                    {% for next_payment,date in next_payments %}
+                        <tr>
+                            <td>{{ next_payment.contract.name }}</td>
+                            <td>{{ next_payment.contract.company_name }}</td>
+                            <td>{{ date }}</td>
+                            <td>{{ next_payment.sum }}</td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="4" id="no_payment_cell"><h6>Nu exista plati viitoare</h6></td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

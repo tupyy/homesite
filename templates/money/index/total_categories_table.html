@@ -1,0 +1,45 @@
+{% load static %}
+<div class="total-categories-table">
+    <div class="card panel-default panel-table">
+        <div class="card-header">
+            <div class="row">
+                <div class="col action-container">
+                    <h6 class="panel-title">Total cheltuieli lunare</h6>
+                </div>
+            </div>
+        </div>
+        <div class="card-body  {% if not payments %} no-data {% endif %}">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-light">
+                <tr>
+                    {% if items is not none %}
+                        <th class="icon-column-header"></th>
+                    {% endif %}
+                    {% for column_label in columns_labels %}
+                        <th>{{ column_label|capfirst }}</th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                {% if totals %}
+                    {% for entry in totals %}
+                        <tr>
+                            {% for item in entry %}
+                                {% if forloop.counter == 1 %}
+                                    <td>{{ item|capfirst }}</td>
+                                {% else %}
+                                    <td>{{ item }}</td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="{{ columns_labels|length|add:1 }}">No data available.</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
