@@ -82,7 +82,8 @@ class PaymentsIndexView(MonthViewMixin, CategoryViewMixin, LoginRequiredMixin, L
         context = super().get_context_data(**kwargs)
         context['table_title'] = 'Cheltuieli'
         context['columns_labels'] = ['Nume', 'Categorie', 'Subcategorie', 'Data', 'Suma', 'Comentariu']
-        context['total'] = self.compute_total(context['payments'])['total']
+        total = self.compute_total(context['payments'])['total']
+        context['total'] = total if total else "0"
         return context
 
     def compute_total(self, queryset):
