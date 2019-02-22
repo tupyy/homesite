@@ -48,32 +48,6 @@
                             </div>
                             <div class="col-md-6 form-column">
                                 <div class="div-opt">
-                                    <div class="div-collapse" data-toggle="collapse" data-target="#contract">
-                                        <div>Contract</div>
-                                        <div>
-                                            <i class="fa fa-chevron-down text-muted" id="contractIcon"></i>
-                                        </div>
-                                    </div>
-                                    <div id="contract" class="collapse div-collapse2">
-                                        <div class="form-group">
-                                           {% render_field form.contract class="form-control form-control-sm" id="contract" %}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="div-collapse" data-toggle="collapse" data-target="#tickete" id="test">
-                                        <div class="">Tichete</div>
-                                        <div>
-                                            <i class="fa fa-chevron-down text-muted" id="paymentOptionIcon"></i>
-                                        </div>
-                                    </div>
-                                    <div id="tickete" class="collapse div-collapse2">
-                                        <div class="form-group">
-                                            {% render_field form.nb_tickete class="form-control form-control-sm" id="nb_tickete" %}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="div-opt">
                                     <div class="div-collapse" data-toggle="collapse" data-target="#comments">
                                         <div>Comentariu</div>
                                         <div>
@@ -90,8 +64,8 @@
                         </div>
                         <div class="row row-2">
 {#                            <div class="div-btn">#}
-                                <button type="submit" class="myButton">Submit</button>
-                                <button type="button" onclick="window.location.href='{{ next_url }}'" class="cancelButton">Close</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="button" onclick="window.location.href='{{ next_url }}'" class="btn btn-danger">Close</button>
 {#                            </div>#}
                         </div>
                     </form>
@@ -109,18 +83,6 @@
         <script src="{% static "money/js/parse_next_url.js" %}"></script>
         <script>
             $(document).ready(function() {
-                $('#contract').on('hidden.bs.collapse',function() {
-                    $('#contractIcon').attr('class','fa fa-chevron-down text-muted');
-                });
-                $('#contract').on('show.bs.collapse',function() {
-                    $('#contractIcon').attr('class','fa fa-chevron-up text-muted')
-                });
-                $('#tickete').on('hidden.bs.collapse',function() {
-                    $('#paymentOptionIcon').attr('class','fa fa-chevron-down text-muted');
-                });
-                $('#tickete').on('show.bs.collapse',function() {
-                    $('#paymentOptionIcon').attr('class','fa fa-chevron-up text-muted')
-                });
                 $('#comments').on('hidden.bs.collapse',function() {
                     $('#commentIcon').attr('class','fa fa-chevron-down text-muted');
                 });
