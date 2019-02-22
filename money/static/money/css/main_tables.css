@@ -154,6 +154,10 @@ div.form-group.row {
         text-align: right;
     }
 
+    .table-bordered {
+        border: none;
+    }
+
     .td-btn {
         width: 100%;
     }
@@ -202,20 +206,35 @@ div.form-group.row {
     }
 
 
+    .future-payments-table td:nth-of-type(1):before {
+        content: "Nume";
+    }
+
+    .future-payments-table td:nth-of-type(2):before {
+        content: "Companie";
+    }
+
+    .future-payments-table td:nth-of-type(3):before {
+        content: "Data";
+    }
+
+    .future-payments-table td:nth-of-type(4):before {
+        content: "Suma";
+    }
+
+    .future-payments-table td:nth-of-type(4):after {
+        content: " €";
+    }
+
+
+
 }
 
 @media only screen and (max-width: 768px) {
-    .action-container {
-        margin-bottom: 10px;
-    }
 
     .action-container-create {
         display: flex;
         justify-content: center;
         margin: auto;
-    }
-
-    .table-bordered {
-        border: none;
     }
 }
