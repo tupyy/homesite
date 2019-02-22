@@ -1,3 +1,13 @@
 .mainComponent {
     margin: 50px auto;
 }
+
+@media all and (max-width: 750px) {
+    .mainComponent .row {
+        display: block;
+    }
+
+    div .table-container {
+        margin-bottom: 25px;
+    }
+}
