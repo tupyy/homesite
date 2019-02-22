@@ -262,4 +262,8 @@ div.form-group.row {
         justify-content: center;
         margin: auto;
     }
+
+    .btn-filter {
+        margin-right: 5px;
+    }
 }
