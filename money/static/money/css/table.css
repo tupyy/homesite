@@ -23,6 +23,10 @@ div.form-group.row {
     margin-bottom: 0;
 }
 
+.panel-table .panel-title {
+    margin-bottom: 0;
+}
+
 @media only screen and (min-width: 1030px) {
     .payments-table {
         margin: 0 20px auto 20px;
@@ -135,10 +139,6 @@ div.form-group.row {
 
 @media only screen and (max-width: 1024px) {
 
-    .action-container {
-        margin-bottom: 10px;
-    }
-
     .no-data {
         display: none !important;
     }
@@ -249,6 +249,10 @@ div.form-group.row {
 }
 
 @media only screen and (max-width: 768px) {
+    .action-container {
+        margin-bottom: 10px;
+    }
+
     .action-container-create {
         display: flex;
         justify-content: center;
