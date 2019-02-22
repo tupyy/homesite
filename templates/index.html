@@ -12,7 +12,7 @@
     <link href="{% static 'money/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="{% static "money/css/index.css" %}" rel="stylesheet">
-    <link href="{% static "money/css/table.css" %}" rel="stylesheet">
+    <link href="{% static "money/css/main_tables.css" %}" rel="stylesheet">
     <link href="{% static "money/css/navbar.css" %}" rel="stylesheet">
 </head>
 <body>
@@ -21,10 +21,10 @@
     {% if user.is_authenticated %}
         <div class="col-xl-9 col-lg-9 mainComponent">
             <div class="row">
-                <div class="col" id="mainTableContainer">
+                <div class="col table-container">
                     {% include "money/index/total_categories_table.html" %}
                 </div>
-                <div class="col">
+                <div class="col table-container">
                     {% include "money/index/future_payments.html" %}
                 </div>
             </div>
@@ -36,6 +36,6 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="{% static  "money/js/jquery.min.js" %}"></script>
 <script src="{% static "money/bootstrap/js/bootstrap.min.js" %}"></script>
-<script src="{% static "money/components/main_component.js" %}"></script>
+<script src="{% static "money/js/resize_window.js" %}"></script>
 </body>
 </html>
