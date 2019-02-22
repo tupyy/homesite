@@ -60,7 +60,7 @@
                                     <div class="row-actions">
                                         {#                                        check if action is allowed for payment.id#}
                                         <a class="btn btn-primary"
-                                           href="{% url 'money.payment.update' id=payment.id %}">
+                                           href="{% url 'money.payment.update' payment_id=payment.id %}">
                                             <img class="img-action-product"
                                                  src="{% static "money/image/pencil.png" %}">
                                         </a>
