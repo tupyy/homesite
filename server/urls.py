@@ -4,10 +4,11 @@ from django.contrib import admin
 from contract.views import view_contracts, view_contract_pdf
 from rest_framework.routers import DefaultRouter
 from django.urls import *
-from money.views import *
+
+from money.views import update_payments2, category_total, index
 from money.views.api import CategoryViewSet, PaymentViewSet, SubcategoryViewSet, TotalViewSet, RevenuesViewSet
 from authentication.views import login_view, logout_view
-from money.views.payments.controllers2 import PaymentView, DeletePaymentView
+from money.views.payments.controllers2 import PaymentsIndexView, DeletePaymentView, PaymentView
 
 """
     Restful urls
@@ -40,9 +41,9 @@ Main URL patterns
 """
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^money/payment/$', payment, name="money.payment.add"),
+    url(r'^money/payment/$', PaymentView.as_view(), name="money.payment.add"),
     path('money/payment/delete/<int:payment_id>/', DeletePaymentView.as_view(), name="money.payment.delete"),
-    path('money/payment/view/<int:month>/', PaymentView.as_view(), name="money.payment.view"),
+    path('money/payment/view/<int:month>/', PaymentsIndexView.as_view(), name="money.payment.view"),
     path('money/payment/update/<int:id>/', update_payments2, name="money.payment.update"),
     path('money/payment/category/total/', category_total, name="category_total"),
     url(r'^$', index, name="index")
