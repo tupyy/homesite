@@ -74,7 +74,7 @@ class PaymentsIndexView(MonthViewMixin, CategoryViewMixin, LoginRequiredMixin, L
     login_url = '/accounts/login/'
     redirect_field_name = 'redirect_to'
     model = Payment
-    paginate_by = 2
+    paginate_by = 20
     context_object_name = 'payments'
     template_name = 'money/payment/view_month.html'
 
