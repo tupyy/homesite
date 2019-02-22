@@ -1,87 +1,41 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <title>Casuta noastra</title>
-        <!-- Bootstrap core CSS -->
-        <link href="{%  static 'money/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-        <!-- Custom styles for this template -->
-        <link href="{% static "money/css/style.css" %}" rel="stylesheet">
-        <link href="{% static "money/css/navbar.css" %}" rel="stylesheet">
-    </head>
-    <body>
-        {% include "navbar.html" %}
-        <section class="content">
-            {% if user.is_authenticated %}
-                <div class="d-flex container-fluid justify-content-center">
-                    <div class="row">
-                        <div class="col-control col-md-1">
-                            <div>
-                                <div class="form-group">
-                                    <label for="form_select_luna">Selecteaza luna</label>
-                                    <select id="form_select_luna" class="form-control">
-                                        {% for luna in luni %}
-                                            <option>{{ luna }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-main col-md-6 col-lg-5">
-                            <h4 class="div-title">Cheltuieli</h4>
-                            <table class="table" id="myTable">
-                                <thead>
-                                    <tr>
-                                        <th>Categorie</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                                <tfoot>
-                                </tfoot>
-                            </table>
-                        </div>
-                         <div class="col-main col-md-6 col-lg-5">
-                            <h4 class="div-title">Plati viitoare</h4>
-                            <table class="table" id="futurePaymentsTable">
-                                <thead>
-                                    <tr>
-                                        <th>Contract</th>
-                                        <th>Companie</th>
-                                        <th>Data</th>
-                                        <th>Suma</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                     {% if next_payments %}
-                                         {% for next_payment,date in next_payments %}
-                                            <tr>
-                                                <td>{{ next_payment.contract.name }}</td>
-                                                <td>{{ next_payment.contract.company_name }}</td>
-                                                <td>{{ date }}</td>
-                                                <td>{{ next_payment.sum }}</td>
-                                            </tr>
-                                        {% endfor %}
-                                     {% else %}
-                                         <tr><td colspan="4" id="no_payment_cell"><h5>Nu exista plati viitoare</h5></td></tr>
-                                    {% endif %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Casuta noastra</title>
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'money/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="{% static "money/css/index.css" %}" rel="stylesheet">
+    <link href="{% static "money/css/main_tables.css" %}" rel="stylesheet">
+    <link href="{% static "money/css/navbar.css" %}" rel="stylesheet">
+</head>
+<body>
+{% include "navbar.html" %}
+<section class="content">
+    {% if user.is_authenticated %}
+        <div class="col-xl-9 col-lg-9 mainComponent">
+            <div class="row">
+                <div class="col table-container">
+                    {% include "money/index/total_categories_table.html" %}
                 </div>
-            {% endif %}
-        </section>
-        <!-- Bootstrap core JavaScript
-    ================================================== -->
-        <!-- Placed at the end of the document so the pages load faster -->
-        <script src="{% static  "money/js/jquery.min.js" %}"></script>
-        <script src="{% static "money/bootstrap/js/bootstrap.min.js" %}"></script>
-        <script src="{% static "money/js/get_totals.js" %}"></script>
-    </body>
+                <div class="col table-container">
+                    {% include "money/index/future_payments.html" %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</section>
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="{% static  "money/js/jquery.min.js" %}"></script>
+<script src="{% static "money/bootstrap/js/bootstrap.min.js" %}"></script>
+<script src="{% static "money/js/resize_window.js" %}"></script>
+</body>
 </html>

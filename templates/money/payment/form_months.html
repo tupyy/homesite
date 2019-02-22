@@ -1,0 +1,13 @@
+<form role="form" class="form-filter">
+    <div class="form-group row">
+        <select class="form-control col-sm-12 widget-col" id="select_luna">
+            {% for luna in months %}
+                {% if forloop.counter == current_month %}
+                    <option selected>{{ luna }}</option>
+                {% else %}
+                    <option>{{ luna }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+</form>
