@@ -40,10 +40,6 @@
     margin: auto;
 }
 
-.action-container-create {
-    margin-right: 20px;
-}
-
 @media screen and (max-width: 766.99px) {
     .form-group {
         margin-left: 0;

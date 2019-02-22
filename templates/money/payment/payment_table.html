@@ -3,10 +3,10 @@
     <div class="card panel-default panel-table">
         <div class="card-header">
             <div class="row">
-                <div class="col-lg-1 col-xd action-container">
+                <div class="col-xl-1 col-lg-2 col-xd action-container">
                     <h4 class="panel-title">{{ table_title }}</h4>
                 </div>
-                <div class="col-xs-4 col-lg-1 text-left action-container">
+                <div class="col-xs-4 col-lg-2 col-xl-1 text-left action-container">
                     {% include 'money/payment/form_months.html' %}
                 </div>
                 <div class="col col-xs-6 text-right action-container action-container-create">
@@ -80,6 +80,11 @@
                     </tr>
                 {% endif %}
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="{{ columns_labels|length|add:1 }}">Total: {{ total }}</td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>

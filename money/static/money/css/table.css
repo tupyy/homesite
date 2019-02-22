@@ -19,12 +19,15 @@
     background-color: #03465C;
 }
 
-@media only screen and (min-width: 760px) {
+div.form-group.row {
+    margin-bottom: 0;
+}
+
+@media only screen and (min-width: 1030px) {
     .payments-table {
         margin: 0 20px auto 20px;
         font-family: 'Roboto', sans-serif;
         font-size: 14px;
-        width: 100%;
     }
 
     .panel-table .card-body {
@@ -47,6 +50,20 @@
 
     .table > tbody > tr > .action-cell {
         width: 100px;
+    }
+
+    .table > tfoot > tr > td {
+        text-align: left;
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+    .table > tbody > tr > td:nth-of-type(5):after {
+        content: " €";
+    }
+
+    .table > tfoot:last-child > tr > td:after {
+        content: " €";
     }
 
     .panel-table .panel-body .table-bordered {
@@ -113,18 +130,19 @@
         height: 25px;
         filter: invert(1)
     }
+
 }
 
-@media only screen and (max-width: 760px),
-(min-device-width: 768px) and (max-device-width: 1024px) {
-    .action-container-create {
-        display: flex;
-        justify-content: center;
+@media only screen and (max-width: 1024px) {
+
+    .action-container {
+        margin-bottom: 10px;
     }
 
     .no-data {
         display: none !important;
     }
+
     /* Force table to not be like tables anymore */
     table,
     thead,
@@ -208,7 +226,32 @@
         content: "Suma";
     }
 
+    td:nth-of-type(5):after {
+        content: " €";
+    }
+
     td:nth-of-type(6) {
         display: none;
+    }
+
+    tfoot tr:last-child td:before {
+        content: "";
+    }
+
+    tfoot tr:last-child td:after {
+        content: " €";
+    }
+
+    tfoot {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .action-container-create {
+        display: flex;
+        justify-content: center;
+        margin: auto;
     }
 }
