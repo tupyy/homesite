@@ -1,0 +1,64 @@
+{% load static %}
+<div class="main-table total-categories-table">
+    <div class="card panel-default panel-table">
+        <div class="card-header">
+            <div class="row">
+                <div class="col action-container">
+                    <h6 class="panel-title">Contracte</h6>
+                </div>
+            </div>
+        </div>
+        <div class="card-body  {% if not contracts %} no-data {% endif %}">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-light">
+                <tr>
+                    <th>Tip</th>
+                    <th>Nume</th>
+                    <th>Companie</th>
+                    <th>Numar</th>
+                    <th>Data semnarii</th>
+                    <th>Data rezilierii</th>
+                    <th>Plata lunara</th>
+                    <th>Comentariu</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if contracts %}
+                    {% for contract in contracts %}
+                        <tr>
+                            {% if contract.pdf_contract %}
+                                <td>
+                                    <a href="{% url "view_contract_pdf" id=contract.id %}?next={{ request.path }}">{{ contract.contract_type }}</a>
+                                </td>
+                            {% else %}
+                                <td>{{ contract.contract_type }}</td>
+                            {% endif %}
+                            <td>{{ contract.name }}</td>
+                            <td>{{ contract.company_name }}</td>
+                            <td>{{ contract.contract_id }}</td>
+                            <td>{{ contract.start_date }}</td>
+                            {% if contract.end_date %}
+                                <td>{{ contract.end_date }}</td>
+                            {% else %}
+                                <td>-</td>
+                            {% endif %}
+                            {% if contract.monthly_payment %}
+                                <td>{{ contract.monthly_payment }}</td>
+                            {% else %}
+                                <td>-</td>
+                            {% endif %}
+                            <td class="td-comments">{{ contract.comment }}</td>
+                            <td>{{ contract.status }}</td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="{{ columns_labels|length|add:1 }}">No data available.</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
