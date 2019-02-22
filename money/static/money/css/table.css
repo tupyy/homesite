@@ -143,6 +143,10 @@ div.form-group.row {
         display: none !important;
     }
 
+    .table-bordered {
+        border: none;
+    }
+
     /* Force table to not be like tables anymore */
     table,
     thead,

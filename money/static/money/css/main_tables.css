@@ -214,4 +214,8 @@ div.form-group.row {
         justify-content: center;
         margin: auto;
     }
+
+    .table-bordered {
+        border: none;
+    }
 }
