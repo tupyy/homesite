@@ -1,1 +1,0 @@
-from money.views.index.controller import index,category_total
