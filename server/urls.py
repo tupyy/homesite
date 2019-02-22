@@ -5,9 +5,9 @@ from contract.views import view_contracts, view_contract_pdf
 from rest_framework.routers import DefaultRouter
 from django.urls import *
 
-from money.views import category_total, index
-from money.views.api import CategoryViewSet, PaymentViewSet, SubcategoryViewSet, TotalViewSet, RevenuesViewSet
 from authentication.views import login_view, logout_view
+from money.views.api import CategoryViewSet, PaymentViewSet, SubcategoryViewSet, TotalViewSet, RevenuesViewSet
+from money.views.index.controller import IndexView
 from money.views.payments.controllers import PaymentsIndexView, DeletePaymentView, PaymentView
 
 """
@@ -45,8 +45,8 @@ urlpatterns = [
     path('money/payment/delete/<int:payment_id>/', DeletePaymentView.as_view(), name="money.payment.delete"),
     path('money/payment/<int:month>/', PaymentsIndexView.as_view(), name="money.payment.view"),
     path('money/payment/update/<int:payment_id>/', PaymentView.as_view(), name="money.payment.update"),
-    path('money/payment/category/total/', category_total, name="category_total"),
-    url(r'^$', index, name="index")
+    # path('money/payment/category/total/', category_total, name="category_total"),
+    url(r'^$', IndexView.as_view(), name="index")
 ]
 
 urlpatterns += router.urls
