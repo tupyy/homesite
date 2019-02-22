@@ -67,6 +67,6 @@ class PaymentTotalManager(Manager):
     def __compute_total(payments: QuerySet) -> int:
         from django.db.models.aggregates import Sum
         if payments:
-            total = payments.aggregate(total=Sum(sum))
+            total = payments.aggregate(total=Sum('sum'))
             return total['total']
         return 0
