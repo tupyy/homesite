@@ -1,5 +1,5 @@
 {% load static %}
-<div class="total-categories-table">
+<div class="main-table total-categories-table">
     <div class="card panel-default panel-table">
         <div class="card-header">
             <div class="row">
@@ -8,7 +8,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-body  {% if not payments %} no-data {% endif %}">
+        <div class="card-body  {% if not totals %} no-data {% endif %}">
             <table class="table table-striped table-bordered">
                 <thead class="thead-light">
                 <tr>
