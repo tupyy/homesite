@@ -3,9 +3,12 @@ from datetime import date
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse, Http404
+from django.shortcuts import render
+from django.urls import reverse
 from django.views.generic import ListView, DetailView
 
 from money.models import Payment, Category
+from money.views.payments.forms import PaymentForm
 
 
 class MonthViewMixin(object):
@@ -67,7 +70,7 @@ class CategoryViewMixin(object):
         return qs
 
 
-class PaymentView(MonthViewMixin, CategoryViewMixin, LoginRequiredMixin, ListView):
+class PaymentsIndexView(MonthViewMixin, CategoryViewMixin, LoginRequiredMixin, ListView):
     login_url = '/accounts/login/'
     redirect_field_name = 'redirect_to'
     model = Payment
@@ -79,7 +82,12 @@ class PaymentView(MonthViewMixin, CategoryViewMixin, LoginRequiredMixin, ListVie
         context = super().get_context_data(**kwargs)
         context['table_title'] = 'Cheltuieli'
         context['columns_labels'] = ['Nume', 'Categorie', 'Subcategorie', 'Data', 'Suma', 'Comentariu']
+        context['total'] = self.compute_total(context['payments'])['total']
         return context
+
+    def compute_total(self, queryset):
+        from django.db.models.aggregates import Sum
+        return queryset.aggregate(total=Sum('sum'))
 
 
 class DeletePaymentView(LoginRequiredMixin, DetailView):
@@ -99,3 +107,20 @@ class DeletePaymentView(LoginRequiredMixin, DetailView):
         else:
             return JsonResponse({'next': redirect_to,
                                  'status_code': 404})
+
+
+class PaymentView(DetailView):
+    model = Payment
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.GET.get('next'):
+            context['next_url'] = self.request.GET.get('next', None)
+            context['action'] = reverse('money.payment.add') + '?next=' + self.request.GET["next"]
+        else:
+            context['action'] = reverse('money.payment.add')
+        return context
+
+    def get(self, *args, **kwargs):
+        form = PaymentForm()
+        return render(self.request, 'money/payment/add_payment.html', {'form': form})
