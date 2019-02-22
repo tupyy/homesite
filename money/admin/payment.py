@@ -30,7 +30,7 @@ class RecurrentPaymentAdmin(admin.ModelAdmin):
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "contract":
-            kwargs["queryset"] = Contract.objects.filter(status__status__exact="Active")
+            kwargs["queryset"] = Contract.objects.filter(status__status__exact="Open")
         return super(RecurrentPaymentAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 
