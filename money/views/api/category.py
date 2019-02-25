@@ -1,4 +1,3 @@
-import calendar
 import json
 from datetime import datetime
 
@@ -75,30 +74,24 @@ class CategoryViewSet(viewsets.ViewSet):
         :return:
         """
 
+        try:
+            month = int(pk)
+            if month < 0 or month > 12:
+                raise ValueError
+        except ValueError:
+            return Response('month value invalid', status=status.HTTP_400_BAD_REQUEST)
+
         category_name = self.request.query_params.get("category")
         if category_name is None:
-            return Response("Category is null", status=status.HTTP_400_BAD_REQUEST)
+            total = Payment.totals.get_total_by_categories(month)
+            category_total = {k: float(v) for k, v in total.items()}
+            return HttpResponse(json.dumps(category_total),
+                                content_type='application/javascript; charset=utf8')
         else:
-            payments = Payment.objects.filter(date__month=pk, category__name__exact=category_name)
-
-            subcategory_total = dict()
-            subcategories = Subcategory.objects.filter(category__name__exact=category_name)
-
-            total1 = 0
-            for subcategory in subcategories:
-                total = 0
-                for payment in payments:
-                    if payment.subcategory.name == subcategory.name:
-                        total += payment.sum
-                total1 += total
-                subcategory_total[subcategory.name] = str(total)
-
-            # check if we have some total <> 0
-            if total1 == 0:
-                subcategory_total = dict()
-
+            total = Payment.totals.get_total_by_categories(month)
+            category_total = total.get(category_name, 0)
             return HttpResponse(
-                json.dumps(subcategory_total),
+                json.dumps(float(category_total)),
                 content_type='application/javascript; charset=utf8'
             )
 
@@ -106,37 +99,29 @@ class CategoryViewSet(viewsets.ViewSet):
     def get_year_total(self, request, pk=None):
         """
         Compute the totals for each month of the current year for each subcategory
+        Route: api/money/category/casa/year_total?year=2019
         :param request:
         :param pk: category name
-        :return:
+        :return: the total spending for a category from the beginning of the year to the current month if the
+                 year is the current year. Otherwise return the total of a whole year
         """
+        try:
+            _ = Category.objects.get(name=pk)
+        except Category.DoesNotExist:
+            return Response("Category do noy exists.", status=status.HTTP_404_NOT_FOUND)
 
-        subcategory_total = dict()
+        try:
+            year = self.request.query_params.get("year", datetime.now().year)
+        except ValueError:
+            return Response('Invalid year', status=status.HTTP_400_BAD_REQUEST)
 
-        subcategories = Subcategory.objects.filter(category__name__exact=pk)
-        titles = []
-        for subcategory in subcategories:
-            titles.append(subcategory.name)
-
-        subcategory_total['subcategories'] = titles
-        for month in range(1, datetime.today().month + 1):
-            month_total = []
-            for subcategory in subcategories:
-                total = 0
-                payments = Payment.objects.filter(date__year=datetime.today().year,
-                                                  date__month=month,
-                                                  category__name__exact=pk,
-                                                  subcategory__name__exact=subcategory.name)
-                for payment in payments:
-                    total += payment.sum
-
-                month_total.append(str(total))
-            subcategory_total[calendar.month_name[month]] = month_total
-
-        # check if we have some total <> 0
+        period_end = datetime.now().month + 1 if year == datetime.now().year else 12
+        total = 0
+        for i in range(1, period_end):
+            total += float(Payment.totals.get_category_total(pk, i, year))
 
         return HttpResponse(
-            json.dumps(subcategory_total),
+            json.dumps(total),
             content_type='application/javascript; charset=utf8'
         )
 
