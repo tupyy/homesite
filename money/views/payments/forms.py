@@ -8,9 +8,10 @@ from money.models import Category, Subcategory, Payment
 
 
 class PaymentForm(forms.ModelForm):
+
     class Meta:
         model = Payment
-        fields = ('sum',)
+        fields = ('__all__')
 
     next_url = forms.CharField(max_length=200)
     user = forms.ModelChoiceField(label="Name", queryset=User.objects.all(), empty_label=None)
