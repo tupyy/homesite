@@ -24,7 +24,7 @@ function remove_subcategories()
  * @param category_name
  */
 function add_subcategories(category_name) {
-     var subcategorySelect = document.getElementById('subcategory');
+     let subcategorySelect = document.getElementById('subcategory');
      $.get("/api/money/subcategory/" + category_name + "/category/",function(data,status) {
            if (status === "success") {
                for (var j = 0; j < data.subcategories.length; j++) {
@@ -39,16 +39,9 @@ function add_subcategories(category_name) {
 }
 
 $(document).ready(function() {
-   var categorySelect = document.getElementById('category');
-   var subcategorySelect = document.getElementById('subcategory');
+   let categorySelect = document.getElementById('category');
    categorySelect.addEventListener("change", function() {
        remove_subcategories();
        add_subcategories(get_current_category());
     });
-
-    categorySelect.options[0].selected='selected';
-    remove_subcategories();
-    add_subcategories(get_current_category());
-
-
 });
