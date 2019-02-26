@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 
 import json
 
+from django.urls import reverse
 from django.utils.http import is_safe_url
 from django.contrib.auth import authenticate, login, logout
 
@@ -37,7 +38,4 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    redirect_to = request.GET.get('next')
-    if redirect_to and is_safe_url(redirect_to):
-        return HttpResponseRedirect(redirect_to)
-    return redirect('/')
+    return redirect(reverse('index'))
