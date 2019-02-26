@@ -54,7 +54,7 @@ class PaymentTotalManager(Manager):
     def get_category_total(self, category_name: str, month: int, year=datetime.now().year):
         """ Compute the total of a category based on the month and category name for the current year"""
         payments = self.__get_queryset_by_category(category_name, month, year=year)
-        return self.__compute_total(payments)
+        return float(self.__compute_total(payments))
 
     def get_subcategory_total(self, category_name: str, subcategory_name: str, month: int, year=datetime.now().year) -> int:
         """
