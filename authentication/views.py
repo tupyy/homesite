@@ -26,7 +26,9 @@ def login_view(request):
         if user is not None:
             login(request, user)
             redirect_to = request.POST.get('next')
-            url_is_safe = is_safe_url(redirect_to, '*')
+
+            from server.settings import ALLOWED_HOSTS
+            url_is_safe = is_safe_url(redirect_to, ALLOWED_HOSTS)
             if redirect_to and url_is_safe:
                 return HttpResponseRedirect(redirect_to)
             else:
