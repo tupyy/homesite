@@ -152,7 +152,7 @@ class SubcategoryViewSet(viewsets.ViewSet, generics.ListAPIView):
             subcategory.delete()
             return Response(self.serializer_class(subcategory).data, status=status.HTTP_200_OK)
         except ValueError:
-            return Response("Category with id " + pk + " not found", status=status.HTTP_400_BAD_REQUEST)
+            return Response("Subcategory with id " + pk + " not found", status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
         subcategory = get_object_or_404(Subcategory.objects.all(), pk=pk)
