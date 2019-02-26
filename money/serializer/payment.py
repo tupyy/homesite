@@ -8,6 +8,7 @@ from money.models import *
 
 
 class PaymentSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     category = serializers.CharField(required=True)
     subcategory = serializers.CharField(required=True)
     user = serializers.CharField(required=True)
@@ -29,20 +30,19 @@ class PaymentSerializer(serializers.Serializer):
         return _payment
 
     def update(self, instance, validated_data):
-        if self.is_valid(raise_exception=True):
-            _category = Category.objects.get(name=self.validated_data['category'])
-            _subcategory = Subcategory.objects.filter(name=self.validated_data['subcategory'],
-                                                      category__name=_category.name).first()
-            _user = User.objects.get(username=self.validated_data['user'])
+        _category = Category.objects.get(name=self.validated_data['category'])
+        _subcategory = Subcategory.objects.filter(name=self.validated_data['subcategory'],
+                                                  category__name=_category.name).first()
+        _user = User.objects.get(username=self.validated_data['user'])
 
-            instance.category = _category
-            instance.user = _user
-            instance.subcategory = _subcategory
-            instance.sum = validated_data.get("sum", instance.sum)
-            instance.date = validated_data.get('date', instance.date)
-            instance.comments = validated_data.get('comments', instance.comments)
-            instance.save()
-            return instance
+        instance.category = _category
+        instance.user = _user
+        instance.subcategory = _subcategory
+        instance.sum = validated_data.get("sum", instance.sum)
+        instance.date = validated_data.get('date', instance.date)
+        instance.comments = validated_data.get('comments', instance.comments)
+        instance.save()
+        return instance
 
     def validate(self, data):
         if 'category' not in data:
