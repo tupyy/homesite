@@ -2,7 +2,7 @@
 import logging
 
 # Get an instance of a logger
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("django")
 
 
 def parse_db_variable(var_string):
@@ -11,14 +11,10 @@ def parse_db_variable(var_string):
     if not var_string:
         return []
 
-    regex = r'\/\/(\w+):(\w+)@([A-Za-z0-9\-\.]+):(\d{4})\/(\w+)'
+    regex = r'.*\/\/(\w+):(\w+)@([A-Za-z0-9\-\.]+):(\d{4})\/(\w+)'
 
     logger.info("Parse db variable: {}".format(var_string))
-    groups = list()
-    p = re.compile(regex)
-    m = p.match(regex, var_string)
+    m = re.match(regex, var_string)
     if m:
-        for groupNum in range(0, len(m.groups())):
-            logger.info('Var: {}'.format(m.group(groupNum)))
-            groups.append(m.group(groupNum))
-    return groups
+        return m.groups()
+    return list()
