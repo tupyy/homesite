@@ -13,10 +13,9 @@ from django.contrib.auth import authenticate, login, logout
 
 def login_view(request):
     if request.method == 'GET':
-        return render(request, 'authentication/login.html',
-                      {'login_successful': True,
-                       'next': request.GET['next']
-                       })
+        return render(request, 'authentication/login.html', {'login_successful': True,
+                                                             'next': request.GET.get('next', reverse('index'))
+                                                             })
 
     elif request.method == 'POST':
 

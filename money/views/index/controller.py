@@ -1,7 +1,9 @@
 import calendar
 from datetime import datetime
 
-from django.views.generic import ListView
+from django.shortcuts import redirect
+from django.urls import reverse
+from django.views.generic import TemplateView
 
 from money.models import Payment
 from money.utils import get_future_payments
@@ -87,6 +89,12 @@ class TotalPaymentsViewMixin(object):
         return transposed
 
 
-class IndexView(TotalPaymentsViewMixin, FuturePaymentsViewMixin, ListView):
+class IndexView(TotalPaymentsViewMixin, FuturePaymentsViewMixin, TemplateView):
     model = Payment
     template_name = 'index.html'
+
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect(reverse('login_view'))
+
+        return self.render_to_response(self.get_context_data(**kwargs))
