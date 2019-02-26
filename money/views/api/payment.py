@@ -1,13 +1,14 @@
 from datetime import datetime
 
-from django.shortcuts import get_object_or_404
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 from rest_framework import generics, serializers
 from rest_framework import status
 from rest_framework import viewsets
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 
-from authentication.permissions import IsPostOrIsAuthenticated
 from money.models import Payment
 from money.serializer.payment import PaymentSerializer
 
@@ -15,7 +16,8 @@ from money.serializer.payment import PaymentSerializer
 class PaymentAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     serializer_class = PaymentSerializer
 
-    # permission_classes = (IsPostOrIsAuthenticated,)
+    authentication_classes = (SessionAuthentication, BasicAuthentication)
+    permission_classes = (IsAuthenticated,)
 
     def create(self, request):
         serializer = self.serializer_class(data=request.data)

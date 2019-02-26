@@ -1,15 +1,13 @@
-import json
-from datetime import datetime
-
-from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from rest_framework import generics, serializers
+from rest_framework import serializers
 from rest_framework import status
 from rest_framework import viewsets
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from money.models import Category, Payment, Subcategory
+from money.models import Category, Subcategory
 from money.serializer import CategorySerializer, SubcategorySerializer
 
 """
@@ -22,7 +20,8 @@ class CategoryViewSet(viewsets.ViewSet):
     """
     View set for categories
     """
-    # permission_classes = (IsAuthenticated,)
+    authentication_classes = (SessionAuthentication, BasicAuthentication)
+    permission_classes = (IsAuthenticated,)
     serializer_class = CategorySerializer
 
     def create(self, request):
@@ -67,7 +66,8 @@ class CategoryViewSet(viewsets.ViewSet):
 
 
 class SubcategoryViewSet(viewsets.ViewSet):
-    # permission_classes = (IsAuthenticated,)
+    authentication_classes = (SessionAuthentication, BasicAuthentication)
+    permission_classes = (IsAuthenticated,)
     serializer_class = SubcategorySerializer
 
     """

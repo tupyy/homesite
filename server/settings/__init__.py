@@ -10,6 +10,7 @@ ENV = environ['DJANGO_ENV']
 base_settings = [
     'components/common.py',
     'components/logging.py',
+    'components/rest.py',
     'components/csp.py',
     'components/db.py',
 
