@@ -6,7 +6,7 @@ from rest_framework.routers import DefaultRouter
 from django.urls import *
 
 from authentication.views import login_view, logout_view
-from money.views.api import CategoryViewSet, PaymentViewSet, SubcategoryViewSet, TotalViewSet, RevenuesViewSet
+from money.views.api import CategoryViewSet, PaymentAPIViewSet, SubcategoryViewSet, TotalViewSet, RevenuesViewSet
 from money.views.index.controller import IndexView
 from money.views.payments.controllers import PaymentsIndexView, DeletePaymentView
 from money.views.payments.add_update_controller import AddPaymentView, UpdatePaymentView
@@ -17,7 +17,7 @@ from money.views.payments.add_update_controller import AddPaymentView, UpdatePay
 router = DefaultRouter()
 router.register(r'api/money/category', CategoryViewSet, base_name="money_category")
 router.register(r'api/money/subcategory', SubcategoryViewSet, base_name="money_subcategory")
-router.register(r'api/money/payment', PaymentViewSet, base_name='money_payment')
+router.register(r'api/money/payment', PaymentAPIViewSet, base_name='money_payment')
 router.register(r'api/money/total', TotalViewSet, base_name="payment_total")
 router.register(r'api/money/revenues', RevenuesViewSet, base_name="revenues_total")
 

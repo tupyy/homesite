@@ -12,7 +12,7 @@ from money.models import Payment
 from money.serializer.payment import PaymentSerializer
 
 
-class PaymentViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
+class PaymentAPIViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     serializer_class = PaymentSerializer
 
     # permission_classes = (IsPostOrIsAuthenticated,)
@@ -62,4 +62,5 @@ class PaymentViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
             query_condition &= Q(category__name__exact=_category) & Q(subcategory__name__exact=_subcategory)
         elif _category and not _subcategory:
             query_condition &= Q(category__name__exact=_category)
+
         return Payment.objects.filter(query_condition)
