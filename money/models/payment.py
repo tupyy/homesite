@@ -1,4 +1,7 @@
+import datetime
+
 from django.contrib.auth.models import User
+from django.utils import timezone
 from django.db import models
 from django.db.models import Model
 from eventtools.models import BaseEvent, BaseOccurrence
@@ -16,7 +19,7 @@ class Payment(Model):
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
     subcategory = models.ForeignKey(Subcategory, null=True, on_delete=models.SET_NULL)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField(default=timezone.now)
     sum = models.DecimalField(max_digits=8, decimal_places=2)
     comments = models.CharField(max_length=200, null=True, blank=True)
 

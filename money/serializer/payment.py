@@ -1,92 +1,77 @@
 from django.contrib.auth.models import User
+from django.http import Http404
+from django.shortcuts import get_object_or_404
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from money.models import *
 
 
-class PaymentSerializer(serializers.ModelSerializer):
+class PaymentSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
-    contract = serializers.StringRelatedField(read_only=True)
-    category = serializers.StringRelatedField(read_only=True)
-    subcategory = serializers.StringRelatedField(read_only=True)
-    user = serializers.StringRelatedField(read_only=True)
-
-    class Meta:
-        model = Payment
-        fields = ('__all__')
+    category = serializers.CharField(required=True)
+    subcategory = serializers.CharField(required=True)
+    user = serializers.CharField(required=True)
+    sum = serializers.DecimalField(max_digits=10, decimal_places=2, required=True)
+    date = serializers.DateField(required=True)
+    comments = serializers.CharField(required=False)
 
     def create(self, validated_data):
-        try:
-            category = self.__get_category(self.initial_data['category'])
-            subcategory = self.__get_subcategory(self.initial_data['subcategory'])
-
-            if self.__is_valid_subcategory(category.name, subcategory.name):
-                user = self.__get_user(self.initial_data['user'])
-
-                payment = Payment.objects.create(user=user,
-                                                 category=category,
-                                                 subcategory=subcategory,
-                                                 sum=float(validated_data['sum']),
-                                                 date=validated_data['date'],
-                                                 nb_tickete=int(validated_data['nb_tickete']),
-                                                 comments=validated_data['comments'])
-                return payment
-            else:
-                raise serializers.ValidationError(
-                    'Subcategory %s does not belong to category %s' % (subcategory.name, category.name))
-        except (IndexError, KeyError, ValueError) as ex:
-            raise serializers.ValidationError(ex.message)
+        _category = Category.objects.get(name=self.validated_data['category'])
+        _subcategory = Subcategory.objects.filter(name=self.validated_data['subcategory'],
+                                                  category__name=_category.name).first()
+        _user = User.objects.get(username=self.validated_data['user'])
+        _payment = Payment.objects.create(user=_user,
+                                          category=_category,
+                                          subcategory=_subcategory,
+                                          sum=float(validated_data['sum']),
+                                          date=validated_data['date'],
+                                          comments=validated_data.get('comments', ''))
+        return _payment
 
     def update(self, instance, validated_data):
+        _category = Category.objects.get(name=self.validated_data['category'])
+        _subcategory = Subcategory.objects.filter(name=self.validated_data['subcategory'],
+                                                  category__name=_category.name).first()
+        _user = User.objects.get(username=self.validated_data['user'])
+
+        instance.category = _category
+        instance.user = _user
+        instance.subcategory = _subcategory
+        instance.sum = validated_data.get("sum", instance.sum)
+        instance.date = validated_data.get('date', instance.date)
+        instance.comments = validated_data.get('comments', instance.comments)
+        instance.save()
+        return instance
+
+    def validate(self, data):
+        if 'category' not in data:
+            raise ValidationError('Category is missing.')
+
+        if 'subcategory' not in data:
+            raise ValidationError('Subcategory is missing.')
+
+        _subcategory = Subcategory.objects.filter(name=data.get('subcategory'),
+                                                  category__name__exact=data.get('category')).first()
+        if not _subcategory:
+            raise ValidationError(
+                'Subcategory {} is not part of category {}'.format(data.get('subcategory'), data.get('category')))
+        return data
+
+    def validate_category(self, value):
         try:
-            category = self.__get_category(self.initial_data['category'])
-            subcategory = self.__get_subcategory(self.initial_data['subcategory'])
+            _category = get_object_or_404(Category, name=value)
+            return value
+        except Http404:
+            raise ValidationError('Category {} do not exists.'.format(value))
 
-            if self.__is_valid_subcategory(category.name, subcategory.name):
-                user = self.__get_user(self.initial_data['user'])
-
-                instance.category = category
-                instance.user = user
-                instance.subcategory = subcategory
-                instance.sum = validated_data.get("sum", instance.sum)
-                instance.nb_tickete = validated_data.get('nb_tickete', instance.nb_tickete)
-                instance.date = validated_data.get('date', instance.date)
-                instance.comments = validated_data.get('comments', instance.comments)
-                instance.save()
-                return instance
-            else:
-                raise serializers.ValidationError(
-                    'Subcategory %s does not belong to category %s' % (subcategory.name, category.name))
-        except (IndexError, KeyError) as ex:
-            raise serializers.ValidationError(ex.message)
-
-    def __is_valid_subcategory(self, category_name, subcategory_name):
-        """
-        Check if the subcategory belongs to the category
-        :param category_name:
-        :param subcategory_name:
-        :return: true if the subcategory belongs to the category
-        """
-        category = self.__get_category(category_name)
-        subcategory = self.__get_subcategory(subcategory_name)
-        if category.pk == subcategory.category.pk:
-            return True
-
-        return False
-
-    def __get_category(self, category_name):
-        return Category.objects.filter(name__exact=category_name)[0]
-
-    def __get_subcategory(self, subcategory):
-        return Subcategory.objects.filter(name__exact=subcategory)[0]
-
-    def __get_user(self, username):
-        return User.objects.filter(username__exact=username)[0]
-
-    def __get_contract(self, contract_id):
-        return User.objects.filter(contract_id__exact=contract_id)[0]
+    def validate_user(self, value):
+        try:
+            _user = get_object_or_404(User, username=value)
+            return value
+        except Http404:
+            raise ValidationError('User {} do not exists.'.format(value))
 
 
 class TotalSerializer(serializers.Serializer):
     total = serializers.DictField()
-

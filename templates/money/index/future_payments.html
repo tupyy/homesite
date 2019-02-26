@@ -4,11 +4,11 @@
         <div class="card-header">
             <div class="row">
                 <div class="col action-container">
-                    <h6 class="panel-title">Plati viitoare</h6>
+                    <h5 class="panel-title">Plati viitoare</h5>
                 </div>
             </div>
         </div>
-        <div class="card-body  {% if not next_payments %} no-data {% endif %}">
+        <div class="card-body  {% if not future_payments %} no-data {% endif %}">
             <table class="table table-striped table-bordered">
                 <thead class="thead-light">
                 <tr>
@@ -19,13 +19,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% if next_payments %}
-                    {% for next_payment,date in next_payments %}
+                {% if future_payments %}
+                    {% for future_payment,date in future_payments %}
                         <tr>
-                            <td>{{ next_payment.contract.name }}</td>
-                            <td>{{ next_payment.contract.company_name }}</td>
+                            <td>{{ future_payment.contract.name }}</td>
+                            <td>{{ future_payment.contract.company_name }}</td>
                             <td>{{ date }}</td>
-                            <td>{{ next_payment.sum }}</td>
+                            <td>{{ future_payment.sum }}</td>
                         </tr>
                     {% endfor %}
                 {% else %}

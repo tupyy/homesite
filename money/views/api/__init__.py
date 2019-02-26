@@ -1,4 +1,4 @@
 from .category import CategoryViewSet, SubcategoryViewSet
-from .payment import PaymentViewSet
+from .payment import PaymentAPIViewSet
 from .revenue import RevenuesViewSet
 from .totals import TotalViewSet
