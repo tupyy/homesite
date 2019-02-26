@@ -9,6 +9,7 @@ class SubcategorySerializer(serializers.Serializer):
     category = serializers.CharField(required=True)
     name = serializers.CharField(required=True)
     description = serializers.CharField(required=False)
+    id = serializers.IntegerField(read_only=True)
 
     def create(self, validated_data):
         if self.is_valid(raise_exception=True):
@@ -35,9 +36,6 @@ class SubcategorySerializer(serializers.Serializer):
             instance.save()
             return instance
 
-    class Meta:
-        model = Subcategory
-
     def validate_category(self, value):
         try:
             _ = Category.objects.get(name__exact=value)
@@ -53,6 +51,7 @@ class CategorySerializer(serializers.Serializer):
     subcategories = SubcategorySerializer(read_only=True, many=True)
     name = serializers.CharField(required=True)
     description = serializers.CharField(required=False)
+    id = serializers.IntegerField(read_only=True)
 
     def create(self, validated_data):
         (obj, created) = Category.objects.get_or_create(**validated_data)
@@ -70,7 +69,3 @@ class CategorySerializer(serializers.Serializer):
         instance.description = validated_data.get('description', instance.description)
         instance.save()
         return instance
-
-    class Meta:
-        model = Category
-        fields = ('id', 'name', 'description', 'subcategories')
