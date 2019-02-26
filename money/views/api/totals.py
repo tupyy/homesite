@@ -25,21 +25,29 @@ class TotalViewSet(viewsets.ViewSet):
             return Response("Bad request", status=status.HTTP_400_BAD_REQUEST)
 
     def retrieve(self, request, pk=None):
+        """ return the total for a certain month.
+            Without "year" parameter it returns the total of the month of the current year
+        """
         try:
             month = int(pk)
-            data = Payment.totals.get_total(int(month))
-            return HttpResponse(json.dumps({calendar.month_name[int(month)]: float(data)}),
-                                content_type='application/javascript; charset=utf8')
-        except ValueError:
-            return Response("Bad month number", status=status.HTTP_400_BAD_REQUEST)
+            if month not in range(1, 13):
+                raise ValueError('Invalid month.')
+            year = int(self.request.query_params.get("year", datetime.now().year))
+        except ValueError as err:
+            return Response(str(err), status=status.HTTP_400_BAD_REQUEST)
+
+        data = Payment.totals.get_year_total(month, year)
+        return HttpResponse(json.dumps({calendar.month_name[int(month)]: float(data)}),
+                            content_type='application/javascript; charset=utf8')
 
     @action(methods=['get'], detail=True, url_path="total")
     def get_totals(self, request, pk=None):
         """
         Get the totals for a given month by subcategories
+        The route can take a parameter 'year'.
         :param request:
         :param pk: month id
-        :return:
+        :return: totals by category
         """
 
         try:
@@ -70,8 +78,7 @@ class TotalViewSet(viewsets.ViewSet):
         :return: year total
         """
         try:
-            year = self.request.query_params.get("year", datetime.now().year)
-            year = int(year)
+            year = int(self.request.query_params.get("year", datetime.now().year))
         except ValueError:
             return Response('Invalid year', status=status.HTTP_400_BAD_REQUEST)
 
