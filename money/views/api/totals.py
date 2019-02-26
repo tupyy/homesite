@@ -80,7 +80,5 @@ class TotalViewSet(viewsets.ViewSet):
         for i in range(1, period_end):
             total += float(Payment.totals.get_year_total(i, year))
 
-        return HttpResponse(
-            json.dumps(total),
-            content_type='application/javascript; charset=utf8'
-        )
+        return HttpResponse(json.dumps(total),
+                            content_type='application/javascript; charset=utf8')
