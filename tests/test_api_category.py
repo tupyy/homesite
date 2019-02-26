@@ -31,3 +31,25 @@ class CategoryAPITestCase(TestCase):
 
         response = self.client.get('http://localhost:8000/api/money/category/')
         self.assertEqual(len(response.data[0]['subcategories']), 1)
+
+    def test_delete_category(self):
+        _category = Category(name='foo')
+        _category.save()
+
+        response = self.client.delete('http://localhost:8000/api/money/category/{}/'.format(_category.id))
+        self.assertEqual(response.status_code, 200)
+
+    def test_delete_category_404(self):
+        _category = Category(name='foo')
+        _category.save()
+
+        response = self.client.delete('http://localhost:8000/api/money/category/{}/'.format(_category.id + 1))
+        self.assertEqual(response.status_code, 404)
+
+    def test_update_category(self):
+        _category = Category(name='foo')
+        _category.save()
+
+        response = self.client.put('http://localhost:8000/api/money/category/{}/'.format(_category.id), {'name':'bar'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['name'], 'bar')
