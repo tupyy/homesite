@@ -65,66 +65,6 @@ class CategoryViewSet(viewsets.ViewSet):
         except ValueError:
             return Response("Argument must be an int", status=status.HTTP_400_BAD_REQUEST)
 
-    @action(methods=['get'], detail=True, url_path="total")
-    def get_totals(self, request, pk=None):
-        """
-        Get the totals for a given month by subcategories
-        :param request:
-        :param pk: month id
-        :return:
-        """
-
-        try:
-            month = int(pk)
-            if month < 0 or month > 12:
-                raise ValueError
-        except ValueError:
-            return Response('month value invalid', status=status.HTTP_400_BAD_REQUEST)
-
-        category_name = self.request.query_params.get("category")
-        if category_name is None:
-            total = Payment.totals.get_total_by_categories(month)
-            category_total = {k: float(v) for k, v in total.items()}
-            return HttpResponse(json.dumps(category_total),
-                                content_type='application/javascript; charset=utf8')
-        else:
-            total = Payment.totals.get_total_by_categories(month)
-            category_total = total.get(category_name, 0)
-            return HttpResponse(
-                json.dumps(float(category_total)),
-                content_type='application/javascript; charset=utf8'
-            )
-
-    @action(methods=['GET'], detail=True, url_path="year_total")
-    def get_year_total(self, request, pk=None):
-        """
-        Compute the totals for each month of the current year for each subcategory
-        Route: api/money/category/casa/year_total?year=2019
-        :param request:
-        :param pk: category name
-        :return: the total spending for a category from the beginning of the year to the current month if the
-                 year is the current year. Otherwise return the total of a whole year
-        """
-        try:
-            _ = Category.objects.get(name=pk)
-        except Category.DoesNotExist:
-            return Response("Category do noy exists.", status=status.HTTP_404_NOT_FOUND)
-
-        try:
-            year = self.request.query_params.get("year", datetime.now().year)
-        except ValueError:
-            return Response('Invalid year', status=status.HTTP_400_BAD_REQUEST)
-
-        period_end = datetime.now().month + 1 if year == datetime.now().year else 12
-        total = 0
-        for i in range(1, period_end):
-            total += float(Payment.totals.get_category_total(pk, i, year))
-
-        return HttpResponse(
-            json.dumps(total),
-            content_type='application/javascript; charset=utf8'
-        )
-
 
 class SubcategoryViewSet(viewsets.ViewSet):
     # permission_classes = (IsAuthenticated,)
