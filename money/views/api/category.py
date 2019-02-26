@@ -126,7 +126,7 @@ class CategoryViewSet(viewsets.ViewSet):
         )
 
 
-class SubcategoryViewSet(viewsets.ViewSet, generics.ListAPIView):
+class SubcategoryViewSet(viewsets.ViewSet):
     # permission_classes = (IsAuthenticated,)
     serializer_class = SubcategorySerializer
 
@@ -167,7 +167,7 @@ class SubcategoryViewSet(viewsets.ViewSet, generics.ListAPIView):
             return Response(ex.detail, status=status.HTTP_400_BAD_REQUEST)
 
     def list(self, request):
-        queryset = Subcategory.objects.all()
+        queryset = self.get_queryset()
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
