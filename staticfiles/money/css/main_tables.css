@@ -1,0 +1,240 @@
+div.form-group.row {
+    margin-bottom: 0;
+}
+
+.panel-table .panel-title {
+    margin-bottom: 0;
+}
+
+@media only screen and (min-width: 1030px) {
+    .payments-table {
+        margin: 0 20px auto 20px;
+        font-family: 'Roboto', sans-serif;
+        font-size: 14px;
+    }
+
+    .panel-table .card-body {
+        padding: 0;
+        text-align: center;
+    }
+
+    .table > thead > tr > th,
+    .table > tbody > tr > td {
+        vertical-align: middle;
+    }
+
+    .table > tbody > tr > td > img {
+        width: 16px;
+    }
+
+    .table > tbody > tr > td {
+        padding: 0.3rem;
+    }
+
+    .table > tbody > tr > .action-cell {
+        width: 100px;
+    }
+
+    .table > tfoot > tr > td {
+        text-align: left;
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+    .table > tbody > tr > td:nth-of-type(5):after {
+        content: " €";
+    }
+
+    .table > tfoot:last-child > tr > td:after {
+        content: " €";
+    }
+
+    .panel-table .panel-body .table-bordered {
+        border-style: none;
+        margin: 0;
+    }
+
+    .panel-table .panel-body .table-bordered > thead > tr > th:first-of-type {
+        text-align: center;
+        width: 100px;
+    }
+
+    .panel-table .panel-body .table-bordered > thead > tr > th:last-of-type,
+    .panel-table .panel-body .table-bordered > tbody > tr > td:last-of-type {
+        border-right: 0px;
+    }
+
+    .panel-table .panel-body .table-bordered > thead > tr > th:first-of-type,
+    .panel-table .panel-body .table-bordered > tbody > tr > td:first-of-type {
+        border-left: 0px;
+    }
+
+    .panel-table .panel-body .table-bordered > tbody > tr:first-of-type > td {
+        border-bottom: 0px;
+    }
+
+    .panel-table .panel-body .table-bordered > thead > tr:first-of-type > th {
+        border-top: 0px;
+    }
+
+    .panel-table .panel-footer .pagination {
+        margin: 0;
+    }
+
+    .row-actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .table {
+        margin-bottom: 0;
+    }
+
+    /*
+    used to vertically center elements, may need modification if you're not using default sizes.
+    */
+    .panel-table .panel-footer .col {
+        line-height: 34px;
+        height: 34px;
+    }
+
+    .panel-table .card-header .col h3 {
+        line-height: 30px;
+        height: 30px;
+    }
+
+    .panel-table .panel-body .table-bordered > tbody > tr > td {
+        line-height: 34px;
+    }
+
+    .row-actions .btn img {
+        width: 25px;
+        height: 25px;
+        filter: invert(1)
+    }
+
+}
+
+@media only screen and (max-width: 1024px) {
+
+    .no-data {
+        display: none !important;
+    }
+
+    /* Force table to not be like tables anymore */
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+    }
+
+    /* Hide table headers (but not display: none;, for accessibility) */
+    thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    tr {
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+    }
+
+    td {
+        /* Behave  like a "row" */
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        overflow: hidden;
+        padding-left: 48%;
+        text-align: right;
+    }
+
+    .table-bordered {
+        border: none;
+    }
+
+    .td-btn {
+        width: 100%;
+    }
+
+    .row-actions {
+        display: flex;
+        justify-content: center;
+    }
+
+    .row-actions .btn img {
+        width: 25px;
+        height: 25px;
+        filter: invert(1)
+    }
+
+    td:before {
+        /* Now like a table header */
+        position: absolute;
+
+        /* Top/left values mimic padding */
+        top: 13px;
+        left: 5px;
+
+        /* width: 35% */
+        padding-right: 10px;
+        white-space: nowrap;
+    }
+
+    /*
+	Label the data
+	*/
+    .total-categories-table td:before {
+        content: attr(data-content);
+    }
+
+    .total-categories-table td:after {
+        content: " €";
+    }
+
+    .total-categories-table td:nth-of-type(1):before {
+        content: "Categorie";
+    }
+
+    .total-categories-table td:nth-of-type(1):after {
+        content: "";
+    }
+
+
+    .future-payments-table td:nth-of-type(1):before {
+        content: "Nume";
+    }
+
+    .future-payments-table td:nth-of-type(2):before {
+        content: "Companie";
+    }
+
+    .future-payments-table td:nth-of-type(3):before {
+        content: "Data";
+    }
+
+    .future-payments-table td:nth-of-type(4):before {
+        content: "Suma";
+    }
+
+    .future-payments-table td:nth-of-type(4):after {
+        content: " €";
+    }
+
+
+
+}
+
+@media only screen and (max-width: 768px) {
+
+    .action-container-create {
+        display: flex;
+        justify-content: center;
+        margin: auto;
+    }
+}
