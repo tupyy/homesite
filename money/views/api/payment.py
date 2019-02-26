@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 from rest_framework import generics, serializers
 from rest_framework import status
 from rest_framework import viewsets
@@ -40,29 +41,25 @@ class PaymentViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
             return Response(str(ex), status=status.HTTP_400_BAD_REQUEST)
 
     def get_queryset(self):
-
-        start_date = self.request.query_params.get('start_date', None)
-        end_date = self.request.query_params.get('end_date', None)
+        _start_date = self.request.query_params.get('start_date', None)
+        _end_date = self.request.query_params.get('end_date', None)
         _subcategory = self.request.query_params.get('subcategory', None)
         _category = self.request.query_params.get('category', None)
         _month = self.request.query_params.get('month', None)
         _year = self.request.query_params.get('year', None)
 
-        if start_date and end_date:
-            queryset = Payment.objects.filter(date__gte=start_date, date__lte=end_date)
+        if _start_date and _end_date:
+            query_condition = Q(date__gte=_start_date) & Q(date__lte=_end_date)
         else:
             if _year:
-                queryset = Payment.objects.filter(date__year=_year)
+                query_condition = Q(date__year=_year)
             else:
-                queryset = Payment.objects.filter(date__year=datetime.now().year)
+                query_condition = Q(date__year=datetime.now().year)
             if _month:
-                queryset = queryset.filter(date__month=_month)
+                query_condition &= Q(date__month=_month)
 
         if _subcategory and _category:
-            queryset = queryset.filter(category__name__exact=_category,
-                                       subcategory__name__exact=_subcategory,
-                                       date__month=_month)
+            query_condition &= Q(category__name__exact=_category) & Q(subcategory__name__exact=_subcategory)
         elif _category and not _subcategory:
-            queryset = queryset.filter(category__name__exact=_category,
-                                       date__month=_month)
-        return queryset
+            query_condition &= Q(category__name__exact=_category)
+        return Payment.objects.filter(query_condition)
