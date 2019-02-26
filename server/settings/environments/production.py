@@ -4,7 +4,7 @@ from server.settings.utils.utils import parse_db_variable
 SECRET_KEY = os.environ.get('SECRET_KEY', 'SECRET_KEY')
 DEBUG = False
 
-ALLOWED_HOSTS = ['herokuapp.com']
+ALLOWED_HOSTS = ['homesite2.herokuapp.com']
 
 db_variables = parse_db_variable(os.environ.get('DATABASE_URL'))
 # use dev db
