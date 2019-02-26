@@ -44,13 +44,22 @@
     margin-left: 10px;
     margin-right: 10px;
     width: 100px;
-    font-weight: bold;
 }
+
+.btn-primary {
+    background-color: #2E507A;
+}
+
+.btn-primary:hover {
+    background-color: #03465C;
+}
+
 
 .div-opt {
     margin-top: 15px;
     margin-bottom: 15px;
 }
+
 .form-comentariu {
     height: 207px;
     vertical-align: text-top;
