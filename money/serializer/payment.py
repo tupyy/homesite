@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from money.models import *
+from money.models import Category, Subcategory, Payment
 
 
 class PaymentSerializer(serializers.Serializer):
@@ -60,14 +60,14 @@ class PaymentSerializer(serializers.Serializer):
 
     def validate_category(self, value):
         try:
-            _category = get_object_or_404(Category, name=value)
+            _ = get_object_or_404(Category, name=value)
             return value
         except Http404:
             raise ValidationError('Category {} do not exists.'.format(value))
 
     def validate_user(self, value):
         try:
-            _user = get_object_or_404(User, username=value)
+            _ = get_object_or_404(User, username=value)
             return value
         except Http404:
             raise ValidationError('User {} do not exists.'.format(value))

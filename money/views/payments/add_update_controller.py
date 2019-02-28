@@ -27,7 +27,7 @@ class AddPaymentView(PaymentFormViewMixin, TemplateView):
     def post(self, request):
         form = PaymentForm(request.POST)
         if form.is_valid():
-            _payment = form.save()
+            form.save()
             return HttpResponseRedirect(form.cleaned_data['next_url'])
         else:
             return render(self.request, reverse('money.payment.add'), {'form': form,
@@ -49,7 +49,7 @@ class UpdatePaymentView(PaymentFormViewMixin, DetailView):
     def post(self, request, pk):
         form = PaymentForm(request.POST, instance=self.get_object())
         if form.is_valid():
-            _payment = form.save()
+            form.save()
             return HttpResponseRedirect(form.cleaned_data['next_url'])
         else:
             return render(self.request, reverse('money.payment.update', args=[pk]), {'form': form})
