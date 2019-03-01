@@ -41,12 +41,16 @@ div.form-group.row {
         font-size: 15px;
     }
 
-    .table > tbody > tr > td:nth-of-type(5):after {
+    .total-categories-table table > tbody > tr:last-child {
+        font-weight: bold;
+    }
+
+    .total-categories-table td:after {
         content: " €";
     }
 
-    .table > tfoot:last-child > tr > td:after {
-        content: " €";
+    .total-categories-table td:nth-of-type(1):after {
+        content: "";
     }
 
     .panel-table .panel-body .table-bordered {
@@ -184,6 +188,10 @@ div.form-group.row {
         /* width: 35% */
         padding-right: 10px;
         white-space: nowrap;
+    }
+
+    table > tbody > tr:last-child > td {
+        font-weight: bold;
     }
 
     /*
