@@ -1,5 +1,5 @@
 import calendar
-from datetime import date
+from datetime import date, datetime
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse, Http404
@@ -15,7 +15,7 @@ class MonthViewMixin(object):
         context = super(MonthViewMixin, self).get_context_data(**kwargs)
         context['months'] = self.get_months_name()
         context['selected_month'] = self.get_selected_month()
-        context['current_month'] = self.kwargs.get('month', None)
+        context['current_month'] = self.kwargs.get('month', datetime.now().month)
         return context
 
     def get_queryset(self):
@@ -40,6 +40,8 @@ class MonthViewMixin(object):
                 return calendar.month_name[_selected_month_id]
             except IndexError:
                 raise Http404
+        else:
+            return calendar.month_name[datetime.now().month]
 
 
 class CategoryViewMixin(object):

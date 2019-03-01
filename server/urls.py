@@ -44,6 +44,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     path('money/payment/add', AddPaymentView.as_view(), name="money.payment.add"),
     path('money/payment/delete/<int:payment_id>/', DeletePaymentView.as_view(), name="money.payment.delete"),
+    path('money/payment/', PaymentsIndexView.as_view(), name="money.payment.view"),
     path('money/payment/<int:month>/', PaymentsIndexView.as_view(), name="money.payment.view"),
     path('money/payment/update/<int:pk>/', UpdatePaymentView.as_view(), name="money.payment.update"),
     # path('money/payment/category/total/', category_total, name="category_total"),
