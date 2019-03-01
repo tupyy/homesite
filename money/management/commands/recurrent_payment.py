@@ -1,14 +1,8 @@
 import datetime
-import os
-from django.core.management.base import BaseCommand, CommandError
+
+from django.core.management.base import BaseCommand
+
 from money.models import Payment, RecurrentPayment, PaymentOccurrence
-
-
-# If modifying these scopes, delete your previously saved credentials
-# at ~/.credentials/calendar-python-quickstart.json
-SCOPES = 'https://www.googleapis.com/auth/calendar'
-CLIENT_SECRET_FILE = 'client_secret2.json'
-APPLICATION_NAME = 'My calendar'
 
 
 class Command(BaseCommand):
