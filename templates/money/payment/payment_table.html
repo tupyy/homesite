@@ -82,7 +82,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="{{ columns_labels|length|add:1 }}">Total: {{ total }}</td>
+                        <td colspan="{{ columns_labels|length|add:1 }}">Total: {{ total|floatformat:2 }}</td>
                     </tr>
                 </tfoot>
             </table>
