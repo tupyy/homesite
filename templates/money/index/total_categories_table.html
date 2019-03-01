@@ -28,7 +28,7 @@
                                 {% if forloop.counter == 1 %}
                                     <td>{{ item|capfirst }}</td>
                                 {% else %}
-                                    <td>{{ item }}</td>
+                                    <td>{{ item | floatformat:2 }}</td>
                                 {% endif %}
                             {% endfor %}
                         </tr>
